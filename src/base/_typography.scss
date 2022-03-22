@@ -1,0 +1,10 @@
+// @import url("../public/assets/fonts/nunito.css");
+// @import url("../public/assets/fonts/roboto.css");
+
+$nunito: "Nunito", sans-serif;
+$roboto: "Roboto", sans-serif;
+
+$theme-fonts: (
+  "primary": $nunito,
+  "secondary": $roboto,
+);
