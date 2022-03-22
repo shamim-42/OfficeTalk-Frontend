@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import "./main.scss";
 import App from './App';
-import { store } from './app/store';
+import { store } from './redux/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 

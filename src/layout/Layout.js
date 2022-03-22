@@ -4,11 +4,11 @@ import {
 } from "react-router-dom";
 import connector from '../connector/index';
 import config from "../config/config.json";
-import {Container, Row, Col} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 connector.baseUrl = config.baseUrl;
 
 function Layout() {
-    
+
     connector.handle404 = async (response) => {
         const err = await response.json();
         console.log(err.message);
@@ -53,11 +53,11 @@ function Layout() {
     // }
 
     return (
-    <Routes>
-        <Route path="/login" element={<Container><Row><Col><h1>I am login component</h1></Col></Row></Container>} />
-        <Route path="/style-guide" element={<Container><Row><Col><h1>I am Style-guide component</h1></Col></Row></Container>} />
-        <Route path="/" element={<Container><Row><Col><h1>I am Home Component</h1></Col></Row></Container>} />
-    </Routes>
+        <Routes>
+            <Route path="/login" element={<Container><Row><Col><h2>I am login component</h2></Col></Row></Container>} />
+            <Route path="/style-guide" element={<Container><Row><Col><h1>I am Style-guide component</h1></Col></Row></Container>} />
+            <Route path="/" element={<Container><Row><Col><h2>I am Home Component</h2></Col></Row></Container>} />
+        </Routes>
     )
 }
 

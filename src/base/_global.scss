@@ -3,7 +3,7 @@
 @use "sass:map";
 
 // set the line-clamp with the params passed to it
-@mixin set-line-clamp($clamp){
+@mixin set-line-clamp($clamp) {
   -webkit-line-clamp: $clamp;
   overflow: hidden;
   display: -webkit-box;
@@ -11,7 +11,7 @@
 }
 
 // set display to flex with the params passed to it
-@mixin set-display-flex($align, $justify, $gap: 0, $direction: row){
+@mixin set-display-flex($align, $justify, $gap: 0, $direction: row) {
   display: flex;
   justify-content: $justify;
   align-items: $align;
@@ -21,18 +21,16 @@
   }
 
   @if $direction != row {
-    flex-direction: $direction
+    flex-direction: $direction;
   }
-
 }
-
 
 body {
   font-family: map.get($theme-fonts, "primary");
   font-size: 16px;
   line-height: 22px;
   font-weight: 400;
-  color: map.get($theme-colors, "black");
+  color: map.get($theme-colors, "gray-text-60");
 
   @include media("<=tablet") {
     font-size: 14px;
@@ -49,142 +47,106 @@ body {
   padding: 0;
   outline: 0;
 }
-h1,h2,h3,h4,h5,h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   margin: 0;
   padding: 0;
 }
 
-a, a:hover, a:focus {
+a,
+a:hover,
+a:focus {
   text-decoration: none;
 }
 
-ul, ol {
+ul,
+ol {
   list-style-type: none;
 }
 
 h1 {
   font-family: map.get($theme-fonts, "primary");
-  font-size: 32px;
-  line-height: 44px;
-  font-weight: 900;
-  color: map.get($theme-colors, "black");
-
-  
-  @include media("<=tablet") {
-    font-size: 24px;
-    line-height: 34px;
-  }
+  font-size: 72px;
+  line-height: 98px;
+  font-weight: 700;
+  color: map.get($theme-colors, "white");
 }
 
 h2 {
   font-family: map.get($theme-fonts, "primary");
-  font-size: 24px;
-  line-height: 34px;
+  font-size: 48px;
+  line-height: 66px;
   font-weight: 700;
   color: map.get($theme-colors, "black");
-  
-  &.title-lg {
-    font-size: 36px;
-    line-height:48px;
-  }
-  
-  &.section-title {
-    color: map.get($theme-colors, "primary")
-  }
-  &.secondary-font{
+
+  &.color-title {
+    color: rgba(0, 141, 220, 0.72);
+    line-height: 56px;
     font-family: map.get($theme-fonts, "secondary");
-    line-height: 28px
-  } 
-  &.font-normal {
-    font-weight: 400;
   }
-  
-  @include media("<=tablet") {
-    font-size: 20px;
-    line-height: 28px;
+  &.extra-bold {
+    color: map.get($theme-colors, "white");
+    font-weight: 800;
   }
-  
 }
 
 h3 {
-  font-size: 24px;
-  line-height: 32px;
+  font-size: 36px;
+  line-height: 49px;
   font-family: map.get($theme-fonts, "primary");
-  font-weight: 700;
-  color: map.get($theme-colors, "black");
-  
-  
-  &.section-title {
-    color: map.get($theme-colors, "primary");
+  font-weight: 600;
+
+  &.bold {
+    font-weight: 700;
   }
-  
-  @include media("<=tablet") {
-    font-size: 18px;
-    line-height: 24px;
+  &.regular {
+    font-weight: 400;
   }
 }
 
 h4 {
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 20px;
+  line-height: 28px;
   font-family: map.get($theme-fonts, "primary");
   font-weight: 600;
   color: map.get($theme-colors, "black");
-  
-  &.author-title {
-    color: map.get($theme-colors, "primary");
+
+  &.title {
+    font-weight: 700;
+    font-size: 24px;
   }
-  
+  &.subtitle {
+    font-size: 18px;
+  }
 }
-.font-bold {
-  font-weight: 700;
+
+.regular-subtitle {
+  font-family: map.get($theme-fonts, "primary");
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19px;
+
+  &.bold {
+    font-weight: 600;
+  }
 }
 
 .primary-color {
   color: map.get($theme-colors, "primary");
 }
 
-.body-text-1 {
-  font-size: 14px;
-  line-height:20px;
-  font-family: map.get($theme-fonts, "primary");
-  font-weight:400;
-  color: map.get($theme-colors, "black");
-  
-  &.text-gray-alpha-39 {
-    color: map.get($theme-colors, "gray-alhpa-39");
-  }
-  
-}
-
-
-.caption {
-  font-size: 14px;
-  line-height:16px;
-  font-weight: 500;
-  color: map.get($theme-colors, "black");
-  font-family: map.get($theme-fonts, "secondary");
-  
-  &.as-option {
-    font-weight: 400;
-  }
-  
-}
-
-.body-text-2 {
-  font-size: 12px;
-  line-height:18px;
-  font-family: map.get($theme-fonts, "primary");
-  font-weight:400;
-  color: map.get($theme-colors, "black");
-}
 
 .form-label {
   font-size: 20px;
   font-weight: 400;
-  line-height:28px;
+  line-height: 28px;
   color: map.get($theme-colors, "gray-text-60");
-  
+
   @include media("<=tablet") {
     font-size: 16px;
     line-height: 24px;
@@ -196,34 +158,33 @@ h4 {
   padding: 8px 42px;
   border-radius: 20px;
   transition: all ease 0.25s;
-  
+
   &.medium-size {
     padding: 12px 48px;
     border-radius: 30px;
   }
-  
+
   &.filled-btn {
     color: map.get($theme-colors, "white");
     border: 1px solid map.get($theme-colors, "primary");
     background-color: map.get($theme-colors, "primary");
-    
+
     &:hover {
       color: map.get($theme-colors, "primary");
       background-color: map.get($theme-colors, "transparent");
     }
   }
-  
+
   &.outlined-btn {
     color: map.get($theme-colors, "primary");
     background-color: map.get($theme-colors, "transparent");
     border: 1px solid map.get($theme-colors, "primary");
-    
+
     &:hover {
       color: map.get($theme-colors, "black");
       border: 1px solid map.get($theme-colors, "black");
     }
   }
-  
 }
 
 .btn-theme-primary-fluid {
@@ -233,29 +194,28 @@ h4 {
   height: 50px;
   border-radius: 50px;
   transition: all ease 0.25s;
-  
+
   &.filled-btn {
     color: map.get($theme-colors, "white");
     border: 1px solid map.get($theme-colors, "primary");
     background-color: map.get($theme-colors, "primary");
-    
+
     &:hover {
       color: map.get($theme-colors, "primary");
       background-color: map.get($theme-colors, "transparent");
     }
   }
-  
+
   &.outlined-btn {
     color: map.get($theme-colors, "primary");
     background-color: map.get($theme-colors, "transparent");
     border: 1px solid map.get($theme-colors, "primary");
-    
+
     &:hover {
       color: map.get($theme-colors, "black");
       border: 1px solid map.get($theme-colors, "black");
     }
   }
-  
 }
 
 .btn-theme-black-normal {
@@ -269,16 +229,16 @@ h4 {
   border: 1px solid map.get($theme-colors, "black");
   transition: all ease 0.25s;
   background-color: map.get($theme-colors, "transparent");
-  
+
   &:hover {
     color: map.get($theme-colors, "primary");
     border: 1px solid map.get($theme-colors, "primary");
   }
-  
+
   &.outlined-btn {
     color: map.get($theme-colors, "primary");
     border: 1px solid map.get($theme-colors, "primary");
-    
+
     &:hover {
       color: map.get($theme-colors, "black");
       border: 1px solid map.get($theme-colors, "black");
