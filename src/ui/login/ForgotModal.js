@@ -2,7 +2,7 @@ import { Button, Form, Input } from 'antd';
 import React from 'react';
 
 const ForgotModal = (props) => {
-  const { handleCancel, onFinishModal, modalno, onFinishOtp } = props;
+  const { handleCancel, onFinishModal, modalno, onFinishOtp, onFinishPassword } = props;
   if (modalno === 2) {
     return (
       <>
@@ -59,30 +59,44 @@ const ForgotModal = (props) => {
   else if (modalno === 3) {
     return (
       <>
-        <h3 className="forgot-title title-color-50">Change your password </h3>
+        <h3 className="forgot-title title-color-50">Change password </h3>
         <Form
           className="modal-form"
           name="modal"
           initialValues={{
             remember: true,
           }}
-          onFinish={onFinishModal}
+          onFinish={onFinishPassword}
           autoComplete="off"
         >
           <Form.Item
-            name="forgot-email"
+            name="password"
             align="center"
             rules={[
               {
                 required: true,
-                message: 'Please input your valid email!',
-                type: 'email'
+                message: 'Password is required!',
               },
             ]}
           >
-            <Input
+            <Input.Password
               className="regular-input"
-              placeholder="anyname@gmail.com"
+              placeholder="New password"
+            />
+          </Form.Item>
+          <Form.Item
+            name="confirmPass"
+            align="center"
+            rules={[
+              {
+                required: true,
+                message: 'Password is required!',
+              },
+            ]}
+          >
+            <Input.Password
+              className="regular-input"
+              placeholder="Confirm the password"
             />
           </Form.Item>
           <Form.Item

@@ -27,6 +27,11 @@ const Login = () => {
     setModalno(2)
   };
 
+  const onFinishPassword = (values) => {
+    console.log(values);
+    setModalno(0)
+  };
+
   return (
     <LoginUi
       onFinish={onFinish}
@@ -36,6 +41,7 @@ const Login = () => {
       handleCancel={handleCancel}
       modalno={modalno}
       onFinishOtp={onFinishOtp}
+      onFinishPassword={onFinishPassword}
     />
   );
 };
