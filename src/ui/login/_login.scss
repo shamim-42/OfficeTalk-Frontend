@@ -1,0 +1,84 @@
+@use "sass:map";
+
+.login-section {
+  background-color: map.get($theme-colors, "primary-bg");
+  height: 100vh;
+}
+
+.login-logo {
+  @include set-display-flex(center, center, 0, column);
+  width: 100%;
+
+  & > h1 {
+    @include media("<=tablet") {
+      font-size: 32px;
+      text-align: center;
+    }
+  }
+}
+
+.login-logo-img {
+  inline-size: 100%;
+  object-fit: contain;
+  height: 204px;
+  aspect-ratio: 1/1;
+
+  @include media("<=tablet") {
+    height: 100px;
+  }
+}
+
+.login-form-container {
+  @include set-display-flex(center, center, 0, column);
+  background-color: map.get($theme-colors, "white");
+  height: 100vh;
+  width: 100%;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+
+  @include media("<=tablet-xl") {
+    justify-content: start;
+    padding-top: 16px;
+    border-radius: 0;
+  }
+
+  & .login-form-title {
+    color: map.get($theme-colors, "primary-text-125");
+    text-align: left;
+  }
+  & .havenotaccount {
+    padding-top: 10px;
+    color: map.get($theme-colors, "black-alhpa-60");
+    font-size: 16px;
+  }
+
+  & form.login-form.ant-form {
+    width: 60%;
+
+    @include media("<=tablet") {
+      width: 90%;
+    }
+
+    & > * {
+      width: 100%;
+    }
+
+    & > .forgot-password {
+      text-align: right;
+    }
+  }
+  .login-button {
+    font-size: 24px;
+
+    @include media("<=tablet") {
+      font-size: 16px;
+    }
+  }
+}
+
+.regular-input {
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid #c4c4c4;
+  outline: none;
+}

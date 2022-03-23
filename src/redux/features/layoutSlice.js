@@ -1,23 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  error: null,
-  alertList: [],
-  userProfile: null,
-};
-
 export const layoutSlice = createSlice({
   name: 'layout',
-  initialState,
+  initialState: {
+    error: null,
+    alertList: [],
+    userProfile: null,
+  },
   reducers: {
-    setError: (state, action) =>{
+    setError: (state, action) => {
       state.error = action.payload
     },
     resetError: (state) => {
       state.error = null
     }
   },
-  
+
 });
 
 export const { setError, resetError } = layoutSlice.actions;
