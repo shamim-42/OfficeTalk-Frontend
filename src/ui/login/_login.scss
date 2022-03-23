@@ -72,9 +72,11 @@
 
   .login-button {
     font-size: 24px;
+    height: 48px;
 
     @include media("<=tablet") {
       font-size: 16px;
+      height: 36px;
     }
   }
 }
@@ -102,6 +104,9 @@
     & .modal-buttons {
       @include set-display-flex(center, end, 20px);
       justify-self: end;
+      & Button {
+        height: 38px;
+      }
     }
   }
 }

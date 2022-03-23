@@ -1,19 +1,11 @@
 import { Button, Col, Form, Input, Modal, Row } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import ForgotModal from './ForgotModal';
 
 const LoginUi = (props) => {
-  const { onFinish } = props;
+  const { onFinish, onFinishModal, showModal, handleCancel, isModalVisible, modalno, onFinishOtp } = props;
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
 
   return (
     <section aria-label="Login Section" className="login-section">
@@ -98,56 +90,13 @@ const LoginUi = (props) => {
           visible={isModalVisible}
           closable={false}
           footer={null}
-          onCancel={handleCancel}
         >
-          <h3 className="forgot-title title-color-50">Sent code via email </h3>
-          <Form
-            className="modal-form"
-            name="modal"
-            initialValues={{
-              remember: true,
-            }}
-            onFinish={onFinish}
-            autoComplete="off"
-          >
-            <Form.Item
-              name="forgot-email"
-              align="center"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your valid email!',
-                  type: 'email'
-                },
-              ]}
-            >
-              <Input
-                className="regular-input"
-                placeholder="anyname@gmail.com"
-              />
-            </Form.Item>
-            <Form.Item
-              align="center"
-              wrapperCol={{
-                span: 16,
-              }}
-            >
-              <div className="modal-buttons">
-                <Button
-                  className="btn-theme-primary-fluid default-btn login-button"
-                  type="default"
-                  onClick={handleCancel}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  className="btn-theme-primary-fluid filled-btn login-button"
-                  htmlType="submit">
-                  Submit
-                </Button>
-              </div>
-            </Form.Item>
-          </Form>
+          <ForgotModal
+            isModalVisible={isModalVisible}
+            handleCancel={handleCancel}
+            onFinishModal={onFinishModal}
+            modalno={modalno}
+            onFinishOtp={onFinishOtp} />
         </Modal>
       </div>
     </section>
