@@ -1,14 +1,20 @@
-import { Button, Col, Form, Input, Row } from 'antd';
-import React from 'react';
+import { Button, Col, Form, Input, Modal, Row } from 'antd';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const LoginUi = () => {
-  const onFinish = (values) => {
-    console.log(values);
+const LoginUi = (props) => {
+  const { onFinish } = props;
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
+
   return (
     <section aria-label="Login Section" className="login-section">
       <div>
@@ -24,12 +30,10 @@ const LoginUi = () => {
             <Form
               className="login-form"
               name="basic"
-
               initialValues={{
                 remember: true,
               }}
               onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
               <Form.Item
@@ -64,9 +68,9 @@ const LoginUi = () => {
                   placeholder="Password" />
               </Form.Item>
               <Form.Item className="forgot-password">
-                <a href="/">
+                <Button type="link" onClick={showModal}>
                   Forgot password
-                </a>
+                </Button>
               </Form.Item>
 
               <Form.Item
@@ -82,14 +86,69 @@ const LoginUi = () => {
                   Submit
                 </Button>
                 <p className="havenotaccount">Dont have an account ?
-                  <a href="/" style={{ paddingLeft: '10px' }} >
+                  <Link to="/register" style={{ paddingLeft: '10px' }} >
                     Sign Up
-                  </a>
+                  </Link>
                 </p>
               </Form.Item>
             </Form>
           </Col>
         </Row>
+        <Modal
+          visible={isModalVisible}
+          closable={false}
+          footer={null}
+          onCancel={handleCancel}
+        >
+          <h3 className="forgot-title title-color-50">Sent code via email </h3>
+          <Form
+            className="modal-form"
+            name="modal"
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            autoComplete="off"
+          >
+            <Form.Item
+              name="forgot-email"
+              align="center"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your valid email!',
+                  type: 'email'
+                },
+              ]}
+            >
+              <Input
+                className="regular-input"
+                placeholder="anyname@gmail.com"
+              />
+            </Form.Item>
+            <Form.Item
+              align="center"
+              wrapperCol={{
+                span: 16,
+              }}
+            >
+              <div className="modal-buttons">
+                <Button
+                  className="btn-theme-primary-fluid default-btn login-button"
+                  type="default"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="btn-theme-primary-fluid filled-btn login-button"
+                  htmlType="submit">
+                  Submit
+                </Button>
+              </div>
+            </Form.Item>
+          </Form>
+        </Modal>
       </div>
     </section>
   );

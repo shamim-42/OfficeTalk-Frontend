@@ -139,20 +139,15 @@ h4 {
   }
 }
 
-.primary-color {
-  color: map.get($theme-colors, "primary");
+.title-color-50 {
+  color: map.get($theme-colors, "primary-text-50");
 }
 
-.form-label {
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 28px;
-  color: map.get($theme-colors, "gray-text-60");
-
-  @include media("<=tablet") {
-    font-size: 16px;
-    line-height: 24px;
-  }
+.regular-input {
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid #c4c4c4;
+  outline: none;
 }
 
 .btn-theme-primary {
@@ -200,6 +195,12 @@ h4 {
 
   @include media("<=tablet") {
     height: 32px;
+  }
+
+  &.default-btn {
+    color: map.get($theme-colors, "black");
+    border: 0;
+    background-color: #e1e1e1;
   }
 
   &.filled-btn {

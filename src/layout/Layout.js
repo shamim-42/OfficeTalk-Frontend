@@ -4,9 +4,9 @@ import {
 } from "react-router-dom";
 import connector from '../connector/index';
 import config from "../config/config.json";
-import HomePage from "../container/HomePage";
 import StyleGuide from "../container/StyleGuide";
 import Login from "../container/Login";
+import Registration from "../container/Registration";
 connector.baseUrl = config.baseUrl;
 
 function Layout() {
@@ -57,8 +57,9 @@ function Layout() {
     return (
         <Routes>
             <Route path="/style-guide" element={<StyleGuide />} />
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} exact />
+            <Route path="/register" element={<Registration />} exact />
         </Routes>
     )
 }

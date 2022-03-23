@@ -3,6 +3,7 @@
 .login-section {
   background-color: map.get($theme-colors, "primary-bg");
   height: 100vh;
+  position: relative;
 }
 
 .login-logo {
@@ -15,16 +16,16 @@
       text-align: center;
     }
   }
-}
 
-.login-logo-img {
-  inline-size: 100%;
-  object-fit: contain;
-  height: 204px;
-  aspect-ratio: 1/1;
+  & > .login-logo-img {
+    inline-size: 100%;
+    object-fit: contain;
+    height: 204px;
+    aspect-ratio: 1/1;
 
-  @include media("<=tablet") {
-    height: 100px;
+    @include media("<=tablet") {
+      height: 100px;
+    }
   }
 }
 
@@ -46,6 +47,7 @@
     color: map.get($theme-colors, "primary-text-125");
     text-align: left;
   }
+
   & .havenotaccount {
     padding-top: 10px;
     color: map.get($theme-colors, "black-alhpa-60");
@@ -67,6 +69,7 @@
       text-align: right;
     }
   }
+
   .login-button {
     font-size: 24px;
 
@@ -76,9 +79,29 @@
   }
 }
 
-.regular-input {
-  border: none;
-  background: transparent;
-  border-bottom: 1px solid #c4c4c4;
-  outline: none;
+.ant-modal {
+  position: absolute;
+  top: 20%;
+  right: 12%;
+
+  @include media("<=tablet-xl") {
+    position: fixed;
+    top: 10%;
+    left: 1%;
+    right: 1%;
+  }
+
+  & .ant-modal-content {
+    border-radius: 30px;
+    padding: 96px 56px;
+
+    & .forgot-title {
+      margin-bottom: 20px;
+    }
+
+    & .modal-buttons {
+      @include set-display-flex(center, end, 20px);
+      justify-self: end;
+    }
+  }
 }
