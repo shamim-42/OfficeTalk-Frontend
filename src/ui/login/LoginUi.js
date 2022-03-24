@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ForgotModal from './ForgotModal';
 
 const LoginUi = (props) => {
-  const { onFinish, onFinishModal, showModal, handleCancel, isModalVisible, modalno, onFinishOtp, onFinishPassword, onChangeNewPassword, confirmPassword } = props;
+  const { onFinish, onFinishModal, showModal, handleCancel, isModalVisible, modalno, onFinishOtp, onFinishPassword } = props;
 
 
   return (
@@ -97,9 +97,8 @@ const LoginUi = (props) => {
             onFinishModal={onFinishModal}
             modalno={modalno}
             onFinishOtp={onFinishOtp}
-            onChangeNewPassword={onChangeNewPassword}
             onFinishPassword={onFinishPassword}
-            confirmPassword={confirmPassword} />
+          />
         </Modal>
       </div>
     </section>

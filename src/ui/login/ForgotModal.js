@@ -2,7 +2,7 @@ import { Button, Form, Input } from 'antd';
 import React from 'react';
 
 const ForgotModal = (props) => {
-  const { handleCancel, onFinishModal, modalno, onFinishOtp, onFinishPassword, onChangeNewPassword, confirmPassword } = props;
+  const { handleCancel, onFinishModal, modalno, onFinishOtp, onFinishPassword } = props;
   if (modalno === 2) {
     return (
       <>
@@ -82,23 +82,31 @@ const ForgotModal = (props) => {
             <Input.Password
               className="regular-input"
               placeholder="New password"
-              onBlur={(e) => onChangeNewPassword(e)}
             />
           </Form.Item>
           <Form.Item
             name="confirmPass"
             align="center"
+            dependencies={['password']}
             rules={[
               {
                 required: true,
-                message: 'Password is required!',
+                message: 'Please confirm your password!',
               },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+
+                  return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                },
+              }),
             ]}
           >
             <Input.Password
               className="regular-input"
               placeholder="Confirm the password"
-              onBlur={(e) => confirmPassword(e)}
             />
           </Form.Item>
           <Form.Item

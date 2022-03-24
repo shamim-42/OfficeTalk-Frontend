@@ -1,7 +1,4 @@
-import {
-    Route,
-    Routes,
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import connector from '../connector/index';
 import config from "../config/config.json";
 import StyleGuide from "../container/StyleGuide";

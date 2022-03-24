@@ -1,22 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import LoginUi from '../ui/login/LoginUi';
 
 const Login = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalno, setModalno] = useState(3);
-  const [newPassword, setNewPassword] = useState('')
+  const [modalno, setModalno] = useState(1);
 
 
-  const onChangeNewPassword = (e) => {
-    setNewPassword(e.target.value);
-  }
-
-  const confirmPassword = (e) => {
-    const confirmPass = e.target.value;
-    if (confirmPass && confirmPass !== newPassword) {
-      console.log('Both password are not the same')
-    }
-  }
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -42,13 +31,10 @@ const Login = () => {
 
   const onFinishPassword = (values) => {
     console.log(values);
-    setModalno(0)
+    setModalno(1)
     handleCancel()
   };
 
-  useEffect(() => {
-    console.log(newPassword)
-  }, [newPassword])
 
   return (
     <LoginUi
@@ -60,8 +46,6 @@ const Login = () => {
       modalno={modalno}
       onFinishOtp={onFinishOtp}
       onFinishPassword={onFinishPassword}
-      onChangeNewPassword={onChangeNewPassword}
-      confirmPassword={confirmPassword}
     />
   );
 };
