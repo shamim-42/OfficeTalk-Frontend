@@ -1,51 +1,36 @@
 import React from 'react';
-import { Layout, Menu } from 'antd';
-import {
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
+import { Layout } from 'antd';
+
+import Sidebar from '../sidebar/Sidebar';
 
 const { Sider, Content } = Layout;
 
-
 const HomeUi = () => {
   return (
-    <Layout>
+    <>
       <Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={broken => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
+        width={460}
+        style={{
+          // overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          bottom: 0,
         }}
       >
-        <div className="logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
-          <Menu.Item key="1" icon={<UserOutlined />}>
-            nav 1 pokdoifcvnbn  bangladesh
-          </Menu.Item>
-          <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-            nav 2
-          </Menu.Item>
-          <Menu.Item key="3" icon={<UploadOutlined />}>
-            nav 3
-          </Menu.Item>
-          <Menu.Item key="4" icon={<UserOutlined />}>
-            nav 4
-          </Menu.Item>
-        </Menu>
+        <Sidebar />
       </Sider>
-      <Layout>
-        <Content style={{ margin: '24px 16px 0' }}>
-          <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-            content
-          </div>
-        </Content>
-      </Layout>
-    </Layout>
+      <Content style={{ margin: '24px 16px 0 500px', overflow: 'initial' }}>
+        <div className="home-content">
+          <img
+            src="https://i.ibb.co/N37F3Zy/Ellipse-7.png"
+            alt="Ellipse-7" border="0" />
+          <h2>Hi Abdullah!</h2>
+          <p className="start-chat">Start chatting ! </p>
+        </div>
+      </Content>
+    </>
   );
 };
 

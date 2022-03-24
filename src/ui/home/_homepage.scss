@@ -1,0 +1,16 @@
+// global style guide
+@use "sass:map";
+
+.home-content {
+  height: 100vh;
+  padding: 24px;
+  text-align: center;
+  @include set-display-flex(center, center, 10, column);
+
+  & .start-chat {
+    font-size: 36px;
+    font-weight: 600;
+    color: map.get($theme-colors, "gray-text-98");
+    padding-top: 10px;
+  }
+}
