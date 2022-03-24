@@ -2,8 +2,8 @@ import { Button, Form, Input } from 'antd';
 import React from 'react';
 
 const ForgotModal = (props) => {
-  const { handleCancel, onFinishModal, modalno, onFinishOtp, onFinishPassword } = props;
-  if (modalno === 2) {
+  const { handleCancel, onFinishModal, modalNumber, onFinishOtp, onFinishPassword } = props;
+  if (modalNumber === 2) {
     return (
       <>
         <h3 className="forgot-title title-color-50">Enter OTP here</h3>
@@ -56,7 +56,7 @@ const ForgotModal = (props) => {
       </>
     )
   }
-  else if (modalno === 3) {
+  else if (modalNumber === 3) {
     return (
       <>
         <h3 className="forgot-title title-color-50">Change password </h3>
@@ -77,6 +77,15 @@ const ForgotModal = (props) => {
                 required: true,
                 message: 'Password is required!',
               },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || value.length >= 8) {
+                    return Promise.resolve();
+                  }
+
+                  return Promise.reject(new Error('Password must be at least 8 characters!'));
+                },
+              }),
             ]}
           >
             <Input.Password
@@ -88,6 +97,7 @@ const ForgotModal = (props) => {
             name="confirmPass"
             align="center"
             dependencies={['password']}
+            hasFeedback
             rules={[
               {
                 required: true,

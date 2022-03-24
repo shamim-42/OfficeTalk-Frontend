@@ -3,9 +3,7 @@ import LoginUi from '../ui/login/LoginUi';
 
 const Login = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalno, setModalno] = useState(1);
-
-
+  const [modalNumber, setModalNumber] = useState(1);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -17,7 +15,7 @@ const Login = () => {
 
   const onFinishOtp = (values) => {
     console.log(values);
-    setModalno(3)
+    setModalNumber(3)
   };
 
   const onFinish = (values) => {
@@ -26,12 +24,12 @@ const Login = () => {
 
   const onFinishModal = (values) => {
     console.log(values);
-    setModalno(2)
+    setModalNumber(2)
   };
 
   const onFinishPassword = (values) => {
     console.log(values);
-    setModalno(1)
+    setModalNumber(1)
     handleCancel()
   };
 
@@ -43,7 +41,7 @@ const Login = () => {
       isModalVisible={isModalVisible}
       showModal={showModal}
       handleCancel={handleCancel}
-      modalno={modalno}
+      modalNumber={modalNumber}
       onFinishOtp={onFinishOtp}
       onFinishPassword={onFinishPassword}
     />

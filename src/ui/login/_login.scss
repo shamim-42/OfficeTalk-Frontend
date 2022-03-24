@@ -16,6 +16,10 @@
       text-align: center;
     }
   }
+  .title-slogun {
+    color: map.get($theme-colors, "white");
+    font-size: 20px;
+  }
 
   & > .login-logo-img {
     inline-size: 100%;
@@ -97,8 +101,17 @@
     border-radius: 30px;
     padding: 96px 56px;
 
+    @include media("<=tablet-xl") {
+      border-radius: 12px;
+      padding: 8px;
+    }
+
     & .forgot-title {
       margin-bottom: 20px;
+
+      @include media("<=tablet-xl") {
+        font-size: 24px;
+      }
     }
 
     & .modal-buttons {
