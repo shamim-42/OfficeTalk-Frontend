@@ -1,6 +1,16 @@
 // global style guide
 @use "sass:map";
 
+// Sidebar Component Style
+.sider-component {
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+// Home content without sidebar
 .home-content {
   height: 100vh;
   padding: 24px;

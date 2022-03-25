@@ -1,27 +1,23 @@
 import React from 'react';
 import { Layout } from 'antd';
-
 import Sidebar from '../sidebar/Sidebar';
-
 const { Sider, Content } = Layout;
 
-const HomeUi = () => {
+const HomeUi = (props) => {
+  const { users, handleChangeSearch, onChangeSwitch } = props;
 
   return (
     <>
       <Sider
         width={460}
-        style={{
-          // overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          bottom: 0,
-        }}
+        className="sider-component"
       >
-        <Sidebar />
+        <Sidebar
+          handleChangeSearch={handleChangeSearch}
+          onChangeSwitch={onChangeSwitch}
+          users={users} />
       </Sider>
+
       <Content style={{ margin: '24px 16px 0 500px', overflow: 'initial' }}>
         <div className="home-content">
           <img className="circle-img"

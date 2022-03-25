@@ -1,50 +1,16 @@
-import { Avatar, Button, Col, Form, Input, Popover, Radio, Row, Select, Space, Switch } from 'antd';
+import { Avatar, Button, Col, Form, Input, Popover, Radio, Row, Select, Space } from 'antd';
 import { CgMenuGridO } from "react-icons/cg";
 import { BsChatTextFill } from "react-icons/bs";
-import { BsMoon } from "react-icons/bs";
 import { MdCall } from "react-icons/md";
 import { FiVideo } from "react-icons/fi";
 import { IoOptions } from "react-icons/io5";
-import { IoMdSettings } from "react-icons/io";
 import { HiOutlineFolderRemove } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
-import { BiRightArrowCircle } from "react-icons/bi";
 import React from 'react';
+import SettingPopover from './SettingPopover';
 
-const SidebarHeader = ({ handleChangeSearch }) => {
-  function onChangeSwitch(evt) {
-    console.log(evt)
-  }
-
-  const content = (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '10px',
-    }}>
-      <p style={{}}>
-        <IoMdSettings />
-        <span style={{ marginLeft: '10px' }}>Setting</span>
-      </p>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        gap: '20px',
-      }}>
-        <p>
-          <BsMoon />
-          <span style={{ marginLeft: '10px' }}>Night mode</span>
-        </p>
-        <Switch size="small" defaultChecked onChange={onChangeSwitch} />
-      </div>
-      <p>
-        <BiRightArrowCircle />
-        <Button type="link" danger>
-          Sign out
-        </Button>
-      </p>
-    </div>
-  );
+const SidebarHeader = (props) => {
+  const { handleChangeSearch, onChangeSwitch } = props;
 
   const contentRadio = (
     <div style={{
@@ -83,7 +49,9 @@ const SidebarHeader = ({ handleChangeSearch }) => {
 
         <Col md={14}>
           <Row className="setting-preicon">
-            <Popover placement="bottomLeft" content={content} trigger="click">
+            <Popover placement="bottomLeft"
+              content={<SettingPopover onChangeSwitch={onChangeSwitch} />}
+              trigger="click">
               <Button type="text" >
                 <CgMenuGridO style={{ fontSize: '16px' }} />
               </Button>

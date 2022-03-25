@@ -1,0 +1,7 @@
+@use "sass:map";
+
+.setting-popover {
+  display: "flex";
+  flex-direction: "column";
+  gap: "10px";
+}
