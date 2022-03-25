@@ -4,16 +4,71 @@
 .sidebar-container {
   background-color: map.get($theme-colors, "white-f1");
   height: 100vh;
-  overflow-y: auto;
   padding: 8px;
 
-  &::-webkit-scrollbar {
-    width: 3px;
+  & .online-users {
+    width: 100%;
+    display: flex;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      height: 3px;
+      display: none;
+    }
+
+    & .online-user-group {
+      gap: 10px;
+
+      & .online-user-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 0;
+      }
+    }
   }
 
-  &::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background-color: map.get($theme-colors, "gray-text-c4");
+  & .sidebar-card-container {
+    height: 100%;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 8px;
+      background-color: map.get($theme-colors, "gray-text-c4");
+    }
+
+    & .sidebar-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      & .ant-card-body {
+        padding: 10px;
+      }
+
+      & .sidebar-car-message {
+        font-size: 14px;
+        font-weight: 600;
+        @include set-line-clamp(1);
+      }
+
+      & .card-message-count {
+        font-size: 12px;
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 50%;
+        background-color: map.get($theme-colors, "orange-text-ff");
+      }
+
+      & .sidebar-card-img {
+        width: 60px;
+        height: 60px;
+      }
+    }
   }
 }
 
@@ -21,12 +76,6 @@
   display: flex;
   gap: 12px;
   align-items: center;
-
-  & .sidebar-user-name {
-    font-size: 20px;
-    font-weight: 600;
-    color: map.get($theme-colors, "black");
-  }
 }
 
 .sidebar-header {
@@ -57,9 +106,24 @@
     width: 100%;
     justify-content: flex-end;
 
-    & > Button:hover {
+    & > Button:hover,
+    Button:focus {
       color: map.get($theme-colors, "primary-text-00");
       background-color: transparent;
     }
   }
+}
+
+.sidebar-user-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: map.get($theme-colors, "black");
+}
+
+.ant-popover-inner {
+  border-radius: 10px;
+  background-color: map.get($theme-colors, "white-f4");
+}
+.ant-popover-arrow {
+  display: none;
 }

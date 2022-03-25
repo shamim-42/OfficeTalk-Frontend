@@ -1,117 +1,110 @@
 import React from 'react';
-import { CgMenuGridO } from "react-icons/cg";
-import { BsChatTextFill } from "react-icons/bs";
-import { MdCall } from "react-icons/md";
-import { FiVideo } from "react-icons/fi";
-import { IoOptions } from "react-icons/io5";
-import { HiOutlineFolderRemove } from "react-icons/hi";
-import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  ShopOutlined,
-  TeamOutlined,
-  UserOutlined,
-  UploadOutlined,
-  VideoCameraOutlined,
-  SearchOutlined,
-  HolderOutlined
-} from '@ant-design/icons';
-import { Avatar, Button, Col, Form, Input, Menu, Row, Select } from 'antd';
+
+import { Avatar, Badge, Divider } from 'antd';
+import SidebarHeader from './SidebarHeader';
+import SidebarCard from './SidebarCard';
+
+const users = [
+  {
+    name: 'Hasan Mahamud',
+    img: 'https://i.ibb.co/n8yn9CM/Ellipse-4.png',
+    status: true,
+  },
+  {
+    name: 'Abu Sayeed',
+    img: 'https://i.ibb.co/ZMDbjf7/Ellipse-4-3.png',
+    status: true,
+  },
+  {
+    name: 'Muaaj Muhammad',
+    img: 'https://i.ibb.co/mXz61cM/Ellipse-4-1.png',
+    status: true,
+  },
+  {
+    name: 'Saidul Islam',
+    img: 'https://i.ibb.co/ZWwbcST/Ellipse-4-2.png',
+    status: true,
+  },
+  {
+    name: 'Adnan ',
+    img: 'https://i.ibb.co/rsJ7tdT/Ellipse-12.png',
+    status: true,
+  },
+  {
+    name: 'Ahamed Sabbir',
+    img: 'https://i.ibb.co/nCR4Z9N/Ellipse-10.png',
+    status: true,
+  },
+  {
+    name: 'Nayeem Hasan',
+    img: 'https://i.ibb.co/f8vbXxB/Ellipse-18.png',
+    status: true,
+  },
+  {
+    name: 'Shad Ahamed',
+    img: 'https://i.ibb.co/FqN6tTg/Ellipse-14.png',
+    status: true,
+  },
+  {
+    name: 'Adnan ',
+    img: 'https://i.ibb.co/rsJ7tdT/Ellipse-12.png',
+    status: true,
+  },
+  {
+    name: 'Ahamed Sabbir',
+    img: 'https://i.ibb.co/nCR4Z9N/Ellipse-10.png',
+    status: true,
+  },
+  {
+    name: 'Shamim Hossain',
+    img: 'https://i.ibb.co/Q89Q7wV/Ellipse-8.png',
+    status: true,
+  },
+]
 
 const Sidebar = () => {
 
-  const { Option } = Select;
-
-  function handleChange(value) {
-    console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
+  function handleChangeSearch(value) {
+    console.log(value);
   }
 
-  const iconsidebar = [AppstoreOutlined,
-    BarChartOutlined,
-    CloudOutlined,
-    ShopOutlined,
-    TeamOutlined,
-    UserOutlined,
-    UploadOutlined,
-    VideoCameraOutlined,
-    SearchOutlined,
-    HolderOutlined]
   return (
     <div className="sidebar-container">
-      <div className="sidebar-header">
-        <Row>
-          <Col md={10}>
-            <div className="sidebar-user">
-              <Avatar
-                src="https://i.ibb.co/N37F3Zy/Ellipse-7.png"
+      <SidebarHeader
+        handleChangeSearch={handleChangeSearch} />
+      <div className="online-users">
+        <Avatar.Group className="online-user-group">
+          {
+            users.map((user, index) => (
+              <Badge
+                key={index}
+                offset={["-5%", "85%"]}
                 style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: '50%',
+                  width: "8px",
+                  height: "8px",
+                  backgroundColor: "#67C148"
                 }}
-              />
-              <p className="sidebar-user-name">Abdullah</p>
-            </div>
-          </Col>
-          <Col md={14}>
-            <Row className="setting-preicon">
-              <Button type="text" >
-                <CgMenuGridO style={{ fontSize: '16px' }} />
-              </Button>
-            </Row>
-            <Row className="sidebar-header-icons">
-              <Select
-                size="small"
-                className="sidebar-header-select"
-                labelInValue
-                defaultValue={{ value: 'lucy' }}
-                style={{ width: 120, fontSize: '12px' }}
-                onChange={handleChange}
+                dot={user.status}
               >
-                <Option value="jack">Meeting / Chat</Option>
-                <Option value="lucy">Meeting / Chat</Option>
-              </Select>
-              <BsChatTextFill style={{ fontSize: '16px', color: '#008DDC' }} />
-              <MdCall style={{ fontSize: '16px' }} />
-              <FiVideo style={{ fontSize: '16px' }} />
-              <HiOutlineFolderRemove style={{ fontSize: '16px' }} />
-            </Row>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={20}>
-            <Form
-              name="normal_login"
-              className="login-form"
-              wrapperCol={{
-                span: 22,
-              }}
-            // onFinish={onFinish}
-            >
-              <Form.Item
-                name="search"
-              >
-                <Input prefix={<SearchOutlined className="site-form-item-icon" />} placeholder="people , groups , message" />
-              </Form.Item>
-            </Form>
-          </Col>
-          <Col md={4}>
-            <Button type="text">
-              <IoOptions style={{ fontSize: '16px' }} />
-            </Button>
-          </Col>
-        </Row>
+                <Avatar
+                  className="online-user-img"
+                  src={user.img}
+                />
+              </Badge>
+            ))
+          }
+        </Avatar.Group>
       </div>
-      <Menu className="home-sidebar" mode="inline" defaultSelectedKeys={['4']}>
-        {
-          iconsidebar.map((iconn, index) => (
-            <Menu.Item key={index}>
-              nav {index}
-            </Menu.Item>
-          ))
-        }
-      </Menu>
+      <Divider />
+      <div className="sidebar-card-container">
+        <div className="sidebar-cards">
+          {
+            users.map((user, i) => (
+              <SidebarCard key={i} user={user} />
+            ))
+          }
+        </div>
+      </div>
     </div>
   );
 };
