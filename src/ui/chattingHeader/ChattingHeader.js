@@ -29,7 +29,7 @@ const ChattingHeader = (props) => {
         <div>
           <p className="user-name">{currentUser.name}</p>
           <p className="user-status">
-            {currentUser.status ? "Active Now" : ''}
+            {currentUser.status ? "Active Now" : 'Active 30 minute ago'}
           </p>
         </div>
       </div>

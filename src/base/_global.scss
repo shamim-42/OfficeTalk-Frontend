@@ -30,7 +30,7 @@ body {
   font-size: 16px;
   line-height: 22px;
   font-weight: 400;
-  color: map.get($theme-colors, "gray-text-60");
+  color: map.get($theme-colors, "black");
 
   @include media("<=tablet") {
     line-height: 20px;
@@ -85,7 +85,6 @@ h2 {
   font-size: 48px;
   line-height: 66px;
   font-weight: 700;
-  color: map.get($theme-colors, "black");
 
   &.color-title {
     color: rgba(0, 141, 220, 0.72);
@@ -117,7 +116,6 @@ h4 {
   line-height: 28px;
   font-family: map.get($theme-fonts, "primary");
   font-weight: 600;
-  color: map.get($theme-colors, "black");
 
   &.title {
     font-weight: 700;

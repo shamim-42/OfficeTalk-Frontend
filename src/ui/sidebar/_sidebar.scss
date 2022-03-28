@@ -23,11 +23,21 @@
         @include set-display-flex(center, space-around);
         margin-bottom: 20px;
 
-        & .ant-select-selector {
+        & Button {
+          padding: 4px;
+          font-size: 16px;
+          margin: 0;
+          background-color: transparent;
+        }
+
+        & .dropdown-button {
           border-radius: 8px;
-          background-color: map.get($theme-colors, "gray-dd");
+          @include set-display-flex(center, space-around);
           border: 1px solid map.get($theme-colors, "black-alhpa-56");
+          background-color: map.get($theme-colors, "gray-dd");
           box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.25);
+          font-size: 10px;
+          margin: 0;
         }
       }
     }
@@ -101,27 +111,46 @@
       gap: 8px;
       padding-bottom: 200px;
 
-      & .ant-card-body {
-        padding: 10px;
+      & .focushed {
+        border: 1px solid #017606;
       }
 
-      & .sidebar-car-message {
-        font-size: 14px;
-        font-weight: 600;
-        @include set-line-clamp(1);
-      }
+      & .sidebar-card {
+        background-color: map.get($theme-colors, "white-fa");
+        width: 100%;
+        border-radius: 8px;
 
-      & .card-message-count {
-        font-size: 12px;
-        display: inline-block;
-        padding: 2px 8px;
-        border-radius: 50%;
-        background-color: map.get($theme-colors, "orange-text-ff");
-      }
+        & .unread-card {
+          color: map.get($theme-colors, "black");
+        }
 
-      & .sidebar-card-img {
-        width: 60px;
-        height: 60px;
+        & .read-card {
+          color: map.get($theme-colors, "gray-text-7c");
+        }
+
+        & .ant-card-body {
+          padding: 10px;
+        }
+
+        & .sidebar-car-message {
+          font-size: 14px;
+          font-weight: 600;
+          @include set-line-clamp(1);
+        }
+
+        & .card-message-count {
+          font-size: 12px;
+          display: inline-block;
+          padding: 2px 8px;
+          border-radius: 50%;
+          background-color: map.get($theme-colors, "orange-text-ff");
+          color: map.get($theme-colors, "white");
+        }
+
+        & .sidebar-card-img {
+          width: 60px;
+          height: 60px;
+        }
       }
     }
   }
@@ -136,7 +165,6 @@
 .sidebar-user-name {
   font-size: 20px;
   font-weight: 600;
-  color: map.get($theme-colors, "black");
 }
 
 .ant-popover-inner {
@@ -148,4 +176,11 @@
 }
 .ant-popover-content {
   @include set-display-flex(center, center, 10, column);
+}
+
+.dropdown-menu-button {
+  & Button {
+    background-color: transparent;
+    color: #017606;
+  }
 }
