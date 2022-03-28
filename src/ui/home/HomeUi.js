@@ -19,7 +19,7 @@ const HomeUi = (props) => {
           users={users} />
       </Sider>
 
-      <Content style={{ margin: '0 16px 0 460px', overflow: 'initial' }}>
+      <Content style={{ marginLeft: '462px', overflow: 'initial' }}>
         <Outlet />
       </Content>
     </>
