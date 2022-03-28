@@ -11,6 +11,7 @@ const Login = () => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setModalNumber(1);
   };
 
   const onFinishOtp = (values) => {

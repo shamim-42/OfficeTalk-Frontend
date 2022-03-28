@@ -1,5 +1,6 @@
 import { Avatar, Badge, Card, Col, Row } from 'antd';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const SidebarCard = ({ user }) => {
   return (
@@ -16,7 +17,7 @@ const SidebarCard = ({ user }) => {
               backgroundColor: "#67C148",
               textAlign: "left"
             }}
-            dot={true}
+            dot={user.status}
           >
             <Avatar
               className="sidebar-card-img circle-img"
@@ -25,7 +26,7 @@ const SidebarCard = ({ user }) => {
           </Badge>
         </Col>
         <Col span={14}>
-          <p className="sidebar-user-name">{user.name}</p>
+          <Link to={`chat/${user.id}`} className="sidebar-user-name">{user.name}</Link>
           <p className="sidebar-car-message">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus sit minima voluptates fuga atque commodi eos incidunt odio modi. Quibusdam.</p>
         </Col>
         <Col span={5}>

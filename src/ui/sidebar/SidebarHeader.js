@@ -33,7 +33,7 @@ const SidebarHeader = (props) => {
   return (
     <div className="sidebar-header">
       <Row>
-        <Col md={10}>
+        <Col md={20}>
           <div className="sidebar-user">
             <Avatar
               src="https://i.ibb.co/FX9y91r/Ellipse-7.png"
@@ -46,8 +46,7 @@ const SidebarHeader = (props) => {
             <p className="sidebar-user-name">Abdullah</p>
           </div>
         </Col>
-
-        <Col md={14}>
+        <Col md={4}>
           <Row className="setting-preicon">
             <Popover placement="bottomLeft"
               content={<SettingPopover onChangeSwitch={onChangeSwitch} />}
@@ -57,31 +56,31 @@ const SidebarHeader = (props) => {
               </Button>
             </Popover>
           </Row>
-
-          <Row className="sidebar-header-icons">
-            <Select
-              size="small"
-              className="sidebar-header-select"
-              labelInValue
-              defaultValue={{ value: 'lucy' }}
-              style={{ width: 120, fontSize: '12px' }}
-              onChange={handleChangeSearch}
-            >
-              <Option value="jack">Meeting / Chat</Option>
-              <Option value="lucy">Meeting / Chat</Option>
-            </Select>
-            <BsChatTextFill style={{ fontSize: '16px', color: '#008DDC' }} />
-            <MdCall style={{ fontSize: '16px' }} />
-            <FiVideo style={{ fontSize: '16px' }} />
-            <HiOutlineFolderRemove style={{ fontSize: '16px' }} />
-          </Row>
+        </Col>
+      </Row>
+      <Row className="sidebar-icon-container">
+        <Col md={14} className="sidebar-header-icons">
+          <Select
+            size="small"
+            className="sidebar-header-select"
+            labelInValue
+            defaultValue={{ value: 'lucy' }}
+            style={{ width: 120, fontSize: '12px' }}
+            onChange={handleChangeSearch}
+          >
+            <Option value="jack">Meeting / Chat</Option>
+            <Option value="lucy">Meeting / Chat</Option>
+          </Select>
+          <BsChatTextFill style={{ fontSize: '16px', color: '#008DDC' }} />
+          <MdCall style={{ fontSize: '16px' }} />
+          <FiVideo style={{ fontSize: '16px' }} />
+          <HiOutlineFolderRemove style={{ fontSize: '16px' }} />
         </Col>
       </Row>
       <Row>
-        <Col md={20}>
+        <Col md={22}>
           <Form
-            name="normal_login"
-            className="login-form"
+            name="search_form"
             wrapperCol={{
               span: 22,
             }}
@@ -94,11 +93,9 @@ const SidebarHeader = (props) => {
             </Form.Item>
           </Form>
         </Col>
-        <Col md={4}>
+        <Col md={2}>
           <Popover placement="bottomLeft" content={contentRadio} trigger="click">
-            <Button type="text" style={{
-              borderRadius: '10px',
-            }}>
+            <Button className="filter-button" type="text">
               <IoOptions style={{ fontSize: '16px' }} />
             </Button>
           </Popover>

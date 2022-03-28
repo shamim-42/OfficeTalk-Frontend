@@ -16,15 +16,19 @@
       }
     }
 
-    & .sidebar-header-icons {
-      @include set-display-flex(center, space-around);
-      margin-bottom: 20px;
+    & .sidebar-icon-container {
+      @include set-display-flex(center, end);
 
-      & .ant-select-selector {
-        border-radius: 8px;
-        background-color: map.get($theme-colors, "gray-dd");
-        border: 1px solid map.get($theme-colors, "black-alhpa-56");
-        box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.25);
+      & .sidebar-header-icons {
+        @include set-display-flex(center, space-around);
+        margin-bottom: 20px;
+
+        & .ant-select-selector {
+          border-radius: 8px;
+          background-color: map.get($theme-colors, "gray-dd");
+          border: 1px solid map.get($theme-colors, "black-alhpa-56");
+          box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.25);
+        }
       }
     }
 
@@ -32,8 +36,24 @@
       width: 100%;
       justify-content: flex-end;
 
-      & > Button:hover,
-      Button:focus {
+      & > Button {
+        padding-right: 0;
+
+        &:hover,
+        &:focus {
+          color: map.get($theme-colors, "primary-text-00");
+          background-color: transparent;
+        }
+      }
+    }
+
+    & .filter-button {
+      border-radius: "10px";
+      padding-right: 0;
+      margin-right: 0;
+
+      &:hover,
+      &:focus {
         color: map.get($theme-colors, "primary-text-00");
         background-color: transparent;
       }
@@ -53,12 +73,6 @@
     & .online-user-group {
       gap: 10px;
 
-      & .online-badge {
-        width: "8px";
-        height: "8px";
-        background-color: map.get($theme-colors, "gray-dd");
-      }
-
       & .online-user-img {
         width: 40px;
         height: 40px;
@@ -69,7 +83,7 @@
   }
 
   & .sidebar-card-container {
-    height: 100%;
+    height: 95%;
     overflow: auto;
 
     &::-webkit-scrollbar {
@@ -85,6 +99,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      padding-bottom: 200px;
 
       & .ant-card-body {
         padding: 10px;

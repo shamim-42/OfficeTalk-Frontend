@@ -148,6 +148,14 @@ h4 {
   background: transparent;
   border-bottom: 1px solid #c4c4c4;
   outline: none;
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.ant-input-affix-wrapper-focused {
+  box-shadow: none;
 }
 
 .circle-img {
