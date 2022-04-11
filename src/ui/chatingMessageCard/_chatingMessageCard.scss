@@ -1,0 +1,57 @@
+// global style guide
+@use "sass:map";
+
+.message-time {
+  font-size: 12px;
+  color: map.get($theme-colors, "gray-text-8b");
+}
+
+.message-text {
+  color: map.get($theme-colors, "gray-text-60");
+  padding: 16px;
+  border: 1px solid map.get($theme-colors, "black-alhpa-50");
+  border-radius: 22px;
+}
+
+.chatting-card-img {
+  width: 40px;
+  height: 40px;
+}
+
+.message-option {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  & .ant-btn {
+    height: 15px;
+  }
+
+  & > Button {
+    padding: 0;
+    margin-top: 10px;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: transparent;
+    }
+  }
+}
+
+.message-options-popover {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  & > Button {
+    font-size: 16px;
+    text-align: left;
+
+    &:hover,
+    &:focus {
+      background: transparent;
+    }
+  }
+}

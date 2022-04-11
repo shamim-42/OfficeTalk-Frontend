@@ -120,6 +120,10 @@
         width: 100%;
         border-radius: 8px;
 
+        &:focus-within {
+          border: 1px solid map.get($theme-colors, "green-017");
+        }
+
         & .unread-card {
           color: map.get($theme-colors, "black");
         }
@@ -178,9 +182,24 @@
   @include set-display-flex(center, center, 10, column);
 }
 
-.dropdown-menu-button {
-  & Button {
+.ant-dropdown-menu {
+  border-radius: 18px;
+
+  & .ant-dropdown-menu-item {
     background-color: transparent;
-    color: #017606;
+
+    & .ant-btn-link {
+      color: map.get($theme-colors, "black");
+
+      &:hover,
+      &:focus,
+      &:active {
+        color: map.get($theme-colors, "primary-text-00");
+      }
+    }
+
+    &:hover {
+      background-color: transparent;
+    }
   }
 }

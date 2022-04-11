@@ -1,0 +1,24 @@
+// global style guide
+@use "sass:map";
+
+.chatting-content {
+  padding: 16px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  & .chatting-date {
+    justify-content: center;
+
+    & .chatting-date-card {
+      border: 1px solid map.get($theme-colors, "gray-text-71");
+      color: map.get($theme-colors, "gray-text-71");
+      font-size: 14px;
+      padding: 6px 20px;
+      text-align: center;
+      border-radius: 18px;
+    }
+  }
+}
+
+

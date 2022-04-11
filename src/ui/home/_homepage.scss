@@ -11,8 +11,15 @@
 }
 
 // Home content without sidebar
-.home-content {
+.content-area {
+  margin-left: 462px;
+  overflow: initial;
   height: 100vh;
+}
+
+// Welcome home content css
+.home-content {
+  height: 100%;
   padding: 24px;
   text-align: center;
   @include set-display-flex(center, center, 10, column);

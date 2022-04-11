@@ -63,6 +63,7 @@ const SidebarHeader = (props) => {
       <Row className="sidebar-icon-container">
         <Col md={14} className="sidebar-header-icons">
           <Dropdown
+            placement="bottomCenter"
             overlay={<Menu>
               <Menu.Item key="1">
                 <Button className="dropdown-menu-button" type="link">Host a meeting</Button>
