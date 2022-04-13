@@ -5,3 +5,15 @@
   flex-direction: "column";
   gap: "10px";
 }
+
+.ant-popover-inner {
+  min-width: 158px;
+  border-radius: 10px;
+  background-color: map.get($theme-colors, "white-f4");
+}
+.ant-popover-arrow {
+  display: none;
+}
+.ant-popover-content {
+  @include set-display-flex(center, center, 10, column);
+}

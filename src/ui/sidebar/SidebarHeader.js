@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, Dropdown, Form, Input, Menu, Popover, Radio, Row, Space } from 'antd';
+import { Avatar, Button, Col, Dropdown, Form, Input, Menu, Popover, Row } from 'antd';
 import { CgMenuGridO } from "react-icons/cg";
 import { BsChatTextFill } from "react-icons/bs";
 import { MdCall } from "react-icons/md";
@@ -9,28 +9,11 @@ import { BiSearch } from "react-icons/bi";
 import { IoChevronDownOutline } from "react-icons/io5";
 import React from 'react';
 import SettingPopover from './SettingPopover';
+import FilterPopover from './FilterPopover';
 
 const SidebarHeader = (props) => {
   const { handleChangeSearch, onChangeSwitch } = props;
 
-
-
-  const contentRadio = (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '10px',
-    }}>
-      <Radio.Group value={0}>
-        <Space direction="vertical">
-          <Radio value={0}>All</Radio>
-          <Radio value={1}>People</Radio>
-          <Radio value={2}>Groups</Radio>
-          <Radio value={3}>Messages</Radio>
-        </Space>
-      </Radio.Group>
-    </div>
-  );
 
   return (
     <div className="sidebar-header">
@@ -63,7 +46,7 @@ const SidebarHeader = (props) => {
       <Row className="sidebar-icon-container">
         <Col md={14} className="sidebar-header-icons">
           <Dropdown
-            placement="bottomCenter"
+            placement="bottom"
             overlay={<Menu>
               <Menu.Item key="1">
                 <Button className="dropdown-menu-button" type="link">Host a meeting</Button>
@@ -81,6 +64,7 @@ const SidebarHeader = (props) => {
               <IoChevronDownOutline />
             </Button>
           </Dropdown>
+
           <Button type="text">
             <BsChatTextFill style={{ color: '#008DDC' }} />
           </Button>
@@ -112,8 +96,9 @@ const SidebarHeader = (props) => {
             </Form.Item>
           </Form>
         </Col>
+
         <Col md={2}>
-          <Popover placement="bottomLeft" content={contentRadio} trigger="click">
+          <Popover placement="bottomLeft" content={<FilterPopover />} trigger="click">
             <Button className="filter-button" type="text">
               <IoOptions style={{ fontSize: '16px' }} />
             </Button>

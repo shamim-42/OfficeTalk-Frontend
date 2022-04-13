@@ -7,13 +7,14 @@ import { BsReply } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { TiArrowForwardOutline } from "react-icons/ti";
+import { BsFillHeartFill } from "react-icons/bs";
 
 const ChatingMessageCard = () => {
   return (
     <Row className="friend-message">
       <Col span={14}>
         <Row className="friend-message-card">
-          <Col span={2}>
+          <Col span={3} style={{ textAlign: 'center' }}>
             <Badge
               offset={["-5%", "85%"]}
               style={{
@@ -30,7 +31,7 @@ const ChatingMessageCard = () => {
               />
             </Badge>
           </Col>
-          <Col span={21}>
+          <Col span={20}>
             <p className='message-time'>10:11 pm</p>
             <p className='message-text'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, consectetur.</p>
           </Col>
@@ -65,9 +66,21 @@ const ChatingMessageCard = () => {
                 <HiDotsVertical />
               </Button>
             </Popover>
-            <Button type="text">
-              <FaRegGrinAlt />
-            </Button>
+            <Popover placement="right"
+              content={
+                <div style={{ fontSize: '24px', display: 'flex', gap: '10px' }}>
+                  <BsFillHeartFill />
+                  <BsFillHeartFill />
+                  <BsFillHeartFill />
+                  <BsFillHeartFill />
+                  <BsFillHeartFill />
+                  <BsFillHeartFill />
+                </div>
+              } trigger="click">
+              <Button type="text">
+                <FaRegGrinAlt />
+              </Button>
+            </Popover>
           </Col>
         </Row>
       </Col>

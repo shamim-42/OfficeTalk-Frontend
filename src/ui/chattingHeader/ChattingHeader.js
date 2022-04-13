@@ -5,6 +5,7 @@ import { IoPersonCircleSharp } from "react-icons/io5";
 import { IoVideocam } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 import { IoIosCall } from "react-icons/io";
+import { Link } from 'react-router-dom';
 
 const ChattingHeader = (props) => {
   const { currentUser } = props;
@@ -50,9 +51,11 @@ const ChattingHeader = (props) => {
           </Button>
         </div>
         <div className="cross-icon">
-          <Button type="text">
-            <IoCloseOutline />
-          </Button>
+          <Link to='/'>
+            <Button type="text">
+              <IoCloseOutline />
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
