@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { userLoginApi } from '../api/auth';
 import LoginUi from '../ui/login/LoginUi';
 
 const Login = () => {
@@ -19,8 +20,33 @@ const Login = () => {
     setModalNumber(3)
   };
 
-  const onFinish = (values) => {
-    console.log(values);
+  // on login submit function
+  const onSubmitHandler = async (values) => {
+    // const loginData = {
+    //   email: values.email,
+    //   password: values.password,
+    // }
+    const loginData = {
+      email: "tamim99@gmail.com",
+      password: "tamim1234",
+    }
+    console.log(loginData);
+
+    async function successHandler(response) {
+      let data = await response.json();
+      console.log(data, "login Data");
+    }
+
+    // Bad Request Handler func
+    async function handleBadReq(response) {
+      let err = await response.json();
+      console.log("Register Error", err);
+    }
+
+    return await userLoginApi(loginData, {
+      successHandler,
+      handleBadReq,
+    });
   };
 
   const onFinishModal = (values) => {
@@ -37,7 +63,7 @@ const Login = () => {
 
   return (
     <LoginUi
-      onFinish={onFinish}
+      onSubmitHandler={onSubmitHandler}
       onFinishModal={onFinishModal}
       isModalVisible={isModalVisible}
       showModal={showModal}

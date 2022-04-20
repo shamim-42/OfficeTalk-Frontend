@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const RegistrationUi = (props) => {
-  const { onFinish } = props;
+  const { onRegisterHandler } = props;
 
   return (
     <section aria-label="Login Section" className="login-section">
@@ -25,11 +25,11 @@ const RegistrationUi = (props) => {
               initialValues={{
                 remember: true,
               }}
-              onFinish={onFinish}
+              onFinish={onRegisterHandler}
               autoComplete="off"
             >
               <Form.Item
-                name="name"
+                name="fullname"
                 align="center"
                 rules={[
                   {
@@ -41,6 +41,21 @@ const RegistrationUi = (props) => {
                 <Input
                   className="regular-input"
                   placeholder="Full Name"
+                />
+              </Form.Item>
+              <Form.Item
+                name="username"
+                align="center"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input an username!',
+                  },
+                ]}
+              >
+                <Input
+                  className="regular-input"
+                  placeholder="Username"
                 />
               </Form.Item>
               <Form.Item

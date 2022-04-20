@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ForgotModal from './ForgotModal';
 
 const LoginUi = (props) => {
-  const { onFinish, onFinishModal, showModal, handleCancel, isModalVisible, modalNumber, onFinishOtp, onFinishPassword } = props;
+  const { onSubmitHandler, onFinishModal, showModal, handleCancel, isModalVisible, modalNumber, onFinishOtp, onFinishPassword } = props;
 
 
   return (
@@ -26,7 +26,7 @@ const LoginUi = (props) => {
               initialValues={{
                 remember: true,
               }}
-              onFinish={onFinish}
+              onFinish={onSubmitHandler}
               autoComplete="off"
             >
               <Form.Item
@@ -88,7 +88,7 @@ const LoginUi = (props) => {
                   Submit
                 </Button>
                 <p className="havenotaccount">Dont have an account ?
-                  <Link to="/register" style={{ paddingLeft: '10px' }} >
+                  <Link to="/signup" style={{ paddingLeft: '10px' }} >
                     Sign Up
                   </Link>
                 </p>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Badge, Divider } from 'antd';
+import { Avatar, Badge, Divider, Tooltip } from 'antd';
 import SidebarHeader from './SidebarHeader';
 import SidebarCard from './SidebarCard';
 
@@ -15,22 +15,27 @@ const Sidebar = (props) => {
         <Avatar.Group className="online-user-group">
           {
             users.map((user, index) => (
-              <Badge
-                key={index}
-                offset={["-5%", "85%"]}
-                className="online-badge"
-                style={{
-                  width: "8px",
-                  height: "8px",
-                  backgroundColor: "#67C148"
-                }}
-                dot={user.status}
-              >
-                <Avatar
-                  className="online-user-img"
-                  src={user.img}
-                />
-              </Badge>
+              <Tooltip key={index} title={user.name} overlayInnerStyle={{
+                padding: '0 4px',
+                minHeight: 'fit-content',
+                fontSize: '12px',
+              }} placement="top">
+                <Badge
+                  offset={["-5%", "85%"]}
+                  className="online-badge"
+                  style={{
+                    width: "8px",
+                    height: "8px",
+                    backgroundColor: "#67C148"
+                  }}
+                  dot={user.status}
+                >
+                  <Avatar
+                    className="online-user-img"
+                    src={user.img}
+                  />
+                </Badge>
+              </Tooltip>
             ))
           }
         </Avatar.Group>
