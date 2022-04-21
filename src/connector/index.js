@@ -223,7 +223,7 @@ class Connector {
           ...options.headers,
           ...{
             "Content-type": "application/json",
-            Accept: "application/json",
+            "Accept": "application/json",
           },
         },
       });
@@ -239,16 +239,15 @@ class Connector {
 
     const reqOptions = {
       method: "POST",
-      body:
-        (options.encoder && options.encoder(payload)) ||
-        JSON.stringify(payload),
+      body: (options.encoder && options.encoder(payload)) ||
+      JSON.stringify(payload),
       mode: "cors",
       headers: {
         ...this._headers,
         ...options.headers,
         ...{
           "Content-type": "application/json",
-          Accept: "application/json",
+          "Accept": "application/json",
         },
       },
     };
@@ -272,7 +271,7 @@ class Connector {
         ...options.headers,
         ...{
           "Content-type": "application/json",
-          Accept: "application/json",
+          "Accept": "application/json",
         },
       },
     };
@@ -294,7 +293,7 @@ class Connector {
         ...options.headers,
         ...{
           "Content-type": "application/json",
-          Accept: "application/json",
+          "Accept": "application/json",
         },
       },
     };

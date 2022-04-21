@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 const { Sider, Content } = Layout;
 
 const HomeUi = (props) => {
-  const { users, handleChangeSearch, onChangeSwitch } = props;
+  const { users, handleChangeSearch, onChangeSwitch, userProfile } = props;
 
   return (
     <>
@@ -14,6 +14,7 @@ const HomeUi = (props) => {
         className="sider-component"
       >
         <Sidebar
+          userProfile={userProfile}
           handleChangeSearch={handleChangeSearch}
           onChangeSwitch={onChangeSwitch}
           users={users} />

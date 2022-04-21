@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import connector from '../connector/index';
 import config from "../config/config.json";
-import StyleGuide from "../container/StyleGuide";
+import connector from '../connector/index';
+import ChattingHome from "../container/ChattingHome";
+import HomePage from "../container/HomePage";
 import Login from "../container/Login";
 import Registration from "../container/Registration";
-import HomePage from "../container/HomePage";
+import StyleGuide from "../container/StyleGuide";
 import WelcomeHome from "../ui/welcomeHome/WelcomeHome";
-import ChattingHome from "../container/ChattingHome";
 connector.baseUrl = config.baseUrl;
 
 function Layout() {
@@ -41,8 +41,7 @@ function Layout() {
     }
 
     connector.headers = {
-        // "x-access-token": isLoggedIn({ getToken: true }),
-        "content-type": "application/json"
+        "Content-type": "application/json"
     }
 
     // function onLogin(authToken) {

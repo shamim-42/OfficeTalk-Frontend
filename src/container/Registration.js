@@ -1,8 +1,13 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { userRegistrationApi } from '../api/auth';
+import { setUserProfile } from '../redux/features/authSlice';
 import RegistrationUi from '../ui/registration/RegistrationUi';
 
 const Registration = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // on registration submit function
   const onRegisterHandler = async (values) => {
@@ -18,6 +23,9 @@ const Registration = () => {
     async function successHandler(response) {
       let data = await response.json();
       console.log(data, "Register Data");
+
+      dispatch(setUserProfile(data))
+      navigate('/');
     }
 
     // Bad Request Handler func

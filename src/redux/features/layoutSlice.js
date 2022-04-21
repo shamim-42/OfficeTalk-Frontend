@@ -5,19 +5,21 @@ export const layoutSlice = createSlice({
   initialState: {
     error: null,
     alertList: [],
-    userProfile: null,
     activeUser: [],
   },
   reducers: {
     setError: (state, action) => {
       state.error = action.payload;
     },
+
     resetError: (state) => {
       state.error = null
     },
+
+
     setActiveUser: (state, action) => {
       state.activeUser = action.payload;
-    }
+    },
   },
 
 });

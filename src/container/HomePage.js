@@ -1,6 +1,7 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { setActiveUser } from '../redux/features/layoutSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUserProfile } from '../redux/features/authSlice';
+import {  setActiveUser } from '../redux/features/layoutSlice';
 import HomeUi from '../ui/home/HomeUi';
 
 const users = [
@@ -105,6 +106,7 @@ const users = [
 const HomePage = () => {
   const dispatch = useDispatch();
   dispatch(setActiveUser(users));
+  const userProfile = useSelector(selectUserProfile);
 
   function handleChangeSearch(value) {
     console.log(value);
@@ -116,6 +118,7 @@ const HomePage = () => {
 
   return (
     <HomeUi
+      userProfile={userProfile}
       handleChangeSearch={handleChangeSearch}
       onChangeSwitch={onChangeSwitch}
       users={users} />

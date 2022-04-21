@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { userLoginApi } from '../api/auth';
+import { setUser, setUserProfile } from '../redux/features/authSlice';
 import LoginUi from '../ui/login/LoginUi';
 
 const Login = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalNumber, setModalNumber] = useState(1);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -22,19 +28,21 @@ const Login = () => {
 
   // on login submit function
   const onSubmitHandler = async (values) => {
-    // const loginData = {
-    //   email: values.email,
-    //   password: values.password,
-    // }
     const loginData = {
-      email: "tamim99@gmail.com",
-      password: "tamim1234",
+      email: values.email,
+      password: values.password,
     }
-    console.log(loginData);
+
 
     async function successHandler(response) {
-      let data = await response.json();
-      console.log(data, "login Data");
+      let res = await response.json();
+      const userLoginData = res.data;
+      const accessToken = res.accessToken;
+      console.log(userLoginData, accessToken);
+
+      dispatch(setUserProfile(userLoginData))
+      dispatch(setUser(accessToken))
+      navigate('/');
     }
 
     // Bad Request Handler func
