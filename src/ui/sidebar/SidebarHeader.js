@@ -22,7 +22,7 @@ const SidebarHeader = (props) => {
       <Row>
         <Col md={20}>
           <div className="sidebar-user">
-            <Link to="/">
+            <Link to="/profile">
               {userProfile?.profileImage ?
                 <Avatar
                   src={userProfile?.profileImage}
@@ -40,7 +40,7 @@ const SidebarHeader = (props) => {
                 }} />
               }
             </Link>
-            <Link to="/">
+            <Link to="/profile">
               <p className="sidebar-user-name">{userProfile?.fullname}</p>
             </Link>
           </div>

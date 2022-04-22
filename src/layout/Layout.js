@@ -5,9 +5,11 @@ import connector from '../connector/index';
 import ChattingHome from "../container/ChattingHome";
 import HomePage from "../container/HomePage";
 import Login from "../container/Login";
+import ProfileView from "../container/ProfileView";
 import Registration from "../container/Registration";
 import StyleGuide from "../container/StyleGuide";
 import { selectUserProfile } from "../redux/features/authSlice";
+import EditProfileForm from "../ui/profile/EditProfileForm";
 import WelcomeHome from "../ui/welcomeHome/WelcomeHome";
 connector.baseUrl = config.baseUrl;
 
@@ -70,7 +72,9 @@ function Layout() {
             <Route path="/style-guide" element={<StyleGuide />} />
             <Route path="/" element={<PrivateRoute><HomePage /></PrivateRoute>}>
                 <Route index element={<WelcomeHome />} />
-                <Route path="/chat/:id" element={<PrivateRoute><ChattingHome /></PrivateRoute>} />
+                <Route path="/chat/:id" element={<ChattingHome />} />
+                <Route path="/profile" element={<ProfileView />} exact />
+                <Route path="/editprofile" element={<EditProfileForm />} exact />
             </Route>
             <Route path="/login" element={<Login />} exact />
             <Route path="/signup" element={<Registration />} exact />

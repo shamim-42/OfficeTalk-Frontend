@@ -15,3 +15,8 @@ export const userLogoutApi = async function (id, options = {}) {
   const url = `/auth/${id}/signout`;
   return connector.get(url, options);
 };
+
+export const editprofileApi = async function (id, payload, options = {}) {
+  const url = `/user/${id}`;
+  return connector.put(url, payload, options);
+}
