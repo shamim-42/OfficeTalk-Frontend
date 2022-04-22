@@ -11,9 +11,10 @@ import { IoChevronDownOutline } from "react-icons/io5";
 import React from 'react';
 import SettingPopover from './SettingPopover';
 import FilterPopover from './FilterPopover';
+import { Link } from 'react-router-dom';
 
 const SidebarHeader = (props) => {
-  const { handleChangeSearch, onChangeSwitch, userProfile } = props;
+  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout } = props;
 
 
   return (
@@ -21,29 +22,33 @@ const SidebarHeader = (props) => {
       <Row>
         <Col md={20}>
           <div className="sidebar-user">
-            {userProfile?.profileImage ?
-              <Avatar
-                src="https://i.ibb.co/FX9y91r/Ellipse-7.png"
-                style={{
+            <Link to="/">
+              {userProfile?.profileImage ?
+                <Avatar
+                  src={userProfile?.profileImage}
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: '50%',
+                  }}
+                />
+                :
+                <IoPersonCircle style={{
                   width: 44,
                   height: 44,
                   borderRadius: '50%',
-                }}
-              />
-              :
-              <IoPersonCircle style={{
-                width: 44,
-                height: 44,
-                borderRadius: '50%',
-              }} />
-            }
-            <p className="sidebar-user-name">{userProfile?.fullname}</p>
+                }} />
+              }
+            </Link>
+            <Link to="/">
+              <p className="sidebar-user-name">{userProfile?.fullname}</p>
+            </Link>
           </div>
         </Col>
         <Col md={4}>
           <Row className="setting-preicon">
             <Popover placement="bottomLeft"
-              content={<SettingPopover onChangeSwitch={onChangeSwitch} />}
+              content={<SettingPopover handleLogout={handleLogout} onChangeSwitch={onChangeSwitch} />}
               trigger="click">
               <Button type="text" >
                 <CgMenuGridO style={{ fontSize: '16px' }} />
@@ -114,7 +119,7 @@ const SidebarHeader = (props) => {
           </Popover>
         </Col>
       </Row>
-    </div>
+    </div >
   );
 };
 

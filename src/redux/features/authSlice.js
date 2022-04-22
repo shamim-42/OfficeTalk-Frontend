@@ -23,11 +23,15 @@ export const authSlice = createSlice({
       }
     },
 
+    resetUser: (state) => {
+      state.user = null;
+    },
+
   },
 
 });
 
-export const {  setUserProfile, setUser } = authSlice.actions;
+export const { setUserProfile, setUser, resetUser } = authSlice.actions;
 
 export const selectUserProfile = (state) => state.auth.userProfile;
 

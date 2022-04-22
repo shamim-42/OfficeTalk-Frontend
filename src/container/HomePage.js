@@ -1,7 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUserProfile } from '../redux/features/authSlice';
-import {  setActiveUser } from '../redux/features/layoutSlice';
+import { useNavigate } from 'react-router-dom';
+import { userLogoutApi } from '../api/auth';
+import { resetUser, selectUserProfile } from '../redux/features/authSlice';
+import { setActiveUser } from '../redux/features/layoutSlice';
 import HomeUi from '../ui/home/HomeUi';
 
 const users = [
@@ -105,6 +107,7 @@ const users = [
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   dispatch(setActiveUser(users));
   const userProfile = useSelector(selectUserProfile);
 
@@ -116,9 +119,31 @@ const HomePage = () => {
     console.log(evt)
   }
 
+  // handle User sign out and
+  async function handleLogout() {
+    const userId = userProfile.userId;
+
+    async function successHandler(response) {
+      const res = await response.json();
+      console.log(res.message);
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("userProfile");
+      dispatch(resetUser());
+      navigate('/login');
+    }
+
+    async function handleBadReq(response) {
+      let error = await response.json();
+      console.log(error.message);
+    }
+
+    return await userLogoutApi(userId, { successHandler, handleBadReq })
+  }
+
   return (
     <HomeUi
       userProfile={userProfile}
+      handleLogout={handleLogout}
       handleChangeSearch={handleChangeSearch}
       onChangeSwitch={onChangeSwitch}
       users={users} />

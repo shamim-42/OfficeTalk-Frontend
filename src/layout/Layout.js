@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Navigate, Route, Routes } from "react-router-dom";
 import config from "../config/config.json";
 import connector from '../connector/index';
 import ChattingHome from "../container/ChattingHome";
@@ -6,11 +7,21 @@ import HomePage from "../container/HomePage";
 import Login from "../container/Login";
 import Registration from "../container/Registration";
 import StyleGuide from "../container/StyleGuide";
+import { selectUserProfile } from "../redux/features/authSlice";
 import WelcomeHome from "../ui/welcomeHome/WelcomeHome";
 connector.baseUrl = config.baseUrl;
 
+const PrivateRoute = ({ children }) => {
+    const userProfile = useSelector(selectUserProfile)
+    return userProfile ? children : <Navigate to="/login" />;
+};
+
 function Layout() {
     connector.handle404 = async (response) => {
+        const err = await response.json();
+        console.log(err);
+    }
+    connector.handle401 = async (response) => {
         const err = await response.json();
         console.log(err);
     }
@@ -57,9 +68,9 @@ function Layout() {
     return (
         <Routes>
             <Route path="/style-guide" element={<StyleGuide />} />
-            <Route path="/" element={<HomePage />}>
+            <Route path="/" element={<PrivateRoute><HomePage /></PrivateRoute>}>
                 <Route index element={<WelcomeHome />} />
-                <Route path="/chat/:id" element={<ChattingHome />} />
+                <Route path="/chat/:id" element={<PrivateRoute><ChattingHome /></PrivateRoute>} />
             </Route>
             <Route path="/login" element={<Login />} exact />
             <Route path="/signup" element={<Registration />} exact />

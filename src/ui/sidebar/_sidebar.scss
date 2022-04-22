@@ -169,6 +169,7 @@
 .sidebar-user-name {
   font-size: 20px;
   font-weight: 600;
+  color: map.get($theme-colors, "black");
 }
 
 .ant-dropdown-menu {
@@ -199,4 +200,7 @@
 
 .ant-tooltip-placement-top {
   padding-bottom: 4px;
+}
+.ant-popover-placement-bottomLeft {
+  padding-top: 0;
 }

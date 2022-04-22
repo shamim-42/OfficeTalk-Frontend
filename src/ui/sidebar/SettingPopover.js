@@ -5,7 +5,7 @@ import { BsMoon } from "react-icons/bs";
 import { BiRightArrowCircle } from "react-icons/bi";
 
 
-const SettingPopover = ({ onChangeSwitch }) => {
+const SettingPopover = ({ onChangeSwitch, handleLogout }) => {
   return (
     <div className="setting-popover" style={{
       display: 'flex',
@@ -27,12 +27,18 @@ const SettingPopover = ({ onChangeSwitch }) => {
         </p>
         <Switch size="small" defaultChecked onChange={onChangeSwitch} />
       </div>
-      <p>
-        <BiRightArrowCircle />
-        <Button type="link" danger>
+      <div>
+        <Button type="text" style={{
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          gap: '10px',
+          padding: 0,
+        }} onClick={handleLogout} danger>
+          <BiRightArrowCircle />
           Sign out
         </Button>
-      </p>
+      </div>
     </div>
   );
 };

@@ -4,11 +4,12 @@ import SidebarHeader from './SidebarHeader';
 import SidebarCard from './SidebarCard';
 
 const Sidebar = (props) => {
-  const { users, handleChangeSearch, onChangeSwitch, userProfile } = props;
+  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout } = props;
 
   return (
     <div className="sidebar-container">
       <SidebarHeader
+        handleLogout={handleLogout}
         userProfile={userProfile}
         onChangeSwitch={onChangeSwitch}
         handleChangeSearch={handleChangeSearch} />
