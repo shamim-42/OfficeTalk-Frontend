@@ -18,8 +18,11 @@ const ProfileViewUi = (props) => {
         >
           <Descriptions.Item label="Name"> {userProfile?.fullname.toUpperCase()}</Descriptions.Item>
           <Descriptions.Item label="Email"> {userProfile?.email} </Descriptions.Item>
-          <Descriptions.Item label="User ID"> {userProfile?.id} </Descriptions.Item>
+          {/* <Descriptions.Item label="User ID"> {userProfile?.id} </Descriptions.Item> */}
           <Descriptions.Item label="User Name"> {userProfile?.username} </Descriptions.Item>
+          <Descriptions.Item label="Bio Data"> {userProfile?.aboutMe} </Descriptions.Item>
+          <Descriptions.Item label="City"> {userProfile?.city} </Descriptions.Item>
+          <Descriptions.Item label="Phone Number"> {userProfile?.phoneNumber} </Descriptions.Item>
         </Descriptions>
       </WrapperTitle>
     </div >

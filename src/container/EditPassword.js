@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { editprofileApi } from '../api/auth';
+import { editPasswordApi } from '../api/auth';
 import { selectUserProfile, selectUserToken } from '../redux/features/authSlice';
 import EditPasswordForm from '../ui/profile/EditPasswordForm';
 
@@ -15,34 +15,19 @@ const EditPassword = () => {
 
   // handle User sign out and
   async function handleEditProfile(values) {
-    const userId = userProfile.userId;
+    const userId = userProfile.id;
 
     const newProfile = {
-      email: values?.email,
-      oldPassword: values?.oldPassword,
-      newPassword: values?.password,
-      newPasswordAgain: values?.confirm,
-      fullname: values?.fullname,
+      oldpass: values?.oldpass,
+      newpass: values?.newpass,
     }
 
-    // const requestOptions = {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: "bearer" + " " + accessToken
-    //   },
-    //   body: JSON.stringify(newProfile)
-    // };
-
-    // fetch('http://192.168.1.21:4000/users/edit/3', requestOptions)
-    //   .then(response => response.json())
-    //   .then(data => console.log(data));
 
 
     async function successHandler(response) {
       const res = await response.json();
       console.log(res);
-      // navigate('/profile');
+      navigate('/profile');
     }
 
     async function handleBadReq(response) {
@@ -50,7 +35,7 @@ const EditPassword = () => {
       console.log(error);
     }
 
-    return await editprofileApi(userId, newProfile, { successHandler, handleBadReq })
+    return await editPasswordApi(userId, newProfile, { successHandler, handleBadReq })
   }
 
   return (

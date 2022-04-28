@@ -20,3 +20,8 @@ export const editprofileApi = async function (id, payload, options = {}) {
   const url = `/users/edit/${id}`;
   return connector.put(url, payload, options);
 }
+
+export const editPasswordApi = async function (id, payload, options = {}) {
+  const url = `/users/${id}/changepassword`;
+  return connector.put(url, payload, options);
+}

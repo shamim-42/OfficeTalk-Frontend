@@ -22,7 +22,7 @@ const EditPasswordForm = (props) => {
           scrollToFirstError
         >
           <Form.Item
-            name="oldPassword"
+            name="oldpass"
             label="Old Password"
             rules={[
               {
@@ -35,7 +35,7 @@ const EditPasswordForm = (props) => {
           </Form.Item>
 
           <Form.Item
-            name="password"
+            name="newpass"
             label="Password"
             rules={[
               {
@@ -68,7 +68,7 @@ const EditPasswordForm = (props) => {
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
+                  if (!value || getFieldValue('newpass') === value) {
                     return Promise.resolve();
                   }
 

@@ -1,8 +1,9 @@
+import { message } from 'antd';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { userRegistrationApi } from '../api/auth';
-import { setUserProfile } from '../redux/features/authSlice';
+import { setUser, setUserProfile } from '../redux/features/authSlice';
 import RegistrationUi from '../ui/registration/RegistrationUi';
 
 const Registration = () => {
@@ -18,13 +19,14 @@ const Registration = () => {
       password: values.password,
     }
 
-    console.log(userData);
     // Success Handler func
     async function successHandler(response) {
       let data = await response.json();
       console.log(data, "Register Data");
+      message.success('Your Account Created successfully !');
 
-      dispatch(setUserProfile(data))
+      dispatch(setUserProfile(data.user))
+      dispatch(setUser(data.accessToken))
       navigate('/');
     }
 

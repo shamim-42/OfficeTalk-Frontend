@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { editprofileApi } from '../api/auth';
-import { selectUserProfile, selectUserToken, setUserProfile } from '../redux/features/authSlice';
+import { selectUserProfile,  setUserProfile } from '../redux/features/authSlice';
 import EditProfileForm from '../ui/profile/EditProfileForm';
 
 
@@ -10,7 +10,6 @@ const EditProfile = () => {
   const userProfile = useSelector(selectUserProfile);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const accessToken = useSelector(selectUserToken);
 
 
   // handle User sign out and

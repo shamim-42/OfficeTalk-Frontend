@@ -121,7 +121,7 @@ const HomePage = () => {
 
   // handle User sign out and
   async function handleLogout() {
-    const userId = userProfile.userId;
+    const userId = userProfile.id;
 
     async function successHandler(response) {
       const res = await response.json();

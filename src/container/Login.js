@@ -1,4 +1,4 @@
-import { Alert, Form, Modal } from 'antd';
+import { Alert, Form, message, Modal } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ const Login = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isErrorModal, setIsErrorModal] = useState(false);
   const [modalNumber, setModalNumber] = useState(1);
-  const [message, setMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -55,6 +55,8 @@ const Login = () => {
       const accessToken = res.accessToken;
       console.log(userLoginData, accessToken);
 
+      message.success('User logged in successfully !');
+
       dispatch(setUserProfile(userLoginData))
       dispatch(setUser(accessToken))
       navigate('/');
@@ -64,7 +66,7 @@ const Login = () => {
     async function handleBadReq(response) {
       let err = await response.json();
       const message = err.message;
-      setMessage(message);
+      setErrorMessage(message);
       console.log("Login Error", err.message);
       showErrorModal()
     }
@@ -97,7 +99,7 @@ const Login = () => {
         onOk={handleOk}>
         <Alert
           message="Login Error"
-          description={message}
+          description={errorMessage}
           type="error"
           showIcon
         />
