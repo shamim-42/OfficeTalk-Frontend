@@ -18,7 +18,7 @@ const ProfileViewUi = (props) => {
         >
           <Descriptions.Item label="Name"> {userProfile?.fullname.toUpperCase()}</Descriptions.Item>
           <Descriptions.Item label="Email"> {userProfile?.email} </Descriptions.Item>
-          <Descriptions.Item label="User ID"> {userProfile?.userId} </Descriptions.Item>
+          <Descriptions.Item label="User ID"> {userProfile?.id} </Descriptions.Item>
           <Descriptions.Item label="User Name"> {userProfile?.username} </Descriptions.Item>
         </Descriptions>
       </WrapperTitle>
@@ -34,9 +34,14 @@ const WrapperTitle = ({ title, children, header }) => {
         <h6 className="profile-title">
           {title}
         </h6>
-        <Link className="editprofile-link" to="/editprofile">
-          Edit Profile
-        </Link>
+        <div className="profile-buttons">
+          <Link className="editprofile-link" to="/editprofile">
+            Edit Profile
+          </Link>
+          <Link className="editprofile-link" to="/editpassword">
+            Edit Password
+          </Link>
+        </div>
       </div>
       <div>
         {children}

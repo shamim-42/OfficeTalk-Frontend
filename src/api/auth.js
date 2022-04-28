@@ -17,6 +17,6 @@ export const userLogoutApi = async function (id, options = {}) {
 };
 
 export const editprofileApi = async function (id, payload, options = {}) {
-  const url = `/user/${id}`;
+  const url = `/users/edit/${id}`;
   return connector.put(url, payload, options);
 }

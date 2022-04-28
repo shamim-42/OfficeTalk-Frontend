@@ -85,7 +85,7 @@
   }
 }
 
-.ant-modal {
+.ant-modal.forgot-modal-alert {
   position: fixed;
   top: 20%;
   right: 12%;
@@ -120,6 +120,21 @@
       & Button {
         height: 38px;
       }
+    }
+  }
+}
+
+.ant-modal.error-modal {
+  & .ant-modal-content {
+    padding: 0;
+    position: fixed;
+    background-color: #fff2f0;
+    border: 1px solid #ffccc7;
+    border-radius: 4px;
+
+    & .ant-alert.ant-alert-with-description {
+      padding: 0;
+      border: none;
     }
   }
 }

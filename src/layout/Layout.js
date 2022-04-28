@@ -1,15 +1,17 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import config from "../config/config.json";
 import connector from '../connector/index';
 import ChattingHome from "../container/ChattingHome";
+import EditPassword from "../container/EditPassword";
+import EditProfile from "../container/EditProfile";
 import HomePage from "../container/HomePage";
 import Login from "../container/Login";
 import ProfileView from "../container/ProfileView";
 import Registration from "../container/Registration";
 import StyleGuide from "../container/StyleGuide";
-import { selectUserProfile } from "../redux/features/authSlice";
-import EditProfileForm from "../ui/profile/EditProfileForm";
+import { selectUserProfile, selectUserToken } from "../redux/features/authSlice";
 import WelcomeHome from "../ui/welcomeHome/WelcomeHome";
 connector.baseUrl = config.baseUrl;
 
@@ -19,6 +21,8 @@ const PrivateRoute = ({ children }) => {
 };
 
 function Layout() {
+    const accessToken = useSelector(selectUserToken);
+
     connector.handle404 = async (response) => {
         const err = await response.json();
         console.log(err);
@@ -53,9 +57,19 @@ function Layout() {
         console.log("network error")
     }
 
-    connector.headers = {
-        "Content-type": "application/json"
-    }
+
+    useEffect(() => {
+        if (accessToken) {
+            connector.headers = {
+                Authorization: "bearer" + " " + accessToken,
+                "Content-type": "application/json",
+            }
+        } else {
+            if (connector?.headers?.Authorization) {
+                delete connector.headers.Authorization
+            }
+        }
+    }, [accessToken]);
 
     // function onLogin(authToken) {
     //     localStorage.setItem("authToken", authToken);
@@ -74,7 +88,8 @@ function Layout() {
                 <Route index element={<WelcomeHome />} />
                 <Route path="/chat/:id" element={<ChattingHome />} />
                 <Route path="/profile" element={<ProfileView />} exact />
-                <Route path="/editprofile" element={<EditProfileForm />} exact />
+                <Route path="/editprofile" element={<EditProfile />} exact />
+                <Route path="/editpassword" element={<EditPassword />} exact />
             </Route>
             <Route path="/login" element={<Login />} exact />
             <Route path="/signup" element={<Registration />} exact />

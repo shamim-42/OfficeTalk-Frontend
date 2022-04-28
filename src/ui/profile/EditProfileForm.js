@@ -1,136 +1,119 @@
 import { Button, Form, Input } from 'antd';
 import React from 'react';
+import OnUpload from './OnUpload';
 
 
-const EditProfileForm = ({ handleEditProfile }) => {
+const EditProfileForm = (props) => {
+  const { handleEditProfile, userProfile } = props;
+  const { fullname, email, username } = userProfile;
+
+
+
+
+
+
   const [form] = Form.useForm();
+  form.setFieldsValue({ fullname, email, username });
 
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-  };
 
   return (
-    <WrapperTitle title="Edit Profile:">
-      <Form
-        labelCol={{ span: 6 }}
-        wrapperCol={{ span: 18 }}
-        labelAlign="left"
-        form={form}
-        name="editProfile"
-        onFinish={onFinish}
-        scrollToFirstError
-      >
-        <Form.Item
-          name="fullname"
-          label="Full Name"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your nickname!',
-              whitespace: true,
-            },
-          ]}
+    <>
+      <WrapperTitle title="Edit Profile:" />
+      <div className="edit-profile-container">
+
+        <Form
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
+          labelAlign="left"
+          form={form}
+          name="editProfile"
+          onFinish={handleEditProfile}
+          scrollToFirstError
         >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="email"
-          label="E-mail"
-          rules={[
-            {
-              type: 'email',
-              message: 'The input is not valid E-mail!',
-            },
-            {
-              required: true,
-              message: 'Please input your E-mail!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="oldPassword"
-          label="Old Password"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your Old password!',
-            },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || value.length >= 8) {
-                  return Promise.resolve();
-                }
-
-                return Promise.reject(new Error('Password must be at least 8 characters!'));
+          <OnUpload />
+          <Form.Item
+            name="fullname"
+            label="Full Name"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your nickname!',
+                whitespace: true,
               },
-            }),
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
+            ]}
+          >
+            <Input />
+          </Form.Item>
 
-        <Form.Item
-          name="confirm"
-          label="Confirm Password"
-          dependencies={['password']}
-          hasFeedback
-          rules={[
-            {
-              required: true,
-              message: 'Please confirm your password!',
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve();
-                }
+          <Form.Item
+            name="username"
+            label="Username"
+          >
+            <Input disabled />
+          </Form.Item>
 
-                return Promise.reject(new Error('The two passwords that you entered do not match!'));
+          <Form.Item
+            name="email"
+            label="E-mail"
+          >
+            <Input disabled />
+          </Form.Item>
+
+          <Form.Item
+            name="aboutMe"
+            label="About Me"
+            rules={[
+              {
+                whitespace: true,
               },
-            }),
-          ]}
-        >
-          <Input type="password" />
-        </Form.Item>
+            ]}
+          >
+            <Input.TextArea showCount maxLength={100} />
+          </Form.Item>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Update Profile
-          </Button>
-        </Form.Item>
-      </Form>
-    </WrapperTitle>
+          <Form.Item
+            name="city"
+            label="City"
+            rules={[
+              {
+                whitespace: true,
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="phone"
+            label="Phone Number"
+            rules={[
+              {
+                whitespace: true,
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Update Profile
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </>
   );
 };
 
 
-const WrapperTitle = ({ title, children, header }) => {
+const WrapperTitle = ({ title }) => {
   return (
-    <div className="edit-profile-container">
+    <div>
       <div className="profile-titlebar">
         <h6 className="profile-title">
           {title}
         </h6>
-      </div>
-      <div>
-        {children}
       </div>
     </div>
   );

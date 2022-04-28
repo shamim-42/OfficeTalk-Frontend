@@ -1,3 +1,4 @@
+import { Alert, Form, Modal } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -7,10 +8,13 @@ import LoginUi from '../ui/login/LoginUi';
 
 const Login = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isErrorModal, setIsErrorModal] = useState(false);
   const [modalNumber, setModalNumber] = useState(1);
+  const [message, setMessage] = useState('')
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [form] = Form.useForm();
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -19,7 +23,18 @@ const Login = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
     setModalNumber(1);
+
   };
+
+  const showErrorModal = () => {
+    setIsErrorModal(true);
+  };
+
+  const handleOk = () => {
+    form.resetFields(["password"]);
+    setIsErrorModal(false);
+  };
+
 
   const onFinishOtp = (values) => {
     console.log(values);
@@ -48,7 +63,10 @@ const Login = () => {
     // Bad Request Handler func
     async function handleBadReq(response) {
       let err = await response.json();
-      console.log("Register Error", err);
+      const message = err.message;
+      setMessage(message);
+      console.log("Login Error", err.message);
+      showErrorModal()
     }
 
     return await userLoginApi(loginData, {
@@ -70,16 +88,33 @@ const Login = () => {
 
 
   return (
-    <LoginUi
-      onSubmitHandler={onSubmitHandler}
-      onFinishModal={onFinishModal}
-      isModalVisible={isModalVisible}
-      showModal={showModal}
-      handleCancel={handleCancel}
-      modalNumber={modalNumber}
-      onFinishOtp={onFinishOtp}
-      onFinishPassword={onFinishPassword}
-    />
+    <>
+      <Modal
+        visible={isErrorModal}
+        className="error-modal"
+        cancelButtonProps={{ style: { display: 'none' } }}
+        closable={false}
+        onOk={handleOk}>
+        <Alert
+          message="Login Error"
+          description={message}
+          type="error"
+          showIcon
+        />
+      </Modal>
+
+      <LoginUi
+        form={form}
+        onSubmitHandler={onSubmitHandler}
+        onFinishModal={onFinishModal}
+        isModalVisible={isModalVisible}
+        showModal={showModal}
+        handleCancel={handleCancel}
+        modalNumber={modalNumber}
+        onFinishOtp={onFinishOtp}
+        onFinishPassword={onFinishPassword}
+      />
+    </>
   );
 };
 
