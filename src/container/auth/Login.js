@@ -53,7 +53,7 @@ const Login = () => {
       let res = await response.json();
       const userLoginData = res.profile;
       const accessToken = res.accessToken;
-      console.log(userLoginData, accessToken);
+      console.log(res);
 
       message.success('User logged in successfully !');
 

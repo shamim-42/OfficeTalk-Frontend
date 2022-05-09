@@ -88,7 +88,7 @@ const LoginUi = (props) => {
                 className="btn-theme-primary-fluid filled-btn login-button"
                 type="primary"
                 htmlType="submit">
-                Submit
+                Login
               </Button>
               <p className="havenotaccount">Dont have an account ?
                 <Link to="/signup" style={{ paddingLeft: '10px' }} >

@@ -22,7 +22,6 @@ const Registration = () => {
     // Success Handler func
     async function successHandler(response) {
       let data = await response.json();
-      console.log(data, "Register Data");
       message.success('Your Account Created successfully !');
 
       dispatch(setUserProfile(data.user))
