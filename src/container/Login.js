@@ -51,7 +51,7 @@ const Login = () => {
 
     async function successHandler(response) {
       let res = await response.json();
-      const userLoginData = res.data;
+      const userLoginData = res.profile;
       const accessToken = res.accessToken;
       console.log(userLoginData, accessToken);
 

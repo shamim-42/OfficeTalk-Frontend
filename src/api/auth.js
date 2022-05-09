@@ -21,6 +21,11 @@ export const editprofileApi = async function (id, payload, options = {}) {
   return connector.put(url, payload, options);
 }
 
+export const editprofilePhotoApi = async function (id, payload, options = {}) {
+  const url = `/upload/${id}`;
+  return connector.post(url, payload, options);
+}
+
 export const editPasswordApi = async function (id, payload, options = {}) {
   const url = `/users/${id}/changepassword`;
   return connector.put(url, payload, options);

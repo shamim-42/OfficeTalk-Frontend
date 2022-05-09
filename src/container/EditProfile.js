@@ -10,24 +10,21 @@ const EditProfile = () => {
   const userProfile = useSelector(selectUserProfile);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+ 
 
-
-  // handle User sign out and
+  // handle User profile edit
   async function handleEditProfile(values) {
     const userId = userProfile.id;
 
     const newProfile = {
       fullname: values?.fullname,
       city: values?.city,
-      phoneNumber: values?.phone,
+      phoneNumber: values?.phoneNumber,
       aboutMe: values?.aboutMe,
     }
 
-
     async function successHandler(response) {
-      console.log(response);
       const res = await response.json();
-      console.log(res);
       dispatch(setUserProfile(res))
       navigate('/profile');
     }

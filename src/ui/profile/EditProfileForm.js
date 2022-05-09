@@ -5,21 +5,18 @@ import OnUpload from './OnUpload';
 
 const EditProfileForm = (props) => {
   const { handleEditProfile, userProfile } = props;
-  const { fullname, email, username } = userProfile;
-
-
-
-
+  const { fullname, email, username, aboutMe, city, phoneNumber } = userProfile;
 
 
   const [form] = Form.useForm();
-  form.setFieldsValue({ fullname, email, username });
+  form.setFieldsValue({ fullname, email, username, aboutMe, city, phoneNumber });
 
 
   return (
     <>
       <WrapperTitle title="Edit Profile:" />
       <div className="edit-profile-container">
+        <OnUpload />
 
         <Form
           labelCol={{ span: 6 }}
@@ -30,7 +27,6 @@ const EditProfileForm = (props) => {
           onFinish={handleEditProfile}
           scrollToFirstError
         >
-          <OnUpload />
           <Form.Item
             name="fullname"
             label="Full Name"
@@ -84,7 +80,7 @@ const EditProfileForm = (props) => {
           </Form.Item>
 
           <Form.Item
-            name="phone"
+            name="phoneNumber"
             label="Phone Number"
             rules={[
               {
