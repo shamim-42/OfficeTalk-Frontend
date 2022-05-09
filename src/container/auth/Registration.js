@@ -2,9 +2,9 @@ import { message } from 'antd';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { userRegistrationApi } from '../api/auth';
-import { setUser, setUserProfile } from '../redux/features/authSlice';
-import RegistrationUi from '../ui/registration/RegistrationUi';
+import { userRegistrationApi } from '../../api/auth';
+import { setUser, setUserProfile } from '../../redux/features/authSlice';
+import RegistrationUi from '../../ui/registration/RegistrationUi';
 
 const Registration = () => {
   const navigate = useNavigate();

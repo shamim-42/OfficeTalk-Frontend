@@ -3,7 +3,7 @@ import React from 'react';
 
 
 const EditPasswordForm = (props) => {
-  const { handleEditProfile, userProfile } = props;
+  const { handleEditPassword, userProfile } = props;
   const { fullname, email } = userProfile;
   const [form] = Form.useForm();
   form.setFieldsValue({ fullname, email });
@@ -18,7 +18,7 @@ const EditPasswordForm = (props) => {
           labelAlign="left"
           form={form}
           name="editProfile"
-          onFinish={handleEditProfile}
+          onFinish={handleEditPassword}
           scrollToFirstError
         >
           <Form.Item

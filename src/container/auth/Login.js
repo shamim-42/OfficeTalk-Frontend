@@ -2,9 +2,9 @@ import { Alert, Form, message, Modal } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { userLoginApi } from '../api/auth';
-import { setUser, setUserProfile } from '../redux/features/authSlice';
-import LoginUi from '../ui/login/LoginUi';
+import { userLoginApi } from '../../api/auth';
+import { setUser, setUserProfile } from '../../redux/features/authSlice';
+import LoginUi from '../../ui/login/LoginUi';
 
 const Login = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);

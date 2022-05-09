@@ -38,7 +38,9 @@ const LoginUi = (props) => {
                   message: 'Please input your valid email!',
                   type: 'email'
                 },
-              ]}
+              ]
+              }
+              validateTrigger='onBlur'
             >
               <Input
                 className="regular-input"
@@ -64,6 +66,7 @@ const LoginUi = (props) => {
                   },
                 }),
               ]}
+              validateTrigger='onBlur'
             >
               <Input.Password
                 className="regular-input"

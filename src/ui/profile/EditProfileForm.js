@@ -4,7 +4,7 @@ import OnUpload from './OnUpload';
 
 
 const EditProfileForm = (props) => {
-  const { handleEditProfile, userProfile } = props;
+  const { handleEditProfile, userProfile, handleEditProfileImage, handleImageChange, photoChange } = props;
   const { fullname, email, username, aboutMe, city, phoneNumber } = userProfile;
 
 
@@ -16,7 +16,12 @@ const EditProfileForm = (props) => {
     <>
       <WrapperTitle title="Edit Profile:" />
       <div className="edit-profile-container">
-        <OnUpload />
+        <OnUpload
+          handleEditProfileImage={handleEditProfileImage}
+          handleImageChange={handleImageChange}
+          userProfile={userProfile}
+          photoChange={photoChange}
+        />
 
         <Form
           labelCol={{ span: 6 }}

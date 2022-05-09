@@ -68,6 +68,7 @@ const RegistrationUi = (props) => {
                     type: 'email'
                   },
                 ]}
+                validateTrigger='onBlur'
               >
                 <Input
                   className="regular-input"
@@ -93,6 +94,7 @@ const RegistrationUi = (props) => {
                     },
                   }),
                 ]}
+                validateTrigger='onBlur'
               >
                 <Input.Password
                   className="regular-input"
