@@ -105,9 +105,11 @@ const ChattingHomeUi = (props) => {
             </Row>
           </Col>
         </Row>
-        <div className="message-input">
-          <TextArea showCount maxLength={100} onChange={onChange} />
-        </div>
+        <Row className="message-input">
+          <Col span={14}>
+            <TextArea showCount maxLength={100} onChange={onChange} />
+          </Col>
+        </Row>
       </div>
     </>
   );

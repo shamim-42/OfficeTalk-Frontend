@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -70,6 +71,7 @@ const EditProfile = () => {
 
     async function successHandler(response) {
       const res = await response.json();
+      message.success('User profile edited in successfully !');
       dispatch(setUserProfile(res))
       navigate('/profile');
     }

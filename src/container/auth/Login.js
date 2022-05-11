@@ -1,4 +1,4 @@
-import { Alert, Form, message, Modal } from 'antd';
+import { Alert, Form, message, Modal, Spin } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,8 @@ const Login = () => {
   const [isErrorModal, setIsErrorModal] = useState(false);
   const [modalNumber, setModalNumber] = useState(1);
   const [errorMessage, setErrorMessage] = useState('')
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -43,6 +45,7 @@ const Login = () => {
 
   // on login submit function
   const onSubmitHandler = async (values) => {
+    setLoading(true);
     const loginData = {
       email: values.email,
       password: values.password,
@@ -54,9 +57,8 @@ const Login = () => {
       const userLoginData = res.profile;
       const accessToken = res.accessToken;
       console.log(res);
-
+      setLoading(false);
       message.success('User logged in successfully !');
-
       dispatch(setUserProfile(userLoginData))
       dispatch(setUser(accessToken))
       navigate('/');
@@ -68,6 +70,7 @@ const Login = () => {
       const message = err.message;
       setErrorMessage(message);
       console.log("Login Error", err.message);
+      setLoading(false);
       showErrorModal()
     }
 
@@ -104,18 +107,19 @@ const Login = () => {
           showIcon
         />
       </Modal>
-
-      <LoginUi
-        form={form}
-        onSubmitHandler={onSubmitHandler}
-        onFinishModal={onFinishModal}
-        isModalVisible={isModalVisible}
-        showModal={showModal}
-        handleCancel={handleCancel}
-        modalNumber={modalNumber}
-        onFinishOtp={onFinishOtp}
-        onFinishPassword={onFinishPassword}
-      />
+      <Spin spinning={loading} delay={100}>
+        <LoginUi
+          form={form}
+          onSubmitHandler={onSubmitHandler}
+          onFinishModal={onFinishModal}
+          isModalVisible={isModalVisible}
+          showModal={showModal}
+          handleCancel={handleCancel}
+          modalNumber={modalNumber}
+          onFinishOtp={onFinishOtp}
+          onFinishPassword={onFinishPassword}
+        />
+      </Spin>
     </>
   );
 };

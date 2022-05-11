@@ -20,17 +20,17 @@ const ChattingHeader = (props) => {
             backgroundColor: "#67C148",
             textAlign: "left"
           }}
-          dot={currentUser.status}
+          dot={currentUser?.status}
         >
           <Avatar
             className="user-img circle-img"
-            src={currentUser.img}
+            src={currentUser?.profileImage}
           />
         </Badge>
         <div>
-          <p className="user-name">{currentUser.name}</p>
+          <p className="user-name">{currentUser.fullname}</p>
           <p className="user-status">
-            {currentUser.status ? "Active Now" : 'Active 30 minute ago'}
+            {currentUser?.status ? "Active Now" : 'Active 30 minute ago'}
           </p>
         </div>
       </div>

@@ -34,7 +34,7 @@ const Sidebar = (props) => {
                 >
                   <Avatar
                     className="online-user-img"
-                    src={user.img}
+                    src={user.profileImage}
                   />
                 </Badge>
               </Tooltip>

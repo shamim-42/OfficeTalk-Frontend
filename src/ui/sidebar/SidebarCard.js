@@ -21,16 +21,16 @@ const SidebarCard = ({ user }) => {
                 backgroundColor: "#67C148",
                 textAlign: "left"
               }}
-              dot={user.status}
+              dot={user?.status}
             >
               <Avatar
                 className="sidebar-card-img circle-img"
-                src={user.img}
+                src={user.profileImage}
               />
             </Badge>
           </Col>
           <Col span={14}>
-            <p className="sidebar-user-name">{user.name}</p>
+            <p className="sidebar-user-name">{user.fullname}</p>
             <p className="sidebar-car-message">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus sit minima voluptates fuga atque commodi eos incidunt odio modi. Quibusdam.</p>
           </Col>
           <Col span={5}>
