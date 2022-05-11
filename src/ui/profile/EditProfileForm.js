@@ -1,13 +1,11 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, Spin } from 'antd';
 import React from 'react';
-import OnUpload from './OnUpload';
+import UploadProfile from './UploadProfile';
 
 
 const EditProfileForm = (props) => {
-  const { handleEditProfile, userProfile, handleEditProfileImage, handleImageChange, photoChange } = props;
+  const { handleEditProfile, userProfile, handleEditProfileImage, handleImageChange, photoChange,loader } = props;
   const { fullname, email, username, aboutMe, city, phoneNumber } = userProfile;
-
-
   const [form] = Form.useForm();
   form.setFieldsValue({ fullname, email, username, aboutMe, city, phoneNumber });
 
@@ -16,12 +14,14 @@ const EditProfileForm = (props) => {
     <>
       <WrapperTitle title="Edit Profile:" />
       <div className="edit-profile-container">
-        <OnUpload
-          handleEditProfileImage={handleEditProfileImage}
-          handleImageChange={handleImageChange}
-          userProfile={userProfile}
-          photoChange={photoChange}
-        />
+        <Spin spinning={loader} delay={100}>
+          <UploadProfile
+            handleEditProfileImage={handleEditProfileImage}
+            handleImageChange={handleImageChange}
+            userProfile={userProfile}
+            photoChange={photoChange}
+          />
+        </Spin>
 
         <Form
           labelCol={{ span: 6 }}

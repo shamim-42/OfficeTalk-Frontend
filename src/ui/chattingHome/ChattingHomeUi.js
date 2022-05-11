@@ -10,10 +10,16 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { HiDotsVertical } from "react-icons/hi";
 import { FaRegGrinAlt } from "react-icons/fa";
 import { BsFillHeartFill } from "react-icons/bs";
+import { Input } from 'antd';
+const { TextArea } = Input;
 
 
 const ChattingHomeUi = (props) => {
   const { currentUser } = props;
+  const onChange = e => {
+    console.log('Change:', e.target.value);
+  };
+
   return (
     <>
       <ChattingHeader currentUser={currentUser} />
@@ -99,6 +105,9 @@ const ChattingHomeUi = (props) => {
             </Row>
           </Col>
         </Row>
+        <div className="message-input">
+          <TextArea showCount maxLength={100} onChange={onChange} />
+        </div>
       </div>
     </>
   );

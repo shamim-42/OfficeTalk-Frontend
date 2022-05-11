@@ -1,23 +1,27 @@
 import React from 'react';
 import { Button } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 
 
-function OnUpload(props) {
+
+function UploadProfile(props) {
   const { handleEditProfileImage, handleImageChange, userProfile, photoChange } = props;
 
   return (
     <div>
-      <div class="avatar-upload">
-        <div class="avatar-edit">
+      <div className="avatar-upload">
+        <div className="avatar-edit">
           <input type='file' id="imageUpload" onChange={handleImageChange} />
           {
             !photoChange ?
-              <label for="imageUpload">Change Photo</label>
+              <label htmlFor="imageUpload">Change Photo</label>
               :
-              <Button className="edit-profileImage-button" onClick={handleEditProfileImage}>Upload Photo</Button>
+              <>
+              <Button className="edit-profileImage-button" onClick={handleEditProfileImage}><UploadOutlined /> Upload Photo</Button>
+              </>
           }
         </div>
-        <div class="avatar-preview">{userProfile.profileImage &&
+        <div className="avatar-preview">{userProfile.profileImage &&
           <div id="imagePreview" style={{ backgroundImage: `url(${userProfile?.profileImage})` }}>
           </div>
         }
@@ -29,4 +33,4 @@ function OnUpload(props) {
 }
 
 
-export default OnUpload;
+export default UploadProfile;

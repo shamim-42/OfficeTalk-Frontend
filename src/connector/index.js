@@ -251,6 +251,8 @@ class Connector {
         },
       },
     };
+    
+    if (options.removeContentType) delete reqOptions.headers["Content-type"];
 
     const response = await fetch(this.joinWithBase(url), reqOptions);
 

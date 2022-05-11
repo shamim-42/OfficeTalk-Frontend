@@ -1,4 +1,4 @@
-import { Descriptions } from 'antd';
+import { Button, Descriptions } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -18,7 +18,6 @@ const ProfileViewUi = (props) => {
         >
           <Descriptions.Item label="Name"> {userProfile?.fullname.toUpperCase()}</Descriptions.Item>
           <Descriptions.Item label="Email"> {userProfile?.email} </Descriptions.Item>
-          {/* <Descriptions.Item label="User ID"> {userProfile?.id} </Descriptions.Item> */}
           <Descriptions.Item label="User Name"> {userProfile?.username} </Descriptions.Item>
           <Descriptions.Item label="Bio Data"> {userProfile?.aboutMe} </Descriptions.Item>
           <Descriptions.Item label="City"> {userProfile?.city} </Descriptions.Item>
@@ -38,11 +37,15 @@ const WrapperTitle = ({ title, children, header }) => {
           {title}
         </h6>
         <div className="profile-buttons">
-          <Link className="editprofile-link" to="/editprofile">
-            Edit Profile
+          <Link to="/editprofile">
+            <Button type="primary" shape="round">
+              Edit Profile
+            </Button>
           </Link>
-          <Link className="editprofile-link" to="/editpassword">
-            Edit Password
+          <Link to="/editpassword">
+            <Button type="primary" shape="round">
+              Edit Password
+            </Button>
           </Link>
         </div>
       </div>
