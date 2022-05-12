@@ -5,6 +5,7 @@ export const layoutSlice = createSlice({
   initialState: {
     error: null,
     alertList: [],
+    allUsers: [],
     activeUser: [],
   },
   reducers: {
@@ -17,6 +18,10 @@ export const layoutSlice = createSlice({
     },
 
 
+    setAllUsers: (state, action) => {
+      state.allUsers = action.payload;
+    },
+
     setActiveUser: (state, action) => {
       state.activeUser = action.payload;
     },
@@ -24,9 +29,10 @@ export const layoutSlice = createSlice({
 
 });
 
-export const { setError, resetError, setActiveUser } = layoutSlice.actions;
+export const { setError, resetError, setAllUsers, setActiveUser } = layoutSlice.actions;
 
 export const selectError = (state) => state.layout.error;
+export const selectAllUser = (state) => state.layout.allUsers;
 export const selectActiveUser = (state) => state.layout.activeUser;
 
 export default layoutSlice.reducer;

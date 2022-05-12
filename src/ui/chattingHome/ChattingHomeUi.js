@@ -15,14 +15,19 @@ const { TextArea } = Input;
 
 
 const ChattingHomeUi = (props) => {
-  const { currentUser } = props;
+  const { currentUser, isOnline } = props;
+
+
   const onChange = e => {
     console.log('Change:', e.target.value);
   };
 
+
+
+
   return (
     <>
-      <ChattingHeader currentUser={currentUser} />
+      <ChattingHeader isOnline={isOnline} currentUser={currentUser} />
       <div className="chatting-content">
         <Row className="chatting-date">
           <Col span={6} className="chatting-date-card">

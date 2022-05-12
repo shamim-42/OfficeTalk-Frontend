@@ -2,7 +2,7 @@ import { Avatar, Badge, Card, Col, Row } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const SidebarCard = ({ user }) => {
+const SidebarCard = ({ user, isOnline }) => {
   return (
     <Card
       // if active card will be add .focushed class with .sidebar-card
@@ -21,7 +21,7 @@ const SidebarCard = ({ user }) => {
                 backgroundColor: "#67C148",
                 textAlign: "left"
               }}
-              dot={user?.status}
+              dot={isOnline(user.id)}
             >
               <Avatar
                 className="sidebar-card-img circle-img"

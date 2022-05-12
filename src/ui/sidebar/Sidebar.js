@@ -4,7 +4,11 @@ import SidebarHeader from './SidebarHeader';
 import SidebarCard from './SidebarCard';
 
 const Sidebar = (props) => {
-  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout } = props;
+  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers } = props;
+
+  function isOnline(userid) {
+    return onlineUsers.indexOf(userid) !== -1;
+  }
 
   return (
     <div className="sidebar-container">
@@ -17,7 +21,7 @@ const Sidebar = (props) => {
         <Avatar.Group className="online-user-group">
           {
             users.map((user, index) => (
-              <Tooltip key={index} title={user.name} overlayInnerStyle={{
+              <Tooltip key={user.id || index} title={user.fullname} overlayInnerStyle={{
                 padding: '0 4px',
                 minHeight: 'fit-content',
                 fontSize: '12px',
@@ -30,7 +34,7 @@ const Sidebar = (props) => {
                     height: "8px",
                     backgroundColor: "#67C148"
                   }}
-                  dot={user.status}
+                  dot={isOnline(user.id)}
                 >
                   <Avatar
                     className="online-user-img"
@@ -47,7 +51,7 @@ const Sidebar = (props) => {
         <div className="sidebar-cards">
           {
             users.map((user, i) => (
-              <SidebarCard key={i} user={user} />
+              <SidebarCard isOnline={isOnline} key={i} user={user} />
             ))
           }
         </div>

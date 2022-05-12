@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 const { Sider, Content } = Layout;
 
 const HomeUi = (props) => {
-  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout } = props;
+  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers } = props;
 
   return (
     <>
@@ -18,7 +18,8 @@ const HomeUi = (props) => {
           userProfile={userProfile}
           handleChangeSearch={handleChangeSearch}
           onChangeSwitch={onChangeSwitch}
-          users={users} />
+          users={users}
+          onlineUsers={onlineUsers} />
       </Sider>
 
       <Content className="content-area">
