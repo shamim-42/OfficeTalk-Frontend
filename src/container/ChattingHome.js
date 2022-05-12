@@ -34,6 +34,7 @@ const ChattingHome = () => {
     const year = date.getFullYear();
     const hours = date.getHours();
     let minutes = date.getMinutes();
+    const period = hours < 12 ? 'AM' : 'PM';
 
     if (minutes < 10) {
       // Adding leading zero to minutes
@@ -43,16 +44,16 @@ const ChattingHome = () => {
     if (prefomattedDate) {
       // Today at 10:20
       // Yesterday at 10:20
-      return `${prefomattedDate} at ${hours}:${minutes}`;
+      return `${prefomattedDate} at ${hours}:${minutes} ${period}`;
     }
 
     if (hideYear) {
       // 10. January at 10:20
-      return `${day}. ${month} at ${hours}:${minutes}`;
+      return `${day}. ${month} at ${hours}:${minutes} ${period}`;
     }
 
     // 10. January 2017. at 10:20
-    return `${day}. ${month} ${year}. at ${hours}:${minutes}`;
+    return `${day}. ${month} ${year}. at ${hours}:${minutes} ${period}`;
   }
 
 
