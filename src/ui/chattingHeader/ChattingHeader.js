@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom';
 const ChattingHeader = (props) => {
   const { currentUserStatus, activeStatusFunction } = props;
 
-  console.log(currentUserStatus)
   const currentUser = currentUserStatus?.user;
 
   return (

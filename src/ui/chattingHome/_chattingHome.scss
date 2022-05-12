@@ -1,5 +1,8 @@
 // global style guide
 @use "sass:map";
+.chatting-home {
+  height: 100vh;
+}
 
 .chatting-content {
   padding: 16px 64px;
@@ -21,6 +24,20 @@
     }
   }
 }
-.message-input {
-  text-align: center;
+
+.chatting-bottom {
+  position: fixed;
+  width: 90%;
+  bottom: 0;
+  margin-bottom: 30px;
+
+  .message-input-container {
+    display: flex;
+    justify-content: center;
+
+    & .ant-input {
+      border-radius: 22px;
+      width: 70%;
+    }
+  }
 }
