@@ -35,3 +35,8 @@ export const allUserListApi = async function (options = {}) {
   const url = '/users';
   return connector.get(url, options);
 };
+
+export const userActiveStatusApi = async function (id, options = {}) {
+  const url = `/users/${id}/activestatus`;
+  return connector.get(url, options);
+};

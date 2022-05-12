@@ -8,7 +8,10 @@ import { IoIosCall } from "react-icons/io";
 import { Link } from 'react-router-dom';
 
 const ChattingHeader = (props) => {
-  const { currentUser, isOnline } = props;
+  const { currentUserStatus, activeStatusFunction } = props;
+
+  console.log(currentUserStatus)
+  const currentUser = currentUserStatus?.user;
 
   return (
     <div className="chatting-header">
@@ -21,7 +24,7 @@ const ChattingHeader = (props) => {
             backgroundColor: "#67C148",
             textAlign: "left"
           }}
-          dot={isOnline(currentUser.id)}
+          dot={currentUser?.isLoggedin}
         >
           <Avatar
             className="user-img circle-img"
@@ -29,9 +32,9 @@ const ChattingHeader = (props) => {
           />
         </Badge>
         <div>
-          <p className="user-name">{currentUser.fullname}</p>
+          <p className="user-name">{currentUser?.fullname}</p>
           <p className="user-status">
-            {isOnline(currentUser.id) ? "Active Now" : 'Active 30 minute ago'}
+            {currentUser?.isLoggedin ? "Active Now" : "Last seen" + " " + activeStatusFunction(currentUser?.lastLoggedin)}
           </p>
         </div>
       </div>
