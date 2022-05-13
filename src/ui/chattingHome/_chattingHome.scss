@@ -2,6 +2,7 @@
 @use "sass:map";
 .chatting-home {
   height: 100vh;
+  position: relative;
 }
 
 .chatting-content {
@@ -26,18 +27,19 @@
 }
 
 .chatting-bottom {
-  position: fixed;
-  width: 90%;
-  bottom: 0;
-  margin-bottom: 30px;
+  // position: fixed;
+  // width: 90%;
+  // bottom: 0;
+  // margin-bottom: 30px;
 
   .message-input-container {
     display: flex;
     justify-content: center;
+    column-gap: 20px;
 
     & .ant-input {
       border-radius: 22px;
-      width: 70%;
+      // width: 70%;
     }
   }
 }

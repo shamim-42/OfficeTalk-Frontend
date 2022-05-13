@@ -17,7 +17,7 @@ function UploadProfile(props) {
               <label htmlFor="imageUpload">Change Photo</label>
               :
               <>
-              <Button className="edit-profileImage-button" onClick={handleEditProfileImage}><UploadOutlined /> Upload Photo</Button>
+              <Button type="primary" className="edit-profileImage-button" onClick={handleEditProfileImage}><UploadOutlined /> Upload Photo</Button>
               </>
           }
         </div>

@@ -5,6 +5,7 @@ import { Input } from 'antd';
 import ChatHeader from '../../container/ChatHeader';
 import SendMessageCard from '../chatingMessageCard/SendMessageCard';
 import { SearchOutlined } from '@ant-design/icons';
+import TestEditor from './TestEditor';
 const { TextArea } = Input;
 
 
@@ -22,6 +23,7 @@ const ChattingHomeUi = (props) => {
         </Row>
         <ChatingMessageCard />
         <SendMessageCard />
+        <TestEditor />
         <div className="chatting-bottom">
           <Row className="message-input-container">
             <Col span={14}>

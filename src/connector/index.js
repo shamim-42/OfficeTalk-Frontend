@@ -240,7 +240,7 @@ class Connector {
     const reqOptions = {
       method: "POST",
       body: (options.encoder && options.encoder(payload)) ||
-      JSON.stringify(payload),
+        JSON.stringify(payload),
       mode: "cors",
       headers: {
         ...this._headers,
@@ -251,7 +251,7 @@ class Connector {
         },
       },
     };
-    
+
     if (options.removeContentType) delete reqOptions.headers["Content-type"];
 
     const response = await fetch(this.joinWithBase(url), reqOptions);
@@ -359,8 +359,9 @@ function removeLeadingSlash(url) {
 
 function concatAndResolveUrl(base, relative) {
   let baseParts = removeTrailingSlash(base.split("/"));
-  let relativeParts = removeLeadingSlash(relative.split("/"));
 
+  let relativeParts = removeLeadingSlash(relative.split("/"));
+  relativeParts[0] = ':' + relativeParts[0]
   let url = [...baseParts, ...relativeParts];
 
   url.forEach((item, index) => {
@@ -373,7 +374,9 @@ function concatAndResolveUrl(base, relative) {
       url.splice(index, 1);
     }
   });
-  return url.join("/");
+  const resolvedBase = baseParts.join("/")
+  const resolvedRelative = relativeParts.join("/")
+  return resolvedBase + resolvedRelative
 }
 
 export default new Connector();
