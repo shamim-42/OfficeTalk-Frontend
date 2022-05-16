@@ -9,7 +9,7 @@ import { FaRegGrinAlt } from "react-icons/fa";
 import { BsFillHeartFill } from "react-icons/bs";
 import { Avatar, Badge, Button, Col, Popover, Row } from 'antd';
 
-const SendMessageCard = () => {
+const SendMessageCard = ({ profile, message, isOnline }) => {
   return (
     <Row className="user-message">
       <Col span={14}>
@@ -63,7 +63,7 @@ const SendMessageCard = () => {
           </Col>
           <Col span={20}>
             <p className='message-time' style={{ textAlign: 'right' }}>10:11 pm</p>
-            <p className='message-text'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, consectetur. gyu</p>
+            <p className='message-text'>{message.content}</p>
           </Col>
 
           <Col span={3} style={{ textAlign: 'center' }}>
@@ -75,11 +75,11 @@ const SendMessageCard = () => {
                 backgroundColor: "#67C148",
                 textAlign: "left"
               }}
-              dot={true}
+              dot={isOnline(profile.id)}
             >
               <Avatar
                 className="chatting-card-img circle-img"
-                src='https://i.ibb.co/Q89Q7wV/Ellipse-8.png'
+                src={profile.profileImage}
               />
             </Badge>
           </Col>

@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../api/auth';
+import { selectActiveUser } from '../redux/features/layoutSlice';
 import ChattingHeader from '../ui/chattingHeader/ChattingHeader';
 
 const ChatHeader = () => {
   const { id } = useParams();
+  const onlineUsers = useSelector(selectActiveUser)
   const [currentUserStatus, setCurrentUserStatus] = useState({})
+
   const MONTH_NAMES = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
+
+  const isOnline = onlineUsers.indexOf(parseInt(id)) !== -1;
+
 
   // get user online status function
   async function getOnlineUserStatus() {
@@ -94,10 +101,13 @@ const ChatHeader = () => {
 
   useEffect(() => {
     getOnlineUserStatus()
-  }, [id])
+  }, [id, isOnline])
 
   return (
-    <ChattingHeader activeStatusFunction={activeStatusFunction} currentUserStatus={currentUserStatus} />
+    <ChattingHeader 
+    activeStatusFunction={activeStatusFunction}
+    isOnline={isOnline}
+     currentUserStatus={currentUserStatus} />
   );
 };
 

@@ -5,6 +5,8 @@
   background-color: map.get($theme-colors, "white-f1");
   padding: 18px;
   color: map.get($theme-colors, "black");
+  position: sticky;
+  top: 0;
 
   & .user-info {
     @include set-display-flex(start, start, 10px);

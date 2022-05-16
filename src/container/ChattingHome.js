@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../api/auth';
-import { sendMessageApi } from '../api/chat';
+import { getAllMessageApi, sendMessageApi } from '../api/chat';
 import ChattingHomeUi from '../ui/chattingHome/ChattingHomeUi';
 import { selectUserProfile, selectUserToken } from '../redux/features/authSlice';
 import io from "socket.io-client";
+import { selectActiveUser } from '../redux/features/layoutSlice';
 
 
 const ChattingHome = () => {
@@ -14,16 +15,23 @@ const ChattingHome = () => {
   const [currentUserStatus, setCurrentUserStatus] = useState({})
   const [messagesText, setMessagesText] = useState('')
   const [recheivedMessagesText, setRecheivedMessagesText] = useState({})
+  const [allMessage, setAllMessage] = useState([])
   const socketRef = useRef()
   const userProfile = useSelector(selectUserProfile)
+  const onlineUsers = useSelector(selectActiveUser)
   const senderId = userProfile.id;
+
+
+  function isOnline(id) {
+    return onlineUsers.indexOf(id) !== -1;
+  }
+
 
   // get user online status function
   async function getOnlineUserStatus() {
     async function successHandler(response) {
       const res = await response.json();
       setCurrentUserStatus(res)
-      // console.log(res)
     }
 
     async function handleBadReq(response) {
@@ -34,6 +42,20 @@ const ChattingHome = () => {
     return await userActiveStatusApi(id, { successHandler, handleBadReq })
   }
 
+  // get all message function
+  async function getAllMessage() {
+    async function successHandler(response) {
+      const res = await response.json();
+      setAllMessage(res)
+    }
+
+    async function handleBadReq(response) {
+      let error = await response.json();
+      console.log(error.message);
+    }
+
+    return await getAllMessageApi(id, { userId: senderId }, { successHandler, handleBadReq })
+  }
 
   // Send message function
   async function handleSubmitMessage() {
@@ -45,7 +67,7 @@ const ChattingHome = () => {
 
     async function successHandler(response) {
       const res = await response.json();
-      // console.log(res)
+      console.log(res)
     }
 
     async function handleBadReq(response) {
@@ -76,13 +98,19 @@ const ChattingHome = () => {
 
   useEffect(() => {
     getOnlineUserStatus()
+    getAllMessage()
     getMessage()
-
     return () => socketRef.current.disconnect()
-  }, [])
+  }, [id])
 
   return (
-    <ChattingHomeUi handleSubmitMessage={handleSubmitMessage} setMessagesText={setMessagesText} currentUserStatus={currentUserStatus} />
+    <ChattingHomeUi
+      handleSubmitMessage={handleSubmitMessage}
+      setMessagesText={setMessagesText}
+      allMessage={allMessage}
+      userProfile={userProfile}
+      isOnline={isOnline}
+      currentUserStatus={currentUserStatus} />
   );
 };
 

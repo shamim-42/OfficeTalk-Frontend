@@ -9,7 +9,8 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { TiArrowForwardOutline } from "react-icons/ti";
 import { BsFillHeartFill } from "react-icons/bs";
 
-const ChatingMessageCard = () => {
+const ChatingMessageCard = ({ profile, message, isOnline }) => {
+
   return (
     <Row className="friend-message">
       <Col span={14}>
@@ -23,17 +24,17 @@ const ChatingMessageCard = () => {
                 backgroundColor: "#67C148",
                 textAlign: "left"
               }}
-              dot={true}
+              dot={isOnline(profile?.id)}
             >
               <Avatar
                 className="chatting-card-img circle-img"
-                src='https://i.ibb.co/Q89Q7wV/Ellipse-8.png'
+                src={profile?.profileImage}
               />
             </Badge>
           </Col>
           <Col span={20}>
             <p className='message-time'>10:11 pm</p>
-            <p className='message-text'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Error, consectetur.</p>
+            <p className='message-text'>{message?.content}</p>
           </Col>
           <Col span={1} className='message-option'>
             <Popover placement="bottomLeft"

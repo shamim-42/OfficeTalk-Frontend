@@ -15,7 +15,7 @@ const HomePage = () => {
   const userProfile = useSelector(selectUserProfile);
   const socketRef = useRef()
   const userToket = useSelector(selectUserToken);
-
+  const userId = userProfile.id;
 
   function handleChangeSearch(value) {
     console.log(value);
@@ -43,7 +43,6 @@ const HomePage = () => {
 
   // handle User sign out and
   async function handleLogout() {
-    const userId = userProfile.id;
 
     async function successHandler(response) {
       const res = await response.json();
@@ -77,6 +76,10 @@ const HomePage = () => {
       setOnlineUsers(usersId)
       dispatch(setActiveUser(usersId));
     })
+
+    // socketRef.current.on('disconnected', (value) => {
+    //   console.log(value)
+    // })
   }
 
 
