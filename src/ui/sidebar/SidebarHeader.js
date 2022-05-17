@@ -49,7 +49,8 @@ const SidebarHeader = (props) => {
           <Row className="setting-preicon">
             <Popover placement="bottomLeft"
               content={<SettingPopover handleLogout={handleLogout} onChangeSwitch={onChangeSwitch} />}
-              trigger="click">
+              trigger="click"
+              >
               <Button type="text" >
                 <CgMenuGridO style={{ fontSize: '16px' }} />
               </Button>

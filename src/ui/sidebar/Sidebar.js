@@ -4,7 +4,7 @@ import SidebarHeader from './SidebarHeader';
 import SidebarCard from './SidebarCard';
 
 const Sidebar = (props) => {
-  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers } = props;
+  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, unreadCount } = props;
 
   function isOnline(userid) {
     return onlineUsers.indexOf(userid) !== -1;
@@ -51,7 +51,7 @@ const Sidebar = (props) => {
         <div className="sidebar-cards">
           {
             users.map((user, i) => (
-              <SidebarCard isOnline={isOnline} key={i} user={user} />
+              <SidebarCard unreadCount={unreadCount} isOnline={isOnline} key={i} user={user} />
             ))
           }
         </div>

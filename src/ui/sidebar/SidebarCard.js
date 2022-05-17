@@ -2,7 +2,7 @@ import { Avatar, Badge, Card, Col, Row } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const SidebarCard = ({ user, isOnline }) => {
+const SidebarCard = ({ user, isOnline, unreadCount }) => {
   return (
     <Card
       // if active card will be add .focushed class with .sidebar-card
@@ -42,7 +42,7 @@ const SidebarCard = ({ user, isOnline }) => {
             }}>
               <p className="card-time" style={{ fontSize: '12px' }}>10:10 pm</p>
               <div>
-                <p className="card-message-count">2</p>
+                <p className="card-message-count">{unreadCount}</p>
               </div>
             </div>
           </Col>

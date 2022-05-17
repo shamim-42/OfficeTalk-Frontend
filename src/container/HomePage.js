@@ -16,6 +16,7 @@ const HomePage = () => {
   const socketRef = useRef()
   const userToket = useSelector(selectUserToken);
   const userId = userProfile.id;
+  const [unreadCount, setUnreadCount] = useState('')
 
   function handleChangeSearch(value) {
     console.log(value);
@@ -24,6 +25,7 @@ const HomePage = () => {
   function onChangeSwitch(evt) {
     console.log(evt)
   }
+
 
   // Handle loading user list
   async function fetchUserList() {
@@ -77,9 +79,9 @@ const HomePage = () => {
       dispatch(setActiveUser(usersId));
     })
 
-    // socketRef.current.on('disconnected', (value) => {
-    //   console.log(value)
-    // })
+    socketRef.current.on('unreadMessage' + userId, (res) => {
+      setUnreadCount(res)
+    })
   }
 
 
@@ -95,6 +97,7 @@ const HomePage = () => {
       handleChangeSearch={handleChangeSearch}
       onChangeSwitch={onChangeSwitch}
       onlineUsers={onlineUsers}
+      unreadCount={unreadCount}
       users={users} />
   );
 };

@@ -7,7 +7,7 @@ import MessageBox from "./MessageBox";
 
 
 const ChattingHomeUi = (props) => {
-  const { currentUserStatus, setMessagesText, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, timeFormat } = props;
+  const { currentUserStatus, setMessagesText, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, timeFormat, messagesText, handleScroll } = props;
   const messagesEndRef = useRef(null)
 
 
@@ -21,7 +21,7 @@ const ChattingHomeUi = (props) => {
       <div className="chatting-home">
         <ChatHeader />
         <div className="chatting-content">
-          <div className="all-messages-content">
+          <div className="all-messages-content" onScroll={handleScroll} >
             {
               allMessage.length > 0 && allMessage.slice(0).reverse().map((filterMessages, index) => (
                 <MessageBox
@@ -41,6 +41,8 @@ const ChattingHomeUi = (props) => {
             <Col span={14}>
               <Input
                 className="message-input"
+                value={messagesText}
+                placeholder="Type a message"
                 onChange={(e) => setMessagesText(e.target.value)}
                 onPressEnter={handleSubmitMessage}
                 size="large"

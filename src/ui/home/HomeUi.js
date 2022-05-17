@@ -5,7 +5,7 @@ import Sidebar from '../sidebar/Sidebar';
 const { Sider, Content } = Layout;
 
 const HomeUi = (props) => {
-  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers } = props;
+  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, unreadCount } = props;
 
   return (
     <>
@@ -18,6 +18,7 @@ const HomeUi = (props) => {
           userProfile={userProfile}
           handleChangeSearch={handleChangeSearch}
           onChangeSwitch={onChangeSwitch}
+          unreadCount={unreadCount}
           users={users}
           onlineUsers={onlineUsers} />
       </Sider>

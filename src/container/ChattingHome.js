@@ -1,4 +1,3 @@
-import { Spin } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -74,7 +73,8 @@ const ChattingHome = () => {
     }
 
     async function successHandler(response) {
-      const res = await response.json();
+      // const res = await response.json();
+      setMessagesText('')
       getAllMessage();
       // setIsLoading(false);
     }
@@ -123,6 +123,7 @@ const ChattingHome = () => {
     <ChattingHomeUi
       handleSubmitMessage={handleSubmitMessage}
       timeFormat={timeFormat}
+      messagesText={messagesText}
       setMessagesText={setMessagesText}
       allMessage={allMessage}
       userProfile={userProfile}
