@@ -1,7 +1,7 @@
-import React from 'react';
 import { Layout } from 'antd';
-import Sidebar from '../sidebar/Sidebar';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
+import Sidebar from '../sidebar/Sidebar';
 const { Sider, Content } = Layout;
 
 const HomeUi = (props) => {

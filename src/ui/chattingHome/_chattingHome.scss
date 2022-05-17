@@ -4,29 +4,35 @@
   height: 100vh;
   overflow: hidden;
 
-  & .all-messages-content {
-    display: block;
-  }
-}
+  & .chatting-content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    justify-content: flex-end;
+    height: 80vh;
 
-.chatting-content {
-  padding: 16px 64px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  overflow-y: auto;
-  height: 80vh;
+    & .all-messages-content {
+      display: flex;
+      flex-direction: column;
+      display: block;
+      overflow-y: auto;
+      height: 100%;
+      padding: 16px 64px;
+      column-gap: 32px;
 
-  & .chatting-date {
-    justify-content: center;
+      & .chatting-date {
+        justify-content: center;
 
-    & .chatting-date-card {
-      border: 1px solid map.get($theme-colors, "gray-text-71");
-      color: map.get($theme-colors, "gray-to ext-71");
-      font-size: 14px;
-      padding: 6px 20px;
-      text-align: center;
-      border-radius: 18px;
+        & .chatting-date-card {
+          border: 1px solid map.get($theme-colors, "gray-text-71");
+          color: map.get($theme-colors, "gray-text-71");
+          font-size: 14px;
+          padding: 6px 20px;
+          text-align: center;
+          border-radius: 18px;
+          margin: 30px auto;
+        }
+      }
     }
   }
 }
@@ -44,7 +50,13 @@
 
     & .ant-input {
       border-radius: 22px;
+      height: 44px;
       // width: 70%;
+    }
+
+    & .chat-input-icons {
+      display: flex;
+      justify-content: space-around;
     }
   }
 }

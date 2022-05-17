@@ -1,20 +1,22 @@
+import { Spin } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import io from "socket.io-client";
 import { userActiveStatusApi } from '../api/auth';
 import { getAllMessageApi, sendMessageApi } from '../api/chat';
-import ChattingHomeUi from '../ui/chattingHome/ChattingHomeUi';
 import { selectUserProfile, selectUserToken } from '../redux/features/authSlice';
-import io from "socket.io-client";
 import { selectActiveUser } from '../redux/features/layoutSlice';
+import ChattingHomeUi from '../ui/chattingHome/ChattingHomeUi';
+import { getDateWiseMessages } from '../utils/utils';
 
 
 const ChattingHome = () => {
   const userToket = useSelector(selectUserToken);
   const { id } = useParams();
   const [currentUserStatus, setCurrentUserStatus] = useState({})
+  const [isLoading, setIsLoading] = useState(true);
   const [messagesText, setMessagesText] = useState('')
-  const [recheivedMessagesText, setRecheivedMessagesText] = useState({})
   const [allMessage, setAllMessage] = useState([])
   const socketRef = useRef()
   const userProfile = useSelector(selectUserProfile)
@@ -32,11 +34,13 @@ const ChattingHome = () => {
     async function successHandler(response) {
       const res = await response.json();
       setCurrentUserStatus(res)
+      setIsLoading(false);
     }
 
     async function handleBadReq(response) {
       let error = await response.json();
       console.log(error.message);
+      setIsLoading(false);
     }
 
     return await userActiveStatusApi(id, { successHandler, handleBadReq })
@@ -46,12 +50,15 @@ const ChattingHome = () => {
   async function getAllMessage() {
     async function successHandler(response) {
       const res = await response.json();
-      setAllMessage(res)
+      let sortedData = getDateWiseMessages(res)
+      setIsLoading(false)
+      setAllMessage(sortedData)
     }
 
     async function handleBadReq(response) {
       let error = await response.json();
-      console.log(error.message);
+      console.log(error)
+      setIsLoading(false);
     }
 
     return await getAllMessageApi(id, { userId: senderId }, { successHandler, handleBadReq })
@@ -59,6 +66,7 @@ const ChattingHome = () => {
 
   // Send message function
   async function handleSubmitMessage() {
+    // setIsLoading(true);
     const messageData = {
       message: messagesText,
       senderId: senderId,
@@ -67,12 +75,14 @@ const ChattingHome = () => {
 
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res)
+      getAllMessage();
+      // setIsLoading(false);
     }
 
     async function handleBadReq(response) {
       let error = await response.json();
       console.log(error.message);
+      setIsLoading(false);
     }
 
     return await sendMessageApi(id, messageData, { successHandler, handleBadReq })
@@ -89,27 +99,35 @@ const ChattingHome = () => {
     })
 
     socketRef.current.on('newMessage/user/' + senderId, (msg) => {
-      setRecheivedMessagesText(msg)
+      getAllMessage();
       console.log(msg)
     })
   }
 
+  const timeFormat = (time, date) => {
+    const combineTime = date.toString() + "T" + time.toString()
+    const newTime = new Date(combineTime).toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit' });
+    return newTime;
+  }
 
 
   useEffect(() => {
     getOnlineUserStatus()
     getAllMessage()
     getMessage()
-    return () => socketRef.current.disconnect()
+    return () => socketRef.current.disconnect();
   }, [id])
 
   return (
+
     <ChattingHomeUi
       handleSubmitMessage={handleSubmitMessage}
+      timeFormat={timeFormat}
       setMessagesText={setMessagesText}
       allMessage={allMessage}
       userProfile={userProfile}
       isOnline={isOnline}
+      isLoading={isLoading}
       currentUserStatus={currentUserStatus} />
   );
 };

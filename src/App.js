@@ -1,59 +1,75 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import connector from './connector';
+import Login from './container/auth/Login';
+import Registration from './container/auth/Registration';
 import Layout from './layout/Layout';
+import { selectUserProfile, selectUserToken } from './redux/features/authSlice';
+
+const PrivateRoute = ({ children }) => {
+  const userProfile = useSelector(selectUserProfile)
+  return userProfile ? <Layout>{children}</Layout> : <Navigate replace to="/login" />;
+};
 
 function App() {
-  // const router = useRouter();
-  // const error401Count = useRef(0);
 
-  // const logoutTheUser = useCallback(async () => {
-  //   if (localStorage.getItem('authToken') && error401Count.current === 0) {
-  //     error401Count.current = 1;
-  //     Swal.fire({
-  //       title: 'Login expired',
-  //       text: 'Please login again!',
-  //       showConfirmButton: true,
-  //       confirmButtonText: 'Login',
-  //     }).then(async (result) => {
-  //       error401Count.current = 0;
-  //       async function successHandler(response) {
-  //         await response.json();
-  //         localStorage.removeItem("authToken");
-  //         localStorage.removeItem("userData");
-  //         dispatch(resetUser());
-  //         router.push("/auth/login");
+  const accessToken = useSelector(selectUserToken);
 
-  //       }
+  connector.handle404 = async (response) => {
+    const err = await response.json();
+    console.log(err);
+  }
+  connector.handle401 = async (response) => {
+    const err = await response.json();
+    console.log(err);
+  }
+  connector.handle403 = async (response) => {
+    const err = await response.json();
+    console.log(err);
+  }
+  connector.handle500 = async (response) => {
+    const err = await response.json();
+    console.log(err);
+  }
+  connector.handleBadReq = async (response) => {
+    let errorResponse = await response.json();
+    console.log({ message: Object.values(errorResponse).join(", ") });
+  }
+  connector.onRequestStart = function () {
+    console.log("onRequestStart")
+    // dispatch(setLoading());
+  }
+  connector.onRequestStartDelay = 500;
+  connector.onRequestEnd = async function () {
+    console.log("onRequestEnd")
 
-  //       async function handleBadReq(response) {
-  //         let error = await response.json();
-  //         console.log(error)
-  //       }
-  //       if (result.isConfirmed) {
-  //         return await userLogoutApi({}, { successHandler, handleBadReq })
-  //       }
-  //       return;
-  //     })
-  //   }
-  // }, [router, dispatch]);
+  }
+
+  connector.onNetworkError = async function () {
+    console.log("network error")
+  }
 
 
-  // // currently in test mood
-  // useEffect(() => {
-  //   const timer = new IdleTimer({
-  //     timeout: 600,
-  //     onTimeout: async () => {
-  //       return await logoutTheUser()
-  //     },
-  //     onExpired: async () => {
-  //       return await logoutTheUser()
-  //     }
-  //   });
-
-  //   return () => {
-  //     timer.cleanUp();
-  //   }
-  // }, [logoutTheUser])
-  return <Layout />;
+  useEffect(() => {
+    if (accessToken) {
+      connector.headers = {
+        Authorization: `bearer ${accessToken}`,
+        "Content-type": "application/json",
+      }
+    } else {
+      if (connector?.headers?.Authorization) {
+        delete connector.headers.Authorization
+      }
+    }
+  }, [accessToken]);
+  return (
+    <Routes>
+      <Route path="/*" element={<PrivateRoute />} />
+      <Route path="/login" element={<Login />} exact />
+      <Route path="/signup" element={<Registration />} exact />
+    </Routes>
+  );
 }
 
 export default App;

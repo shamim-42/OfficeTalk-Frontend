@@ -9,7 +9,8 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { TiArrowForwardOutline } from "react-icons/ti";
 import { BsFillHeartFill } from "react-icons/bs";
 
-const ChatingMessageCard = ({ profile, message, isOnline }) => {
+const ChatingMessageCard = (props) => {
+  const { profile, message, isOnline, messageDate, timeFormat } = props;
 
   return (
     <Row className="friend-message">
@@ -33,7 +34,7 @@ const ChatingMessageCard = ({ profile, message, isOnline }) => {
             </Badge>
           </Col>
           <Col span={20}>
-            <p className='message-time'>10:11 pm</p>
+            <p className='message-time'>{timeFormat(message.time, messageDate)}</p>
             <p className='message-text'>{message?.content}</p>
           </Col>
           <Col span={1} className='message-option'>

@@ -9,7 +9,7 @@ import { FaRegGrinAlt } from "react-icons/fa";
 import { BsFillHeartFill } from "react-icons/bs";
 import { Avatar, Badge, Button, Col, Popover, Row } from 'antd';
 
-const SendMessageCard = ({ profile, message, isOnline }) => {
+const SendMessageCard = ({ profile, message, isOnline, messageDate, timeFormat }) => {
   return (
     <Row className="user-message">
       <Col span={14}>
@@ -62,7 +62,9 @@ const SendMessageCard = ({ profile, message, isOnline }) => {
             </Popover>
           </Col>
           <Col span={20}>
-            <p className='message-time' style={{ textAlign: 'right' }}>10:11 pm</p>
+            <p className='message-time' style={{ textAlign: 'right' }}>
+              {timeFormat(message.time, messageDate)}
+            </p>
             <p className='message-text'>{message.content}</p>
           </Col>
 
