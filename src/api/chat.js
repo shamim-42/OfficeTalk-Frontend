@@ -11,3 +11,8 @@ export const getAllMessageApi = async function (id, payload, options = {}) {
   return connector.post(url, payload, options);
 };
 
+export const getConversationsApi = async function (id, options = {}) {
+  const url = `4000/users/message/${id}`;
+  return connector.get(url, options);
+};
+

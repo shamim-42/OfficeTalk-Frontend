@@ -1,6 +1,7 @@
 import { Avatar, Badge, Card, Col, Row } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { conversationTimeFormat } from '../../utils/utils';
 
 const SidebarCard = ({ user, isOnline, unreadCount }) => {
   return (
@@ -8,7 +9,7 @@ const SidebarCard = ({ user, isOnline, unreadCount }) => {
       // if active card will be add .focushed class with .sidebar-card
       className="sidebar-card"
     >
-      <Link to={`chat/${user.id}`}
+      <Link to={`chat/${user?.message_Status_usersId}`}
         // if message is read will be add .read-card class on replace with .unread-card
         className="unread-card">
         <Row>
@@ -21,17 +22,19 @@ const SidebarCard = ({ user, isOnline, unreadCount }) => {
                 backgroundColor: "#67C148",
                 textAlign: "left"
               }}
-              dot={isOnline(user.id)}
+              dot={isOnline(user?.message_Status_usersId)}
             >
               <Avatar
                 className="sidebar-card-img circle-img"
-                src={user.profileImage}
+                src={user?.users_profileImage}
               />
             </Badge>
           </Col>
           <Col span={14}>
-            <p className="sidebar-user-name">{user.fullname}</p>
-            <p className="sidebar-car-message">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus sit minima voluptates fuga atque commodi eos incidunt odio modi. Quibusdam.</p>
+            <p className="sidebar-user-name">{user?.users_fullname}</p>
+            <p className="sidebar-car-message">
+              {user?.message_Status_lastMessage}
+            </p>
           </Col>
           <Col span={5}>
             <div style={{
@@ -40,7 +43,9 @@ const SidebarCard = ({ user, isOnline, unreadCount }) => {
               flexDirection: 'column',
               gap: '10px',
             }}>
-              <p className="card-time" style={{ fontSize: '12px' }}>10:10 pm</p>
+              <p className="card-time" style={{ fontSize: '12px' }}>
+                {conversationTimeFormat(user?.message_Status_lastMessageTime)}
+              </p>
               <div>
                 <p className="card-message-count">{unreadCount}</p>
               </div>

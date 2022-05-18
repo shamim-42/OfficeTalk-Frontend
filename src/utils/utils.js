@@ -110,3 +110,63 @@ export function activeTimeFormat(dateParam) {
 
   return getFormattedDate(date);
 };
+
+
+// Date and time formating function for conversations list
+// date formating funtion
+function getFormattedDateTime(date, prefomattedDate = false, hideYear = false) {
+  const MONTH_NAMES = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  const day = date.getDate();
+  const month = MONTH_NAMES[date.getMonth()];
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  let minutes = date.getMinutes();
+  const period = hours < 12 ? 'AM' : 'PM';
+
+
+  if (prefomattedDate) {
+    if (prefomattedDate === 'Today') {
+      return `${hours}:${minutes} ${period}`;
+    } else if (prefomattedDate === 'Week') {
+      return date.toLocaleDateString(undefined, { weekday: 'long' })
+    }
+    return `${prefomattedDate}`;
+  }
+
+  if (hideYear) {
+    return `${day} ${month}`;
+  }
+  return `${day} ${month} ${year}`;
+}
+
+// active time formating function
+export function conversationTimeFormat(dateParam) {
+  if (!dateParam) {
+    return null;
+  }
+
+  const date = typeof dateParam === 'object' ? dateParam : new Date(dateParam);
+  const DAY_IN_MS = 86400000; // 24 * 60 * 60 * 1000
+  const today = new Date();
+  const yesterday = new Date(today - DAY_IN_MS);
+  const isToday = today.toDateString() === date.toDateString();
+  const isThisWeek = Math.abs(today - date) < 604800001
+  const isYesterday = yesterday.toDateString() === date.toDateString();
+  const isThisYear = today.getFullYear() === date.getFullYear();
+
+  if (isToday) {
+    return getFormattedDateTime(date, 'Today'); //  10:20 AM
+  } else if (isYesterday) {
+    return getFormattedDateTime(date, 'Yesterday'); // Yesterday at 10:20 AM
+  } else if (isThisWeek) {
+    return getFormattedDateTime(date, 'Week'); // Yesterday at 10:20 AM
+  } else if (isThisYear) {
+    return getFormattedDateTime(date, false, true); // 10. January at 10:20
+  }
+
+  return getFormattedDateTime(date);
+};

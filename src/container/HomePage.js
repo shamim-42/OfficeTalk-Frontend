@@ -3,20 +3,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { allUserListApi, userLogoutApi } from '../api/auth';
 import { resetUser, selectUserProfile, selectUserToken } from '../redux/features/authSlice';
-import { setActiveUser, setAllUsers } from '../redux/features/layoutSlice';
+import { setActiveUser, setAllUsers, setConversationList } from '../redux/features/layoutSlice';
 import HomeUi from '../ui/home/HomeUi';
 import io from "socket.io-client";
+import { getConversationsApi } from '../api/chat';
 
 const HomePage = () => {
   const [users, setUsers] = useState([])
   const [onlineUsers, setOnlineUsers] = useState([])
+  const [unreadCount, setUnreadCount] = useState('')
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userProfile = useSelector(selectUserProfile);
   const socketRef = useRef()
   const userToket = useSelector(selectUserToken);
   const userId = userProfile.id;
-  const [unreadCount, setUnreadCount] = useState('')
 
   function handleChangeSearch(value) {
     console.log(value);
@@ -41,6 +42,22 @@ const HomePage = () => {
     }
 
     return await allUserListApi({ successHandler, handleBadReq })
+  }
+
+  // get all conversations list
+  async function fetchConversationList() {
+    async function successHandler(response) {
+      const res = await response.json();
+      console.log(res)
+      dispatch(setConversationList(res))
+    }
+
+    async function handleBadReq(response) {
+      let error = await response.json();
+      console.log(error.message);
+    }
+
+    return await getConversationsApi(userId, { successHandler, handleBadReq })
   }
 
   // handle User sign out and
@@ -80,13 +97,14 @@ const HomePage = () => {
     })
 
     socketRef.current.on('unreadMessage' + userId, (res) => {
+      console.log(res)
       setUnreadCount(res)
     })
   }
 
-
   useEffect(() => {
     fetchUserList()
+    fetchConversationList()
     getOnlineUsers()
   }, [])
 

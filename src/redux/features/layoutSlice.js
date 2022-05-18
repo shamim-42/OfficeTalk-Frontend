@@ -7,6 +7,7 @@ export const layoutSlice = createSlice({
     alertList: [],
     allUsers: [],
     activeUser: [],
+    conversationList: [],
   },
   reducers: {
     setError: (state, action) => {
@@ -25,14 +26,20 @@ export const layoutSlice = createSlice({
     setActiveUser: (state, action) => {
       state.activeUser = action.payload;
     },
+
+    setConversationList: (state, action) => {
+      state.conversationList = action.payload;
+    },
   },
 
 });
 
-export const { setError, resetError, setAllUsers, setActiveUser } = layoutSlice.actions;
+export const { setError, resetError, setAllUsers, setActiveUser, setConversationList } = layoutSlice.actions;
 
 export const selectError = (state) => state.layout.error;
 export const selectAllUser = (state) => state.layout.allUsers;
 export const selectActiveUser = (state) => state.layout.activeUser;
+export const selectConversationList = (state) => state.layout.conversationList;
+;
 
 export default layoutSlice.reducer;
