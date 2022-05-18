@@ -30,11 +30,32 @@ export const layoutSlice = createSlice({
     setConversationList: (state, action) => {
       state.conversationList = action.payload;
     },
+
+    setAddConversation: (state, action) => {
+      let newList = [...state.conversationList];
+      let conversation = action.payload;
+      newList.push(conversation);
+      state.conversationList = newList;
+    },
+
+    setUpdateConversation: (state, action) => {
+      let newList = [...state.conversationList];
+      let updatedConversation = { ...action.payload };
+      console.log(updatedConversation)
+      let index = newList.findIndex(item => item.users_id === action.payload.users_id);
+      if (index === -1) {
+        newList.push(updatedConversation)
+      } else {
+        newList.splice(index, 1);
+        newList.unshift(updatedConversation)
+      }
+      state.conversationList = newList;
+    },
   },
 
 });
 
-export const { setError, resetError, setAllUsers, setActiveUser, setConversationList } = layoutSlice.actions;
+export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation } = layoutSlice.actions;
 
 export const selectError = (state) => state.layout.error;
 export const selectAllUser = (state) => state.layout.allUsers;

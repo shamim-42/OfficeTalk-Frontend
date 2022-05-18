@@ -9,7 +9,7 @@ const SidebarCard = ({ user, isOnline, unreadCount }) => {
       // if active card will be add .focushed class with .sidebar-card
       className="sidebar-card"
     >
-      <Link to={`chat/${user?.message_Status_usersId}`}
+      <Link to={`chat/${user?.users_id}`}
         // if message is read will be add .read-card class on replace with .unread-card
         className="unread-card">
         <Row>
@@ -22,7 +22,7 @@ const SidebarCard = ({ user, isOnline, unreadCount }) => {
                 backgroundColor: "#67C148",
                 textAlign: "left"
               }}
-              dot={isOnline(user?.message_Status_usersId)}
+              dot={isOnline(user?.users_id)}
             >
               <Avatar
                 className="sidebar-card-img circle-img"

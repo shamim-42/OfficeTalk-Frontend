@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, Dropdown, Form, Input, Menu, Popover, Row } from 'antd';
+import { Avatar, Badge, Button, Col, Dropdown, Form, Input, Menu, Popover, Row } from 'antd';
 import { CgMenuGridO } from "react-icons/cg";
 import { BsChatTextFill } from "react-icons/bs";
 import { MdCall } from "react-icons/md";
@@ -22,24 +22,35 @@ const SidebarHeader = (props) => {
       <Row>
         <Col md={20}>
           <div className="sidebar-user">
-            <Link to="/profile">
-              {userProfile?.profileImage ?
-                <Avatar
-                  src={userProfile?.profileImage}
-                  style={{
+            <Badge
+              offset={["-5%", "85%"]}
+              style={{
+                width: "8px",
+                height: "8px",
+                backgroundColor: "#67C148",
+                textAlign: "left"
+              }}
+              dot={true}
+            >
+              <Link to="/profile">
+                {userProfile?.profileImage ?
+                  <Avatar
+                    src={userProfile?.profileImage}
+                    style={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: '50%',
+                    }}
+                  />
+                  :
+                  <IoPersonCircle style={{
                     width: 44,
                     height: 44,
                     borderRadius: '50%',
-                  }}
-                />
-                :
-                <IoPersonCircle style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: '50%',
-                }} />
-              }
-            </Link>
+                  }} />
+                }
+              </Link>
+            </Badge>
             <Link to="/profile">
               <p className="sidebar-user-name">{userProfile?.fullname}</p>
             </Link>
@@ -50,7 +61,7 @@ const SidebarHeader = (props) => {
             <Popover placement="bottomLeft"
               content={<SettingPopover handleLogout={handleLogout} onChangeSwitch={onChangeSwitch} />}
               trigger="click"
-              >
+            >
               <Button type="text" >
                 <CgMenuGridO style={{ fontSize: '16px' }} />
               </Button>

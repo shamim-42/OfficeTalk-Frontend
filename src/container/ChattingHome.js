@@ -5,7 +5,7 @@ import io from "socket.io-client";
 import { userActiveStatusApi } from '../api/auth';
 import { getAllMessageApi, sendMessageApi } from '../api/chat';
 import { selectUserProfile, selectUserToken } from '../redux/features/authSlice';
-import { selectActiveUser, selectConversationList, setConversationList } from '../redux/features/layoutSlice';
+import { selectActiveUser, selectConversationList, setAddConversation, setUpdateConversation } from '../redux/features/layoutSlice';
 import ChattingHomeUi from '../ui/chattingHome/ChattingHomeUi';
 import { getDateWiseMessages } from '../utils/utils';
 
@@ -24,11 +24,11 @@ const ChattingHome = () => {
   const dispatch = useDispatch();
   const senderId = userProfile.id;
 
-
   function isOnline(id) {
     return onlineUsers.indexOf(id) !== -1;
   }
 
+  console.log(conversationsList);
 
   // get user online status function
   async function getOnlineUserStatus() {
@@ -66,43 +66,26 @@ const ChattingHome = () => {
   }
 
   // add message on conversations List
-  const addConversation = (res, send = true) => {
-    const newConversation = [...conversationsList];
-    console.log(conversationsList)
-    let newMessage = {}
-    if (send) {
-      newMessage = {
-        message_Status_usersId: res?.user?.id,
-        users_profileImage: res?.user?.profileImage,
-        users_fullname: res?.user?.fullname,
-        message_Status_lastMessage: res?.result?.content,
-        message_Status_lastMessageTime: res?.result?.createdAt,
-      }
-    } else {
-      newMessage = {
-        message_Status_usersId: res?.senderId,
-        users_profileImage: res?.senderImage,
-        users_fullname: res?.senderName,
-        message_Status_lastMessage: res?.content,
-        message_Status_lastMessageTime: res?.createdAt,
-      }
+  const addConversation = (res) => {
+    let newMessage = {
+      users_id: res?.result?.receiverId,
+      users_profileImage: res?.user?.profileImage,
+      users_fullname: res?.user?.fullname,
+      message_Status_lastMessage: res?.result?.content,
+      message_Status_lastMessageTime: res?.result?.createdAt,
     }
+    dispatch(setUpdateConversation(newMessage))
+  }
 
-    if (conversationsList.length > 0) {
-      for (let i = 0; i < newConversation.length; i++) {
-        if ((newConversation[i]?.message_Status_usersId === res?.user?.id) || (newConversation[i]?.message_Status_usersId === res?.senderId)) {
-          console.log("first")
-          newConversation[i] = newMessage;
-          dispatch(setConversationList(newConversation))
-          return
-        }
-      }
-      newConversation.push(newMessage);
-    } else {
-      console.log("first 0")
-      newConversation.push(newMessage);
+  const addRechieveMessage = (res) => {
+    const newMessage = {
+      users_id: res?.senderId,
+      users_profileImage: res?.senderImage,
+      users_fullname: res?.senderName,
+      message_Status_lastMessage: res?.content,
+      message_Status_lastMessageTime: res?.createdAt,
     }
-    dispatch(setConversationList(newConversation))
+    dispatch(setUpdateConversation(newMessage))
   }
 
   // Send message function
@@ -143,7 +126,7 @@ const ChattingHome = () => {
 
     socketRef.current.on('newMessage/user/' + senderId, (msg) => {
       getAllMessage();
-      addConversation(msg, false);
+      addRechieveMessage(msg)
       console.log(msg)
     })
   }
@@ -156,6 +139,7 @@ const ChattingHome = () => {
     getMessage()
     return () => socketRef.current.disconnect();
   }, [id])
+
 
   return (
 

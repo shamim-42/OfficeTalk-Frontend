@@ -91,9 +91,11 @@ const HomePage = () => {
       }
     })
 
-    socketRef.current.on('users/online', (usersId) => {
-      setOnlineUsers(usersId)
-      dispatch(setActiveUser(usersId));
+    socketRef.current.on('users/online', (users) => {
+      // console.log(users)
+      const allOnlineUsers = users.filter(user=> user !== userId)
+      setOnlineUsers(allOnlineUsers)
+      dispatch(setActiveUser(allOnlineUsers));
     })
 
     socketRef.current.on('unreadMessage' + userId, (res) => {
