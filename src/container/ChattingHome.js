@@ -91,7 +91,7 @@ const ChattingHome = () => {
 
   // Get all online users function
   const getMessage = () => {
-    socketRef.current = io.connect("http://192.168.1.24:3000", {
+    socketRef.current = io.connect("http://192.168.1.16:3000", {
       transports: ['websocket'],
       query: {
         token: userToket
@@ -104,11 +104,6 @@ const ChattingHome = () => {
     })
   }
 
-  const timeFormat = (time, date) => {
-    const combineTime = date.toString() + "T" + time.toString()
-    const newTime = new Date(combineTime).toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit' });
-    return newTime;
-  }
 
 
   useEffect(() => {
@@ -122,7 +117,6 @@ const ChattingHome = () => {
 
     <ChattingHomeUi
       handleSubmitMessage={handleSubmitMessage}
-      timeFormat={timeFormat}
       messagesText={messagesText}
       setMessagesText={setMessagesText}
       allMessage={allMessage}

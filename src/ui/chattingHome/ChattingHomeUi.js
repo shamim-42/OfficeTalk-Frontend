@@ -7,7 +7,7 @@ import MessageBox from "./MessageBox";
 
 
 const ChattingHomeUi = (props) => {
-  const { currentUserStatus, setMessagesText, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, timeFormat, messagesText, handleScroll } = props;
+  const { currentUserStatus, setMessagesText, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll } = props;
   const messagesEndRef = useRef(null)
 
 
@@ -26,7 +26,6 @@ const ChattingHomeUi = (props) => {
               allMessage.length > 0 && allMessage.slice(0).reverse().map((filterMessages, index) => (
                 <MessageBox
                   key={index}
-                  timeFormat={timeFormat}
                   currentUserStatus={currentUserStatus}
                   isOnline={isOnline}
                   userProfile={userProfile}

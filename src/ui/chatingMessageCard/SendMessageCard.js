@@ -8,8 +8,10 @@ import { HiDotsVertical } from "react-icons/hi";
 import { FaRegGrinAlt } from "react-icons/fa";
 import { BsFillHeartFill } from "react-icons/bs";
 import { Avatar, Badge, Button, Col, Popover, Row } from 'antd';
+import { timeFormat } from '../../utils/utils';
 
-const SendMessageCard = ({ profile, message, isOnline, messageDate, timeFormat }) => {
+const SendMessageCard = ({ profile, message, isOnline}) => {
+  
   return (
     <Row className="user-message">
       <Col span={14}>
@@ -63,7 +65,7 @@ const SendMessageCard = ({ profile, message, isOnline, messageDate, timeFormat }
           </Col>
           <Col span={20}>
             <p className='message-time' style={{ textAlign: 'right' }}>
-              {timeFormat(message.time, messageDate)}
+              {timeFormat(message.createdAt)}
             </p>
             <p className='message-text'>{message.content}</p>
           </Col>

@@ -67,7 +67,7 @@ const HomePage = () => {
 
   // Get all online users function
   const getOnlineUsers = () => {
-    socketRef.current = io.connect("http://192.168.1.24:3000", {
+    socketRef.current = io.connect("http://192.168.1.16:3000", {
       transports: ['websocket'],
       query: {
         token: userToket

@@ -4,7 +4,7 @@ import ChatingMessageCard from '../chatingMessageCard/ChatingMessageCard';
 import SendMessageCard from '../chatingMessageCard/SendMessageCard';
 
 const MessageBox = (props) => {
-  const { filterMessages, currentUserStatus, userProfile, isOnline, timeFormat, showPopover, setShowPopover } = props;
+  const { filterMessages, currentUserStatus, userProfile, isOnline } = props;
   const messageDate = (Object.keys(filterMessages))
   const messages = (filterMessages[Object.keys(filterMessages)])
 
@@ -21,18 +21,12 @@ const MessageBox = (props) => {
             if (message?.senderId !== userProfile.id) {
               return <ChatingMessageCard
                 profile={currentUserStatus?.user}
-                showPopover={showPopover}
-                setShowPopover={setShowPopover}
-                messageDate={messageDate}
-                timeFormat={timeFormat}
                 message={message}
                 isOnline={isOnline}
                 key={message?.id} />
             } else {
               return <SendMessageCard
                 profile={userProfile}
-                messageDate={messageDate}
-                timeFormat={timeFormat}
                 isOnline={isOnline}
                 message={message}
                 key={message.id} />
