@@ -41,7 +41,6 @@ export const layoutSlice = createSlice({
     setUpdateConversation: (state, action) => {
       let newList = [...state.conversationList];
       let updatedConversation = { ...action.payload };
-      console.log(updatedConversation)
       let index = newList.findIndex(item => parseInt(item.users_id) === parseInt(action.payload.users_id));
       if (index === -1) {
         newList.push(updatedConversation)
@@ -51,11 +50,22 @@ export const layoutSlice = createSlice({
       }
       state.conversationList = newList;
     },
+
+    setUpdateUnreadCount: (state, action) => {
+      let newList = [...state.conversationList];
+      let index = newList.findIndex(item => parseInt(item.users_id) === parseInt(action.payload));
+      if (index === -1) {
+        return
+      } else {
+        newList[index].message_Status_unreadMessages = 0;
+      }
+      state.conversationList = newList;
+    }
   },
 
 });
 
-export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation } = layoutSlice.actions;
+export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation, setUpdateUnreadCount } = layoutSlice.actions;
 
 export const selectError = (state) => state.layout.error;
 export const selectAllUser = (state) => state.layout.allUsers;

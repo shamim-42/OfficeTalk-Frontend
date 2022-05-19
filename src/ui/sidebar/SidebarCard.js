@@ -47,7 +47,7 @@ const SidebarCard = ({ user, isOnline, unreadCount }) => {
                 {conversationTimeFormat(user?.message_Status_lastMessageTime)}
               </p>
               <div>
-                <p className={user?.message_Status_unreadMessages ? "card-message-count" : ''}>{user?.message_Status_unreadMessages}</p>
+                <p className={user?.message_Status_unreadMessages ? "card-message-count" : ''}>{user?.message_Status_unreadMessages || ''}</p>
               </div>
             </div>
           </Col>

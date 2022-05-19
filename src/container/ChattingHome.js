@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import io from "socket.io-client";
 import { userActiveStatusApi } from '../api/auth';
-import { getAllMessageApi, sendMessageApi } from '../api/chat';
+import { getAllMessageApi, makeReadApi, sendMessageApi } from '../api/chat';
 import { selectUserProfile, selectUserToken } from '../redux/features/authSlice';
-import { selectActiveUser, setUpdateConversation } from '../redux/features/layoutSlice';
+import { selectActiveUser, setUpdateConversation, setUpdateUnreadCount } from '../redux/features/layoutSlice';
 import ChattingHomeUi from '../ui/chattingHome/ChattingHomeUi';
 import { getDateWiseMessages } from '../utils/utils';
 
@@ -64,19 +64,29 @@ const ChattingHome = () => {
 
   // add message on update conversations List
   const updateConversationList = (res, send = false) => {
+    console.log(id)
     let newId
+    let newMessage
+    let unreadCount = 0
+    if (res.senderId !== parseInt(id)) {
+      unreadCount = res.unread;
+    } else {
+      makeReadMessage()
+    }
+
     if (send) {
       newId = id;
     } else {
       newId = res.senderId
     }
 
-    let newMessage = {
+    newMessage = {
       users_id: newId,
       users_profileImage: res.senderImage || currentUserProfile.profileImage,
       users_fullname: res.senderName || currentUserProfile.fullname,
       message_Status_lastMessage: res?.content,
       message_Status_lastMessageTime: res?.createdAt,
+      message_Status_unreadMessages: unreadCount || 0,
     }
     dispatch(setUpdateConversation(newMessage))
   }
@@ -91,6 +101,7 @@ const ChattingHome = () => {
 
     async function successHandler(response) {
       const res = await response.json();
+      console.log(res)
       updateConversationList(res.result, true)
       setMessagesText('')
       getAllMessage();
@@ -122,12 +133,30 @@ const ChattingHome = () => {
     })
   }
 
+  // make message as read message
+  async function makeReadMessage() {
+    const payload = {
+      senderId: id,
+    }
+    async function successHandler(response) {
+      dispatch(setUpdateUnreadCount(id))
+    }
+
+    async function handleBadReq(response) {
+      let error = await response.json();
+      console.log(error);
+    }
+
+    return await makeReadApi(userProfile.id, payload, { successHandler, handleBadReq })
+  }
+
 
 
   useEffect(() => {
     getCurrentUserProfile()
     getAllMessage()
     getMessage()
+    makeReadMessage()
     return () => socketRef.current.disconnect();
   }, [id])
 
