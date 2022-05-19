@@ -20,7 +20,7 @@ const MessageBox = (props) => {
           messages.length > 0 && messages.slice(0).reverse().map((message) => {
             if (message?.senderId !== userProfile.id) {
               return <ChatingMessageCard
-                profile={currentUserStatus?.user}
+                profile={currentUserStatus}
                 message={message}
                 isOnline={isOnline}
                 key={message?.id} />

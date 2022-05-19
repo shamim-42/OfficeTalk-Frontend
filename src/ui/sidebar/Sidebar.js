@@ -12,7 +12,7 @@ const Sidebar = (props) => {
 
 
   function isOnline(userid) {
-    return onlineUsers.indexOf(userid) !== -1;
+    return onlineUsers.indexOf(parseInt(userid)) !== -1;
   }
 
   return (

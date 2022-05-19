@@ -42,7 +42,7 @@ export const layoutSlice = createSlice({
       let newList = [...state.conversationList];
       let updatedConversation = { ...action.payload };
       console.log(updatedConversation)
-      let index = newList.findIndex(item => item.users_id === action.payload.users_id);
+      let index = newList.findIndex(item => parseInt(item.users_id) === parseInt(action.payload.users_id));
       if (index === -1) {
         newList.push(updatedConversation)
       } else {

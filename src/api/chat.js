@@ -16,3 +16,8 @@ export const getConversationsApi = async function (id, options = {}) {
   return connector.get(url, options);
 };
 
+export const makeReadApi = async function (id, payload, options = {}) {
+  const url = `3000/chat/${id}/markAsRead`;
+  return connector.post(url, payload, options);
+};
+

@@ -56,7 +56,6 @@ const Login = () => {
       let res = await response.json();
       const userLoginData = res.profile;
       const accessToken = res.accessToken;
-      console.log(res);
       setLoading(false);
       message.success('User logged in successfully !');
       dispatch(setUserProfile(userLoginData))

@@ -1,12 +1,13 @@
+import { message } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import io from "socket.io-client";
 import { allUserListApi, userLogoutApi } from '../api/auth';
+import { getConversationsApi } from '../api/chat';
 import { resetUser, selectUserProfile, selectUserToken } from '../redux/features/authSlice';
 import { setActiveUser, setAllUsers, setConversationList } from '../redux/features/layoutSlice';
 import HomeUi from '../ui/home/HomeUi';
-import io from "socket.io-client";
-import { getConversationsApi } from '../api/chat';
 
 const HomePage = () => {
   const [users, setUsers] = useState([])
@@ -65,7 +66,7 @@ const HomePage = () => {
 
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res.message);
+      message.success(res.message);
       localStorage.removeItem("authToken");
       localStorage.removeItem("userProfile");
       socketRef.current.disconnect()
@@ -76,6 +77,7 @@ const HomePage = () => {
     async function handleBadReq(response) {
       let error = await response.json();
       console.log(error.message);
+      message.error(error.message);
     }
 
     return await userLogoutApi(userId, { successHandler, handleBadReq })
@@ -84,7 +86,7 @@ const HomePage = () => {
 
   // Get all online users function
   const getOnlineUsers = () => {
-    socketRef.current = io.connect("http://192.168.1.16:3000", {
+    socketRef.current = io.connect("http://192.168.1.23:3000", {
       transports: ['websocket'],
       query: {
         token: userToket
@@ -93,7 +95,7 @@ const HomePage = () => {
 
     socketRef.current.on('users/online', (users) => {
       // console.log(users)
-      const allOnlineUsers = users.filter(user=> user !== userId)
+      const allOnlineUsers = users.filter(user => user !== userId)
       setOnlineUsers(allOnlineUsers)
       dispatch(setActiveUser(allOnlineUsers));
     })

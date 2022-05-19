@@ -3,17 +3,20 @@
 .chatting-home {
   height: 100vh;
   overflow: hidden;
+  
 
   & .chatting-content {
     display: flex;
     flex-direction: column;
-    gap: 32px;
     justify-content: flex-end;
+    gap: 32px;
     height: 80vh;
 
     & .all-messages-content {
       display: flex;
       flex-direction: column;
+      justify-content: flex-end;
+      margin-bottom: 20px;
       display: block;
       overflow-y: auto;
       height: 100%;
@@ -32,6 +35,13 @@
           border-radius: 18px;
           margin: 30px auto;
         }
+      }
+
+      & .message-list {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 20px;
       }
     }
   }
