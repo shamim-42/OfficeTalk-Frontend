@@ -19,7 +19,7 @@ const ChattingHomeUi = (props) => {
   return (
     <Spin spinning={isLoading}>
       <div className="chatting-home">
-        <ChatHeader />
+        <ChatHeader currentUserProfile={currentUserProfile} />
         <div className="chatting-content">
           <div className="all-messages-content" onScroll={handleScroll} >
             {

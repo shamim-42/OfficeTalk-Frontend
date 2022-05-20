@@ -6,6 +6,7 @@ import Login from './container/auth/Login';
 import Registration from './container/auth/Registration';
 import Layout from './layout/Layout';
 import { selectUserProfile, selectUserToken } from './redux/features/authSlice';
+import { newSocket } from './utils/socket';
 
 const PrivateRoute = ({ children }) => {
   const userProfile = useSelector(selectUserProfile)
@@ -13,9 +14,7 @@ const PrivateRoute = ({ children }) => {
 };
 
 function App() {
-
   const accessToken = useSelector(selectUserToken);
-
   connector.handle404 = async (response) => {
     const err = await response.json();
     console.log(err);
@@ -62,6 +61,9 @@ function App() {
         delete connector.headers.Authorization
       }
     }
+
+    newSocket.connect()
+    return () => newSocket.close();
   }, [accessToken]);
   return (
     <Routes>

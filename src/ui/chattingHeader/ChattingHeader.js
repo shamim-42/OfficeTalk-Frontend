@@ -9,8 +9,8 @@ import { Link } from 'react-router-dom';
 import { activeTimeFormat } from '../../utils/utils';
 
 const ChattingHeader = (props) => {
-  const { currentUserStatus, isOnline } = props;
-  const currentUser = currentUserStatus?.user;
+  const { currentUserProfile, isOnline } = props;
+
 
   return (
     <div className="chatting-header">
@@ -27,13 +27,13 @@ const ChattingHeader = (props) => {
         >
           <Avatar
             className="user-img circle-img"
-            src={currentUser?.profileImage}
+            src={currentUserProfile?.profileImage}
           />
         </Badge>
         <div>
-          <p className="user-name">{currentUser?.fullname || ""}</p>
+          <p className="user-name">{currentUserProfile?.fullname || ""}</p>
           <p className="user-status">
-            {isOnline ? "Active Now" : (currentUser?.lastLoggedin && "Last seen" + " " + activeTimeFormat(currentUser?.lastLoggedin))}
+            {isOnline ? "Active Now" : (currentUserProfile?.lastLoggedin && "Last seen" + " " + activeTimeFormat(currentUserProfile?.lastLoggedin))}
           </p>
         </div>
       </div>

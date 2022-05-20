@@ -27,7 +27,7 @@ const HomeUi = (props) => {
       </Sider>
 
       <Content className="content-area">
-        <Outlet />
+        <Outlet ji="ji" />
       </Content>
     </>
   );

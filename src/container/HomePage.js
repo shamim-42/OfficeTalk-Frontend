@@ -2,12 +2,12 @@ import { message } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import io from "socket.io-client";
 import { allUserListApi, userLogoutApi } from '../api/auth';
 import { getConversationsApi } from '../api/chat';
-import { resetUser, selectUserProfile, selectUserToken } from '../redux/features/authSlice';
-import { setActiveUser, setAllUsers, setConversationList } from '../redux/features/layoutSlice';
+import { resetUser, selectUserProfile } from '../redux/features/authSlice';
+import { setActiveUser, setAllUsers, setConversationList, setUpdateConversation } from '../redux/features/layoutSlice';
 import HomeUi from '../ui/home/HomeUi';
+import { newSocket } from '../utils/socket';
 
 const HomePage = () => {
   const [users, setUsers] = useState([])
@@ -17,17 +17,17 @@ const HomePage = () => {
   const navigate = useNavigate();
   const userProfile = useSelector(selectUserProfile);
   const socketRef = useRef()
-  const userToket = useSelector(selectUserToken);
   const userId = userProfile.id;
 
+  // update search input value
   function handleChangeSearch(value) {
     console.log(value);
   }
 
+  // change dark mode switch value
   function onChangeSwitch(evt) {
     console.log(evt)
   }
-
 
   // Handle loading user list
   async function fetchUserList() {
@@ -69,9 +69,9 @@ const HomePage = () => {
       message.success(res.message);
       localStorage.removeItem("authToken");
       localStorage.removeItem("userProfile");
-      socketRef.current.disconnect()
-      dispatch(resetUser());
       navigate('/login');
+      newSocket.disconnect()
+      dispatch(resetUser());
     }
 
     async function handleBadReq(response) {
@@ -86,24 +86,34 @@ const HomePage = () => {
 
   // Get all online users function
   const getOnlineUsers = () => {
-    socketRef.current = io.connect("http://192.168.1.23:3000", {
-      transports: ['websocket'],
-      query: {
-        token: userToket
-      }
-    })
-
-    socketRef.current.on('users/online', (users) => {
-      // console.log(users)
+    newSocket.on('users/online', (users) => {
       const allOnlineUsers = users.filter(user => user !== userId)
       setOnlineUsers(allOnlineUsers)
       dispatch(setActiveUser(allOnlineUsers));
     })
 
-    socketRef.current.on('unreadMessage' + userId, (res) => {
+    newSocket.on('unreadMessage' + userId, (res) => {
       console.log(res)
       setUnreadCount(res)
     })
+
+    newSocket.on('newMessage/user/' + userId, (msg) => {
+      updateConversationList(msg)
+    })
+  }
+
+  // add or update message on conversations List
+  const updateConversationList = (res) => {
+
+    const newMessage = {
+      users_id: res.senderId,
+      users_profileImage: res.senderImage,
+      users_fullname: res.senderName,
+      message_Status_lastMessage: res?.content,
+      message_Status_lastMessageTime: res?.createdAt,
+      message_Status_unreadMessages: res.unread,
+    }
+    dispatch(setUpdateConversation(newMessage))
   }
 
   useEffect(() => {
