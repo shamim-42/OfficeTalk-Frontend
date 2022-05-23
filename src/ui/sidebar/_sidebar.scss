@@ -183,6 +183,11 @@
   color: map.get($theme-colors, "black");
 }
 
+.sidebar-card-user-name {
+  font-size: 20px;
+  font-weight: 600;
+}
+
 .ant-dropdown-menu {
   border-radius: 18px;
 

@@ -15,8 +15,7 @@ const SidebarCard = ({ user, isOnline, unreadCount, userid }) => {
       className="sidebar-card"
     >
       <Link to={`chat/${user?.users_id}`}
-        // if message is read will be add .read-card class on replace with .unread-card
-        className="unread-card">
+        className={unreadMessage > 0 ? 'unread-card' : "read-card"}>
         <Row>
           <Col span={5}>
             <Badge
@@ -36,7 +35,7 @@ const SidebarCard = ({ user, isOnline, unreadCount, userid }) => {
             </Badge>
           </Col>
           <Col span={14}>
-            <p className="sidebar-user-name">{user?.users_fullname}</p>
+            <p className="sidebar-card-user-name">{user?.users_fullname}</p>
             <p className="sidebar-car-message">
               {user?.message_Status_lastMessage}
             </p>
@@ -54,12 +53,31 @@ const SidebarCard = ({ user, isOnline, unreadCount, userid }) => {
               <div>
                 {
                   (
-                    messageStatus === 'sent' && <p className="message-status-icon"><IoCheckmarkCircleOutline /></p>) ||
-                  (messageStatus === 'delevered' && <p className="message-status-icon"><IoCheckmarkCircleSharp /></p>) ||
-                  (((messageStatus === 'seen' && unreadMessage > 0) && <p className={unreadMessage ? "card-message-count" : ''}>{unreadMessage}</p>) || ((messageStatus === 'seen' && unreadMessage === 0) && (user.message_status_sentBy !== userid ? <p></p> : <Avatar
-                    className="circle-img message-status-img"
-                    src={user?.users_profileImage}
-                  />))
+                    messageStatus === 'sent' &&
+                    <p className="message-status-icon">
+                      <IoCheckmarkCircleOutline />
+                    </p>
+                  ) ||
+                  (
+                    messageStatus === 'delevered' &&
+                    <p className="message-status-icon">
+                      <IoCheckmarkCircleSharp />
+                    </p>
+                  ) ||
+                  (
+                    (
+                      (messageStatus === 'seen' && unreadMessage > 0) &&
+                      <p className={unreadMessage ? "card-message-count" : ''}>
+                        {unreadMessage}
+                      </p>
+                    ) ||
+                    (
+                      (messageStatus === 'seen' && unreadMessage === 0) && (user.message_status_sentBy !== userid ? <p></p>
+                        : <Avatar
+                          className="circle-img message-status-img"
+                          src={user?.users_profileImage}
+                        />)
+                    )
                   )
                 }
               </div>
