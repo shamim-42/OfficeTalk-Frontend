@@ -5,9 +5,10 @@ import { selectActiveUser } from '../redux/features/layoutSlice';
 import ChattingHeader from '../ui/chattingHeader/ChattingHeader';
 
 const ChatHeader = ({ currentUserProfile }) => {
-  const { id } = useParams();
+  console.log(currentUserProfile);
+  const { chatId } = useParams();
   const onlineUsers = useSelector(selectActiveUser)
-  const isOnline = onlineUsers.indexOf(parseInt(id)) !== -1;
+  const isOnline = onlineUsers.indexOf(parseInt(chatId)) !== -1;
 
   return (
     <ChattingHeader

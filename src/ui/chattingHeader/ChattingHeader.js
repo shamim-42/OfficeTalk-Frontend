@@ -10,8 +10,7 @@ import { activeTimeFormat } from '../../utils/utils';
 
 const ChattingHeader = (props) => {
   const { currentUserProfile, isOnline } = props;
-
-
+  
   return (
     <div className="chatting-header">
       <div className="user-info">
