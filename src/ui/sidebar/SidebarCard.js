@@ -1,9 +1,14 @@
 import { Avatar, Badge, Card, Col, Row } from 'antd';
 import React from 'react';
+import { IoCheckmarkCircleOutline, IoCheckmarkCircleSharp } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { conversationTimeFormat } from '../../utils/utils';
 
-const SidebarCard = ({ user, isOnline, unreadCount }) => {
+
+const SidebarCard = ({ user, isOnline, unreadCount, userid }) => {
+  const unreadMessage = user?.message_Status_unreadMessages;
+  const messageStatus = user?.message_Status_status;
+
   return (
     <Card
       // if active card will be add .focushed class with .sidebar-card
@@ -47,7 +52,16 @@ const SidebarCard = ({ user, isOnline, unreadCount }) => {
                 {conversationTimeFormat(user?.message_Status_lastMessageTime)}
               </p>
               <div>
-                <p className={user?.message_Status_unreadMessages ? "card-message-count" : ''}>{user?.message_Status_unreadMessages || ''}</p>
+                {
+                  (
+                    messageStatus === 'sent' && <p className="message-status-icon"><IoCheckmarkCircleOutline /></p>) ||
+                  (messageStatus === 'delevered' && <p className="message-status-icon"><IoCheckmarkCircleSharp /></p>) ||
+                  (((messageStatus === 'seen' && unreadMessage > 0) && <p className={unreadMessage ? "card-message-count" : ''}>{unreadMessage}</p>) || ((messageStatus === 'seen' && unreadMessage === 0) && (user.message_status_sentBy !== userid ? <p></p> : <Avatar
+                    className="circle-img message-status-img"
+                    src={user?.users_profileImage}
+                  />))
+                  )
+                }
               </div>
             </div>
           </Col>

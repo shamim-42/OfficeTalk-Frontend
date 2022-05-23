@@ -1,10 +1,10 @@
-import React from 'react';
 import { Avatar, Badge, Divider, Tooltip } from 'antd';
-import SidebarHeader from './SidebarHeader';
-import SidebarCard from './SidebarCard';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { selectConversationList } from '../../redux/features/layoutSlice';
+import SidebarCard from './SidebarCard';
+import SidebarHeader from './SidebarHeader';
 
 const Sidebar = (props) => {
   const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, unreadCount } = props;
@@ -58,7 +58,7 @@ const Sidebar = (props) => {
         <div className="sidebar-cards">
           {
             conversationList.length > 0 && conversationList.map((user, i) => (
-              <SidebarCard unreadCount={unreadCount} isOnline={isOnline} key={i} user={user} />
+              <SidebarCard userid={userProfile.id} unreadCount={unreadCount} isOnline={isOnline} key={i} user={user} />
             ))
           }
         </div>

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../api/auth';
 import { getAllMessageApi, makeReadApi, sendMessageApi } from '../api/chat';
-import { selectUserProfile, setCurrentUser } from '../redux/features/authSlice';
+import { selectUserProfile } from '../redux/features/authSlice';
 import { selectActiveUser, setUpdateConversation, setUpdateUnreadCount } from '../redux/features/layoutSlice';
 import ChattingHomeUi from '../ui/chattingHome/ChattingHomeUi';
 import { newSocket } from '../utils/socket';
@@ -11,7 +11,7 @@ import { getDateWiseMessages } from '../utils/utils';
 
 
 const ChattingHome = () => {
-  const { id } = useParams();
+  let { chatId } = useParams();
   const [currentUserProfile, setCurrentUserProfile] = useState({})
   const [isLoading, setIsLoading] = useState(true);
   const [messagesText, setMessagesText] = useState('')
@@ -19,7 +19,7 @@ const ChattingHome = () => {
   const userProfile = useSelector(selectUserProfile)
   const onlineUsers = useSelector(selectActiveUser)
   const dispatch = useDispatch();
-  const senderId = userProfile.id;
+  const userId = userProfile.id;
 
   // check user online status function
   function isOnline(id) {
@@ -27,7 +27,7 @@ const ChattingHome = () => {
   }
 
   // get current user profile function
-  async function getCurrentUserProfile() {
+  const getCurrentUserProfile = useCallback(async () => {
     async function successHandler(response) {
       const res = await response.json();
       setCurrentUserProfile(res.user)
@@ -40,11 +40,11 @@ const ChattingHome = () => {
       setIsLoading(false);
     }
 
-    return await userActiveStatusApi(id, { successHandler, handleBadReq })
-  }
+    return await userActiveStatusApi(chatId, { successHandler, handleBadReq })
+  }, [chatId])
 
   // get current user all message list function
-  async function getAllMessage() {
+  const getAllMessage = useCallback(async () => {
     async function successHandler(response) {
       const res = await response.json();
       let sortedData = getDateWiseMessages(res)
@@ -58,14 +58,12 @@ const ChattingHome = () => {
       setIsLoading(false);
     }
 
-    return await getAllMessageApi(id, { userId: senderId }, { successHandler, handleBadReq })
-  }
+    return await getAllMessageApi(chatId, { userId: userId }, { successHandler, handleBadReq })
+  }, [userId, chatId])
+
 
   // add or update message on conversations List
   const updateConversationList = (res) => {
-    newSocket.on('message-status-at-message' + id, (msg) => {
-      console.log(msg);
-    })
 
     const newMessage = {
       users_id: parseInt(res.receiverId),
@@ -82,7 +80,7 @@ const ChattingHome = () => {
   async function handleSubmitMessage() {
     const messageData = {
       message: messagesText,
-      senderId: senderId,
+      senderId: userId,
       type: "text"
     }
 
@@ -99,32 +97,23 @@ const ChattingHome = () => {
       setIsLoading(false);
     }
 
-    return await sendMessageApi(id, messageData, { successHandler, handleBadReq })
+    return await sendMessageApi(chatId, messageData, { successHandler, handleBadReq })
   }
 
-  // Get new message from user function
-  const realtimeSocket = () => {
-    newSocket.on('newMessage/user/' + senderId, (msg) => {
-      if (parseInt(msg.senderId) === parseInt(id)) {
-        console.log(parseInt(msg.senderId), parseInt(id))
-        makeReadMessage();
-      }
-      getAllMessage();
-    })
-  }
+
 
 
   // make message as read message 
-  async function makeReadMessage() {
-    newSocket.on('message-seen-status' + id, (msg) => {
+  const makeReadMessage = useCallback(async () => {
+    newSocket.on('message-seen-status' + chatId, (msg) => {
       console.log("msg", msg);
     })
 
     const payload = {
-      senderId: id,
+      senderId: chatId,
     }
     async function successHandler(response) {
-      dispatch(setUpdateUnreadCount(id))
+      dispatch(setUpdateUnreadCount(chatId))
     }
 
     async function handleBadReq(response) {
@@ -133,15 +122,33 @@ const ChattingHome = () => {
     }
 
     return await makeReadApi(userProfile.id, payload, { successHandler, handleBadReq })
-  }
-
+  }, [dispatch, chatId, userProfile.id])
 
   useEffect(() => {
     getCurrentUserProfile()
+  }, [getCurrentUserProfile])
+
+  useEffect(() => {
+    console.log(chatId)
+    newSocket.on('newMessage/user/' + userId, (msg) => {
+      console.log(chatId)
+      if (parseInt(msg.senderId) === parseInt(chatId)) {
+        // console.log(parseInt(msg.senderId), parseInt(id))
+        makeReadMessage();
+      }
+      getAllMessage();
+    })
+
+    newSocket.on('delevered/' + userId, (res) => {
+      console.log(res)
+    })
+
+  }, [chatId, makeReadMessage, getAllMessage, userId])
+
+  useEffect(() => {
     getAllMessage()
-    realtimeSocket()
     makeReadMessage()
-  }, [id])
+  }, [getAllMessage, makeReadMessage])
 
   return (
 

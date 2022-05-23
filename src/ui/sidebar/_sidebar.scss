@@ -151,6 +151,17 @@
           color: map.get($theme-colors, "white");
         }
 
+        & .message-status-icon {
+          font-size: 20px;
+          color: map.get($theme-colors, "gray-text-bc");
+        }
+
+        & .message-status-img {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+        }
+
         & .sidebar-card-img {
           width: 60px;
           height: 60px;

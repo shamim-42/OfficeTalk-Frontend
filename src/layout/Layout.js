@@ -14,14 +14,14 @@ connector.baseUrl = config.baseUrl;
 
 
 function Layout() {
-    
+
 
     return (
-        
+
         <Routes>
-            <Route path="/" element={<HomePage/>}>
+            <Route path="/" element={<HomePage />}>
                 <Route index element={<WelcomeHome />} />
-                <Route path="/chat/:id" element={<ChattingHome />} />
+                <Route path="/chat/:chatId" element={<ChattingHome />} />
                 <Route path="/profile" element={<ProfileView />} exact />
                 <Route path="/editprofile" element={<EditProfile />} exact />
                 <Route path="/editpassword" element={<EditPassword />} exact />
@@ -29,7 +29,7 @@ function Layout() {
             <Route path="/login" element={<Login />} exact />
             <Route path="/signup" element={<Registration />} exact />
         </Routes>
-    ) 
+    )
 }
 
 export default Layout;
