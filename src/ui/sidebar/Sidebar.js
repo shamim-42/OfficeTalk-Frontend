@@ -7,7 +7,7 @@ import SidebarCard from './SidebarCard';
 import SidebarHeader from './SidebarHeader';
 
 const Sidebar = (props) => {
-  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, unreadCount } = props;
+  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers } = props;
   const conversationList = useSelector(selectConversationList);
 
 
@@ -58,7 +58,7 @@ const Sidebar = (props) => {
         <div className="sidebar-cards">
           {
             conversationList.length > 0 && conversationList.map((user, i) => (
-              <SidebarCard userid={userProfile.id} unreadCount={unreadCount} isOnline={isOnline} key={i} user={user} />
+              <SidebarCard userid={userProfile.id} isOnline={isOnline} key={i} user={user} />
             ))
           }
         </div>

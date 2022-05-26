@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { conversationTimeFormat } from '../../utils/utils';
 
 
-const SidebarCard = ({ user, isOnline, unreadCount, userid }) => {
+const SidebarCard = ({ user, isOnline, userid }) => {
   const unreadMessage = user?.message_Status_unreadMessages;
   const messageStatus = user?.message_Status_status;
 
