@@ -1,13 +1,13 @@
-import { IoImagesOutline } from "react-icons/io5";
-import { BsFillMicFill } from "react-icons/bs";
-import { Button, Col, Input, Row, Spin } from 'antd';
+import { Avatar, Button, Col, Input, Row, Spin } from 'antd';
 import React, { useEffect, useRef } from 'react';
+import { BsFillMicFill } from "react-icons/bs";
+import { IoImagesOutline } from "react-icons/io5";
 import ChatHeader from '../../container/ChatHeader';
 import MessageBox from "./MessageBox";
 
 
 const ChattingHomeUi = (props) => {
-  const { currentUserProfile, setMessagesText, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll } = props;
+  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll, handleBlur, isTyping } = props;
   const messagesEndRef = useRef(null)
 
 
@@ -36,13 +36,27 @@ const ChattingHomeUi = (props) => {
           </div>
         </div>
         <div className="chatting-bottom">
+          {isTyping && <div className="user-typing">
+            <Avatar
+              className="user-typing-img"
+              src={currentUserProfile?.profileImage}
+            />
+            <div className="typing">
+              <span className="circle"></span>
+              <span className="circle"></span>
+              <span className="circle"></span>
+              <span className="circle"></span>
+              <span className="circle"></span>
+            </div>
+          </div>}
           <Row className="message-input-container">
             <Col span={14}>
               <Input
                 className="message-input"
                 value={messagesText}
                 placeholder="Type a message"
-                onChange={(e) => setMessagesText(e.target.value)}
+                onChange={handleChangeMessage}
+                onBlur={handleBlur}
                 onPressEnter={handleSubmitMessage}
                 size="large"
               />

@@ -3,7 +3,6 @@
 .chatting-home {
   height: 100vh;
   overflow: hidden;
-  
 
   & .chatting-content {
     display: flex;
@@ -53,6 +52,57 @@
   // bottom: 0;
   // margin-bottom: 30px;
 
+  .user-typing {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 88px;
+
+    & .user-typing-img {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+    }
+
+    & .typing {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & .circle {
+        display: block;
+        height: 5px;
+        width: 5px;
+        border-radius: 50%;
+        background-color: #8d8d8d;
+        margin: 3px;
+        animation: typing 1500ms ease-in-out infinite;
+        animation-delay: 4500ms;
+
+        &:nth-child(1) {
+          animation-delay: 0ms;
+        }
+
+        &:nth-child(2) {
+          animation-delay: 333ms;
+        }
+
+        &:nth-child(3) {
+          animation-delay: 666ms;
+        }
+
+        &:nth-child(4) {
+          animation-delay: 999ms;
+        }
+
+        &:nth-child(5) {
+          animation-delay: 1332ms;
+        }
+      }
+    }
+  }
+
   .message-input-container {
     display: flex;
     justify-content: center;
@@ -68,5 +118,20 @@
       display: flex;
       justify-content: space-around;
     }
+  }
+}
+
+@keyframes typing {
+  0% {
+    transform: scale(1);
+  }
+  33% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
   }
 }

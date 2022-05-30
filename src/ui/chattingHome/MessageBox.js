@@ -17,7 +17,7 @@ const MessageBox = (props) => {
       </Row>
       <div className="message-list">
         {
-          messages.length > 0 && messages.slice(0).reverse().map((message) => {
+          messages?.length > 0 && messages.slice(0).reverse().map((message) => {
             if (message?.senderId !== userProfile.id) {
               return <ChatingMessageCard
                 profile={currentUserStatus}

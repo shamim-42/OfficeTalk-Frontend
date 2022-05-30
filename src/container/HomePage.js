@@ -1,11 +1,11 @@
 import { message } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { allUserListApi, userLogoutApi } from '../api/auth';
 import { getConversationsApi } from '../api/chat';
 import { resetUser, selectUserProfile } from '../redux/features/authSlice';
-import { setActiveUser, setAllUsers, setConversationList, setUpdateConversation } from '../redux/features/layoutSlice';
+import { setActiveUser, setAllUsers, setConversationList, setUpdateConversation, updateConversationStatus } from '../redux/features/layoutSlice';
 import HomeUi from '../ui/home/HomeUi';
 import { newSocket } from '../utils/socket';
 
@@ -16,7 +16,6 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userProfile = useSelector(selectUserProfile);
-  const socketRef = useRef()
   const userId = userProfile.id;
 
   // update search input value
@@ -112,9 +111,16 @@ const HomePage = () => {
       message_Status_lastMessage: res?.content,
       message_Status_lastMessageTime: res?.createdAt,
       message_Status_unreadMessages: res.unread,
+      message_Status_status: 'seen',
     }
     dispatch(setUpdateConversation(newMessage))
   }
+
+  useEffect(() => {
+    newSocket.on('message-seen-status' + userId, (res) => {
+      dispatch(updateConversationStatus(res))
+    })
+  }, [userId, dispatch])
 
   useEffect(() => {
     fetchUserList()

@@ -15,15 +15,34 @@ const ChattingHome = () => {
   const [currentUserProfile, setCurrentUserProfile] = useState({})
   const [isLoading, setIsLoading] = useState(true);
   const [messagesText, setMessagesText] = useState('')
+  const [timer, setTimer] = useState(null);
+  const [isTyping, setIsTyping] = useState(false);
   const [allMessage, setAllMessage] = useState([])
   const userProfile = useSelector(selectUserProfile)
   const onlineUsers = useSelector(selectActiveUser)
   const dispatch = useDispatch();
   const userId = userProfile.id;
 
+
   // check user online status function
   function isOnline(id) {
     return onlineUsers.indexOf(id) !== -1;
+  }
+
+  // handle on change message function
+  const handleChangeMessage = (e) => {
+    setMessagesText(e.target.value);
+    newSocket.emit('isWriting', { chatId: chatId, userId: userId });
+    if (timer) {
+      clearTimeout(timer);
+    }
+  }
+
+  // handle on blur event function
+  const handleBlur = () => {
+    setTimer(setTimeout(() => {
+      newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
+    }, 2000));
   }
 
   // get current user profile function
@@ -35,8 +54,8 @@ const ChattingHome = () => {
     }
 
     async function handleBadReq(response) {
-      let error = await response.json();
-      console.log(error.message);
+      // let error = await response.json();
+      // console.log(error.message);
       setIsLoading(false);
     }
 
@@ -44,7 +63,7 @@ const ChattingHome = () => {
   }, [chatId])
 
   // get current user all message list function
-  const getAllMessage = useCallback(async () => {
+  const getAllMessage = useCallback(async (id) => {
     async function successHandler(response) {
       const res = await response.json();
       let sortedData = getDateWiseMessages(res)
@@ -53,17 +72,21 @@ const ChattingHome = () => {
     }
 
     async function handleBadReq(response) {
-      let error = await response.json();
-      console.log(error)
+      // let error = await response.json();
+      // console.log(error)
       setIsLoading(false);
     }
 
-    return await getAllMessageApi(chatId, { userId: userId }, { successHandler, handleBadReq })
-  }, [userId, chatId])
+    return await getAllMessageApi(id, { userId: userId }, { successHandler, handleBadReq })
+  }, [userId])
 
 
   // add or update message on conversations List
   const updateConversationList = (res) => {
+    let status = "seen";
+    newSocket.on('delevered/' + userId, (res) => {
+      status = res.status;
+    })
 
     const newMessage = {
       users_id: parseInt(res.receiverId),
@@ -72,12 +95,14 @@ const ChattingHome = () => {
       message_Status_lastMessage: res?.content,
       message_Status_lastMessageTime: res?.createdAt,
       message_Status_unreadMessages: 0,
+      message_Status_status: status,
     }
     dispatch(setUpdateConversation(newMessage))
   }
 
   // Send message function
   async function handleSubmitMessage() {
+    newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
     const messageData = {
       message: messagesText,
       senderId: userId,
@@ -88,37 +113,29 @@ const ChattingHome = () => {
       const res = await response.json();
       updateConversationList(res.result)
       setMessagesText('')
-      getAllMessage();
+      getAllMessage(chatId);
     }
 
     async function handleBadReq(response) {
-      let error = await response.json();
-      console.log(error.message);
+      // let error = await response.json();
+      // console.log(error.message);
       setIsLoading(false);
     }
 
     return await sendMessageApi(chatId, messageData, { successHandler, handleBadReq })
   }
 
-
-
-
   // make message as read message 
   const makeReadMessage = useCallback(async () => {
-    newSocket.on('message-seen-status' + chatId, (msg) => {
-      console.log("msg", msg);
-    })
-
     const payload = {
       senderId: chatId,
     }
     async function successHandler(response) {
+      console.log("first")
       dispatch(setUpdateUnreadCount(chatId))
     }
 
     async function handleBadReq(response) {
-      let error = await response.json();
-      console.log(error);
     }
 
     return await makeReadApi(userProfile.id, payload, { successHandler, handleBadReq })
@@ -128,37 +145,59 @@ const ChattingHome = () => {
     getCurrentUserProfile()
   }, [getCurrentUserProfile])
 
-  useEffect(() => {
-    console.log(chatId)
+  const getNewMessage = useCallback((chatId) => {
     newSocket.on('newMessage/user/' + userId, (msg) => {
-      console.log(chatId)
       if (parseInt(msg.senderId) === parseInt(chatId)) {
-        // console.log(parseInt(msg.senderId), parseInt(id))
         makeReadMessage();
       }
-      getAllMessage();
+      getAllMessage(chatId)
     })
-
-    newSocket.on('delevered/' + userId, (res) => {
-      console.log(res)
-    })
-
-  }, [chatId, makeReadMessage, getAllMessage, userId])
+  }, [userId, getAllMessage, makeReadMessage])
 
   useEffect(() => {
-    getAllMessage()
+    getNewMessage(chatId)
+  }, [chatId, getNewMessage])
+
+  
+
+  useEffect(() => {
+    getAllMessage(chatId)
+  }, [getAllMessage, chatId])
+
+  useEffect(() => {
     makeReadMessage()
-  }, [getAllMessage, makeReadMessage])
+  }, [makeReadMessage])
+
+  useEffect(() => {
+    console.log("user: ", userId)
+    newSocket.on(`isWriting/${userId}`, (res) => {
+      if (parseInt(res.userId) === parseInt(chatId)) {
+        setIsTyping(true);
+      }
+      console.log("chat", chatId);
+    });
+
+    newSocket.on(`isNotWriting/${userId}`, (res) => {
+      setIsTyping(false);
+      console.log("chat", chatId);
+    });
+
+    return () => {
+      setIsTyping(false);
+    }
+  }, [userId, chatId])
+
 
   return (
-
     <ChattingHomeUi
       handleSubmitMessage={handleSubmitMessage}
       messagesText={messagesText}
-      setMessagesText={setMessagesText}
+      handleChangeMessage={handleChangeMessage}
+      handleBlur={handleBlur}
       allMessage={allMessage}
       userProfile={userProfile}
       isOnline={isOnline}
+      isTyping={isTyping}
       isLoading={isLoading}
       currentUserProfile={currentUserProfile} />
   );
