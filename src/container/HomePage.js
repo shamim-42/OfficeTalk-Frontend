@@ -13,6 +13,9 @@ const HomePage = () => {
   const [users, setUsers] = useState([])
   const [onlineUsers, setOnlineUsers] = useState([])
   const [unreadCount, setUnreadCount] = useState('')
+  const [isJoinMeetingModalVisible, setIsJoinMeetingModalVisible] = useState(false);
+  const [isChatGroupModalVisible, setIsChatGroupModalVisible] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userProfile = useSelector(selectUserProfile);
@@ -27,6 +30,22 @@ const HomePage = () => {
   function onChangeSwitch(evt) {
     console.log(evt)
   }
+
+  const showJoinMeetingModal = () => {
+    setIsJoinMeetingModalVisible(true);
+  };
+
+  const handleJoinMeetingCancel = () => {
+    setIsJoinMeetingModalVisible(false);
+  };
+
+  const showChatGroupModal = () => {
+    setIsChatGroupModalVisible(true);
+  };
+
+  const handleChatGroupCancel = () => {
+    setIsChatGroupModalVisible(false);
+  };
 
   // Handle loading user list
   async function fetchUserList() {
@@ -134,8 +153,14 @@ const HomePage = () => {
       handleLogout={handleLogout}
       handleChangeSearch={handleChangeSearch}
       onChangeSwitch={onChangeSwitch}
+      isJoinMeetingModalVisible={isJoinMeetingModalVisible}
       onlineUsers={onlineUsers}
+      handleJoinMeetingCancel={handleJoinMeetingCancel}
+      showJoinMeetingModal={showJoinMeetingModal}
       unreadCount={unreadCount}
+      isChatGroupModalVisible={isChatGroupModalVisible}
+      showChatGroupModal={showChatGroupModal}
+      handleChatGroupCancel={handleChatGroupCancel}
       users={users} />
   );
 };

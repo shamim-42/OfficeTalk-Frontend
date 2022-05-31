@@ -322,3 +322,22 @@ h4 {
     max-width: 1320px;
   }
 }
+
+.modal-cross-button {
+  content: "X";
+  position: absolute;
+  border: 0;
+  padding: 0px 10px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 100%;
+  color: map.get($theme-colors, "orange-text-ff");
+  box-shadow: none;
+  top: -10px;
+  right: -40px;
+
+  &:hover,
+  &:focus {
+    color: map.get($theme-colors, "orange-text-ff");
+  }
+}

@@ -7,7 +7,7 @@ import SidebarCard from './SidebarCard';
 import SidebarHeader from './SidebarHeader';
 
 const Sidebar = (props) => {
-  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers } = props;
+  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, isJoinMeetingModalVisible, showJoinMeetingModal, handleJoinMeetingCancel, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel } = props;
   const conversationList = useSelector(selectConversationList);
 
 
@@ -19,9 +19,15 @@ const Sidebar = (props) => {
     <div className="sidebar-container">
       <SidebarHeader
         handleLogout={handleLogout}
+        isJoinMeetingModalVisible={isJoinMeetingModalVisible}
+        handleJoinMeetingCancel={handleJoinMeetingCancel}
+        showJoinMeetingModal={showJoinMeetingModal}
         userProfile={userProfile}
         onChangeSwitch={onChangeSwitch}
-        handleChangeSearch={handleChangeSearch} />
+        handleChangeSearch={handleChangeSearch}
+        isChatGroupModalVisible={isChatGroupModalVisible}
+        showChatGroupModal={showChatGroupModal}
+        handleChatGroupCancel={handleChatGroupCancel} />
       <div className="online-users">
         <Avatar.Group className="online-user-group">
           {

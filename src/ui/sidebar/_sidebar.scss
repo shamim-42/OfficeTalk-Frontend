@@ -220,3 +220,132 @@
 .ant-popover-placement-bottomLeft {
   padding-top: 0;
 }
+
+.ant-modal.join-meeting-modal {
+  position: fixed;
+  top: 30%;
+  right: 25%;
+
+  @include media("<=tablet-xl") {
+    position: fixed;
+    top: 10%;
+    left: 1%;
+    right: 1%;
+  }
+
+  & .ant-modal-content {
+    border-radius: 30px;
+    padding: 48px 64px;
+    width: fit-content;
+
+    @include media("<=tablet-xl") {
+      border-radius: 12px;
+      padding: 8px;
+    }
+
+    & .join-meeting-title {
+      margin-bottom: 20px;
+      font-size: 48px;
+      font-weight: 700;
+      color: map.get($theme-colors, "primary-text-00");
+
+      @include media("<=tablet-xl") {
+        font-size: 24px;
+      }
+    }
+
+    & .join-meeting-subtitle {
+      font-size: 14px;
+      color: map.get($theme-colors, "black-3f");
+    }
+
+    & .join-meeting-input {
+      height: 56px;
+      background-color: map.get($theme-colors, "gray-text-ea");
+      padding: 16px;
+      border-radius: 18px;
+      border: 0;
+
+      & .ant-input {
+        background-color: map.get($theme-colors, "gray-text-ea");
+        font-size: 20px;
+        color: map.get($theme-colors, "gray-alpha-17");
+      }
+
+      & .ant-input-suffix {
+        font-size: 24px;
+      }
+    }
+
+    & .join-meeting-button {
+      width: 60%;
+      justify-self: center;
+      margin: 24px auto;
+      font-size: 18px;
+      font-weight: 700;
+      height: 35px;
+      padding: 6px auto;
+      background-color: map.get($theme-colors, "primary-text-19");
+
+      &:hover {
+        background-color: map.get($theme-colors, "white");
+        color: map.get($theme-colors, "primary-text-19");
+      }
+    }
+  }
+}
+
+.ant-modal.create-group-modal {
+  position: fixed;
+  top: 30%;
+  right: 25%;
+
+  @include media("<=tablet-xl") {
+    position: fixed;
+    top: 10%;
+    left: 1%;
+    right: 1%;
+  }
+
+  & .create-group-userlist {
+    height: 400px;
+    overflow: auto;
+    border-radius: 30px;
+    border: 1px solid map.get($theme-colors, "gray-alpha-37");
+    padding: 16px 32px;
+
+    & .ant-table-row {
+      display: flex;
+      justify-content: space-between;
+      width: 340px;
+      border-bottom: 1px solid map.get($theme-colors, "black-alhpa-49");
+
+      & > td:nth-child(1) {
+        order: 2;
+      }
+      & > td:nth-child(2) {
+        order: 1;
+      }
+    }
+
+    & .ant-table-row-selected {
+      background-color: #edfdff;
+      border-radius: 12px;
+    }
+
+    & .ant-table-row-selected > .ant-table-cell {
+      background: none;
+    }
+  }
+
+  & .ant-table-wrapper > .ant-modal-content > tr {
+    border-radius: 30px;
+    padding: 12px 44px;
+    width: fit-content;
+
+    @include media("<=tablet-xl") {
+      border-radius: 12px;
+      padding: 8px;
+    }
+  }
+}
