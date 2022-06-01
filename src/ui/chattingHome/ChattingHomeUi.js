@@ -32,6 +32,9 @@ const ChattingHomeUi = (props) => {
                   filterMessages={filterMessages} />
               ))
             }
+            {
+              allMessage.length <= 0 && <p>Hello</p>
+            }
             <div ref={messagesEndRef}></div>
           </div>
         </div>

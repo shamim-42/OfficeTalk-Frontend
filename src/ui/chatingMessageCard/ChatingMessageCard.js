@@ -1,13 +1,13 @@
 import { Avatar, Badge, Button, Col, Popover, Row } from 'antd';
 import React from 'react';
-import { HiDotsVertical } from "react-icons/hi";
-import { FaRegGrinAlt } from "react-icons/fa";
-import { MdOutlineContentCopy } from "react-icons/md";
-import { BsReply } from "react-icons/bs";
+import { AiFillLike } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
+import { BsFillHeartFill, BsReply } from "react-icons/bs";
+import { FaRegGrinAlt } from "react-icons/fa";
+import { HiDotsVertical } from "react-icons/hi";
+import { MdOutlineContentCopy } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { TiArrowForwardOutline } from "react-icons/ti";
-import { BsFillHeartFill } from "react-icons/bs";
 import { timeFormat } from '../../utils/utils';
 
 const ChatingMessageCard = (props) => {
@@ -72,7 +72,7 @@ const ChatingMessageCard = (props) => {
             <Popover placement="right"
               content={
                 <div style={{ fontSize: '24px', display: 'flex', gap: '10px' }}>
-                  <BsFillHeartFill />
+                  <AiFillLike />
                   <BsFillHeartFill />
                   <BsFillHeartFill />
                   <BsFillHeartFill />
