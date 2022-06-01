@@ -1,5 +1,5 @@
-import { Avatar, Badge, Button, Col, Dropdown, Form, Input, Menu, Modal, Popover, Row, Table } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Avatar, Badge, Button, Col, Dropdown, Form, Input, Menu, Modal, Popover, Row } from 'antd';
+import React from 'react';
 import { BiSearch } from "react-icons/bi";
 import { BsChatTextFill } from "react-icons/bs";
 import { CgMenuGridO } from "react-icons/cg";
@@ -9,44 +9,13 @@ import { ImUpload } from "react-icons/im";
 import { IoChevronDownOutline, IoOptions, IoPersonCircle } from "react-icons/io5";
 import { MdCall } from "react-icons/md";
 import { Link } from 'react-router-dom';
+import CreateGroupModal from '../modal/CreateGroupModal';
 import FilterPopover from './FilterPopover';
 import SettingPopover from './SettingPopover';
-
-const columns = [
-  {
-    dataIndex: 'name',
-  }
-];
-
-const data = [];
-
-for (let i = 0; i < 46; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-  });
-}
 
 
 const SidebarHeader = (props) => {
   const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, handleJoinMeetingCancel, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel } = props;
-
-
-
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
-  const onSelectChange = (newSelectedRowKeys, n) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-    order: 2
-  };
-  useEffect(() => {
-    console.log(selectedRowKeys)
-  }, [selectedRowKeys])
 
   return (
     <div className="sidebar-header">
@@ -193,20 +162,7 @@ const SidebarHeader = (props) => {
         footer={null}
         width="auto"
       >
-        <Button
-          onClick={handleChatGroupCancel}
-          className="modal-cross-button">
-          X
-        </Button>
-        <h3 className="create-group-title">
-          Create a chat group
-        </h3>
-        <Input className="create-group-input" />
-
-        <div className="create-group-userlist">
-          <Table pagination={false} onChange={(e) => console.log(e)} rowSelection={rowSelection} showHeader={false} columns={columns} dataSource={data} />
-        </div>
-
+        <CreateGroupModal handleChatGroupCancel={handleChatGroupCancel} userProfile={userProfile} />
       </Modal>
     </div >
   );

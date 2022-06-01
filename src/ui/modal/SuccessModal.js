@@ -1,7 +1,7 @@
 import { Alert, Modal } from 'antd';
 import React from 'react';
 
-const SuccessModal = () => {
+const SuccessModal = ({ isErrorModal, handleOk, errorMessage }) => {
   return (
     <Modal
       visible={isErrorModal}
