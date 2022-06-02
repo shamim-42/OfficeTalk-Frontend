@@ -12,12 +12,12 @@ const MessageBox = (props) => {
     <>
       <Row className="chatting-date">
         <Col span={6} className="chatting-date-card">
-          {new Date(messageDate).toDateString()}
+          {messages?.date}
         </Col>
       </Row>
       <div className="message-list">
         {
-          messages?.length > 0 && messages.slice(0).reverse().map((message) => {
+          messages?.data.length > 0 && messages?.data.map((message) => {
             if (message?.senderId !== userProfile.id) {
               return <ChatingMessageCard
                 profile={currentUserStatus}
