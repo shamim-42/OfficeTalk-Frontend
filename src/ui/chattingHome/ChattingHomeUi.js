@@ -2,8 +2,8 @@ import { Avatar, Button, Col, Input, Row, Spin } from 'antd';
 import React, { useEffect, useRef } from 'react';
 import { BsFillMicFill } from "react-icons/bs";
 import { IoImagesOutline } from "react-icons/io5";
+import hi from '../../assest/image/hi.gif';
 import ChatHeader from '../../container/ChatHeader';
-import hi from './hi.gif';
 import MessageBox from "./MessageBox";
 
 
