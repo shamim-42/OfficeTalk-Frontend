@@ -12,7 +12,7 @@ export const userLoginApi = async function (payload, options = {}) {
 };
 
 export const userLogoutApi = async function (id, options = {}) {
-  const url = `4000/auth/${id}/signout`;
+  const url = `3000/chat/${id}/signout`;
   return connector.get(url, options);
 };
 

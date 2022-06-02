@@ -106,9 +106,7 @@
     }
 
     & .sidebar-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      @include set-display-flex(flex-start, flex-start, 8px, column);
       padding-bottom: 200px;
 
       & .focushed {
@@ -172,9 +170,7 @@
 }
 
 .sidebar-user {
-  display: flex;
-  gap: 12px;
-  align-items: center;
+  @include set-display-flex(center, flex-start, 12px);
 }
 
 .sidebar-user-name {

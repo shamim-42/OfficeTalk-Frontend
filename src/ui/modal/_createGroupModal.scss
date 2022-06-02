@@ -28,8 +28,7 @@
     }
 
     & .upload-group-photo {
-      display: flex;
-      justify-content: center;
+      @include set-display-flex(flex-start, center);
       font-size: 68px;
 
       & > svg {
@@ -60,9 +59,7 @@
       }
 
       & .user-search-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        @include set-display-flex(center, space-between);
         margin-bottom: 20px;
         padding: 0 32px;
 
@@ -79,11 +76,10 @@
       }
 
       & .user-list-items {
+        width: 100%;
         padding: 0 32px;
         overflow: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+        @include set-display-flex(flex-start, flex-start, 20px, column);
         height: 35vh;
 
         &::-webkit-scrollbar {
@@ -96,13 +92,13 @@
         }
 
         & .user-list-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
+          width: 100%;
+          @include set-display-flex(center, space-between);
           border-bottom: 1px solid map.get($theme-colors, "black-alhpa-49");
           padding-bottom: 5px;
 
           & .user-info {
+            @include set-display-flex(center, flex-start, 8px);
             display: flex;
             gap: 8px;
             align-items: center;

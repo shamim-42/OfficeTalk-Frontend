@@ -67,7 +67,7 @@ const HomePage = () => {
   async function fetchConversationList() {
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res)
+      // console.log(res)
       dispatch(setConversationList(res))
     }
 

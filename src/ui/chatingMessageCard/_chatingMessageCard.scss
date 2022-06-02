@@ -19,10 +19,7 @@
 }
 
 .message-option {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  @include set-display-flex(center, space-between, 0, column);
 
   & .ant-btn {
     height: 15px;
@@ -41,9 +38,7 @@
 }
 
 .message-options-popover {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  @include set-display-flex(flex-start, flex-start, 16px, column);
 
   & > Button {
     font-size: 16px;
@@ -57,4 +52,9 @@
 }
 .user-message {
   justify-content: flex-end;
+  width: 100%;
+}
+.friend-message {
+  justify-content: flex-start;
+  width: 100%;
 }

@@ -15,6 +15,7 @@ const ChattingHome = () => {
   const [currentUserProfile, setCurrentUserProfile] = useState({})
   const [isLoading, setIsLoading] = useState(true);
   const [messagesText, setMessagesText] = useState('')
+  const [messageStatus, setMessageStatus] = useState(null);
   const [timer, setTimer] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
   const [allMessage, setAllMessage] = useState([])
@@ -64,11 +65,18 @@ const ChattingHome = () => {
 
   // get current user all message list function
   const getAllMessage = useCallback(async (id) => {
+
     async function successHandler(response) {
       const res = await response.json();
-      let sortedData = getDateWiseMessages(res)
+      console.log(res)
+      setMessageStatus(res.status);
+      if (res?.messages?.length > 0) {
+        let sortedData = getDateWiseMessages(res.messages)
+        setAllMessage(sortedData)
+      } else {
+        setAllMessage([])
+      }
       setIsLoading(false)
-      setAllMessage(sortedData)
     }
 
     async function handleBadReq(response) {
@@ -103,6 +111,9 @@ const ChattingHome = () => {
   // Send message function
   async function handleSubmitMessage() {
     newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
+    if (messagesText.length <= 0 || messagesText === " ") {
+      return
+    }
     const messageData = {
       message: messagesText,
       senderId: userId,
@@ -124,6 +135,35 @@ const ChattingHome = () => {
 
     return await sendMessageApi(chatId, messageData, { successHandler, handleBadReq })
   }
+
+
+
+  // Send message function
+  async function sendHiMessage() {
+    setIsLoading(true);
+    newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
+    const messageData = {
+      message: "Hi !",
+      senderId: userId,
+      type: "text"
+    }
+
+    async function successHandler(response) {
+      const res = await response.json();
+      updateConversationList(res.result)
+      getAllMessage(chatId);
+      setIsLoading(false);
+    }
+
+    async function handleBadReq(response) {
+      setIsLoading(false);
+    }
+
+    return await sendMessageApi(chatId, messageData, { successHandler, handleBadReq })
+  }
+
+
+
 
   // make message as read message 
   const makeReadMessage = useCallback(async () => {
@@ -158,7 +198,7 @@ const ChattingHome = () => {
     getNewMessage(chatId)
   }, [chatId, getNewMessage])
 
-  
+
 
   useEffect(() => {
     getAllMessage(chatId)
@@ -196,6 +236,8 @@ const ChattingHome = () => {
       handleBlur={handleBlur}
       allMessage={allMessage}
       userProfile={userProfile}
+      sendHiMessage={sendHiMessage}
+      messageStatus={messageStatus}
       isOnline={isOnline}
       isTyping={isTyping}
       isLoading={isLoading}

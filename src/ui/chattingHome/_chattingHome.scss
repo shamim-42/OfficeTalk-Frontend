@@ -5,22 +5,18 @@
   overflow: hidden;
 
   & .chatting-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 32px;
+    width: 100%;
+    @include set-display-flex(flex-start, flex-end, 32px, column);
     height: 80vh;
 
     & .all-messages-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
+      @include set-display-flex(flex-start, flex-end, 32px, column);
+      width: 100%;
       margin-bottom: 20px;
       display: block;
       overflow-y: auto;
       height: 100%;
       padding: 16px 64px;
-      column-gap: 32px;
 
       & .chatting-date {
         justify-content: center;
@@ -37,26 +33,34 @@
       }
 
       & .message-list {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        gap: 20px;
+        @include set-display-flex(flex-start, flex-end, 20px, column);
+        width: 100%;
+      }
+
+      & .sayhi-card {
+        width: 300px;
+        height: 180px;
+        background-color: map.get($theme-colors, "white-f1");
+        margin: 20px auto;
+        border-radius: 12px;
+        @include set-display-flex(center, space-around, 0, column);
+
+        & .sayhi-emoji {
+          width: 50px;
+          height: 50px;
+        }
+
+        & .sayhi-btn {
+          width: 150px;
+        }
       }
     }
   }
 }
 
 .chatting-bottom {
-  // position: fixed;
-  // width: 90%;
-  // bottom: 0;
-  // margin-bottom: 30px;
-
   .user-typing {
-    display: flex;
-    gap: 12px;
-    justify-content: flex-start;
-    align-items: center;
+    @include set-display-flex(center, flex-start, 12px);
     margin-left: 88px;
 
     & .user-typing-img {
@@ -66,9 +70,7 @@
     }
 
     & .typing {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      @include set-display-flex(center, center);
 
       & .circle {
         display: block;
@@ -104,9 +106,7 @@
   }
 
   .message-input-container {
-    display: flex;
-    justify-content: center;
-    column-gap: 20px;
+    @include set-display-flex(flex-start, center, 20px);
 
     & .ant-input {
       border-radius: 22px;
@@ -115,8 +115,7 @@
     }
 
     & .chat-input-icons {
-      display: flex;
-      justify-content: space-around;
+      @include set-display-flex(flex-start, space-around);
     }
   }
 }

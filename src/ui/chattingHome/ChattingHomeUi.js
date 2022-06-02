@@ -3,11 +3,12 @@ import React, { useEffect, useRef } from 'react';
 import { BsFillMicFill } from "react-icons/bs";
 import { IoImagesOutline } from "react-icons/io5";
 import ChatHeader from '../../container/ChatHeader';
+import hi from './hi.gif';
 import MessageBox from "./MessageBox";
 
 
 const ChattingHomeUi = (props) => {
-  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll, handleBlur, isTyping } = props;
+  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll, handleBlur, isTyping, sendHiMessage, messageStatus } = props;
   const messagesEndRef = useRef(null)
 
 
@@ -29,12 +30,38 @@ const ChattingHomeUi = (props) => {
                   currentUserStatus={currentUserProfile}
                   isOnline={isOnline}
                   userProfile={userProfile}
+                  messageStatus={messageStatus}
                   filterMessages={filterMessages} />
               ))
             }
             {
-              allMessage.length <= 0 && <p>Hello</p>
+              allMessage.length <= 0 &&
+              <div className="sayhi-card">
+                <Avatar
+                  className="sayhi-emoji"
+                  src={hi}
+                />
+                <p className="sayhi-message">
+                  {`Say hi to ${currentUserProfile.fullname}.`}
+                </p>
+                <Button
+                  className="btn-theme-primary-fluid filled-btn sayhi-btn"
+                  type="primary"
+                  onClick={sendHiMessage}
+                  htmlType="submit">
+                  Say Hi
+                </Button>
+              </div>
             }
+
+            {
+              messageStatus === 'choose' &&
+              <div className="message-choose-card">
+                
+              </div>
+
+            }
+
             <div ref={messagesEndRef}></div>
           </div>
         </div>
