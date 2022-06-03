@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../api/auth';
-import { getAllMessageApi, makeReadApi, sendMessageApi } from '../api/chat';
+import { acceptUserApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../api/chat';
 import { selectUserProfile } from '../redux/features/authSlice';
 import { selectActiveUser, setUpdateConversation, setUpdateUnreadCount } from '../redux/features/layoutSlice';
 import ChattingHomeUi from '../ui/chattingHome/ChattingHomeUi';
@@ -68,6 +68,7 @@ const ChattingHome = () => {
 
     async function successHandler(response) {
       const res = await response.json();
+      console.log(res)
       setMessageStatus(res.status);
       if (res?.messages?.length > 0) {
         let sortedData = getDateWiseMessages(res.messages)
@@ -162,7 +163,26 @@ const ChattingHome = () => {
   }
 
 
+  // Accept or Reject a user function
 
+  async function userRequestFunction(msg) {
+    const requestData = {
+      desicion: msg,
+      senderId: chatId,
+      receiverId: userId,
+    }
+
+    async function successHandler(response) {
+      const res = await response.json();
+      console.log(res)
+      setMessageStatus(res.status)
+    }
+
+    async function handleBadReq(response) {
+    }
+
+    return await acceptUserApi(requestData, { successHandler, handleBadReq })
+  }
 
   // make message as read message 
   const makeReadMessage = useCallback(async () => {
@@ -240,6 +260,7 @@ const ChattingHome = () => {
       isOnline={isOnline}
       isTyping={isTyping}
       isLoading={isLoading}
+      userRequestFunction={userRequestFunction}
       currentUserProfile={currentUserProfile} />
   );
 };

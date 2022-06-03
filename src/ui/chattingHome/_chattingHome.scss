@@ -18,6 +18,15 @@
       height: 100%;
       padding: 16px 64px;
 
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background-color: map.get($theme-colors, "gray-text-c4");
+      }
+
       & .chatting-date {
         justify-content: center;
 
@@ -75,7 +84,7 @@
 
         & > Button {
           border-radius: 4px;
-          padding: auto 30px;
+          padding: 2px 30px;
           font-size: 18px;
         }
       }
