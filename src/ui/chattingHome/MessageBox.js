@@ -1,12 +1,21 @@
 import { Col, Row } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import ChatingMessageCard from '../chatingMessageCard/ChatingMessageCard';
 import SendMessageCard from '../chatingMessageCard/SendMessageCard';
 
 const MessageBox = (props) => {
   const { filterMessages, currentUserStatus, userProfile, isOnline } = props;
-  const messageDate = (Object.keys(filterMessages))
-  const messages = (filterMessages[Object.keys(filterMessages)])
+  const messageDate = (Object.keys(filterMessages));
+  const messages = (filterMessages[Object.keys(filterMessages)]);
+  const [popoverVisible, setPopoverVisible] = useState('');
+
+  function handlePopoverVisiblity(isOpen, msgId) {
+    if(isOpen) {
+      setPopoverVisible(msgId);
+    } else {
+      setPopoverVisible("")
+    }
+  }
 
   return (
     <>
@@ -23,7 +32,9 @@ const MessageBox = (props) => {
                 profile={currentUserStatus}
                 message={message}
                 isOnline={isOnline}
-                key={message?.id} />
+                key={message?.id} 
+                visible={(message.id === popoverVisible)}
+                handleVisibleChange={(isOpen)=>handlePopoverVisiblity(isOpen, message.id)}/>
             } else {
               return <SendMessageCard
                 profile={userProfile}

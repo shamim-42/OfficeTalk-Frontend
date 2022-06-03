@@ -19,6 +19,7 @@
 }
 
 .message-option {
+  position: relative;
   @include set-display-flex(center, space-between, 0, column);
 
   & .ant-btn {

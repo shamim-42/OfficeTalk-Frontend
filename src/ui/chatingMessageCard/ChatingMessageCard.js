@@ -11,7 +11,7 @@ import { TiArrowForwardOutline } from "react-icons/ti";
 import { timeFormat } from '../../utils/utils';
 
 const ChatingMessageCard = (props) => {
-  const { profile, message, isOnline } = props;
+  const { profile, message, isOnline, visible, handleVisibleChange } = props;
   
   return (
     <Row className="friend-message">
@@ -38,8 +38,8 @@ const ChatingMessageCard = (props) => {
             <p className='message-time'>{timeFormat(message.createdAt)}</p>
             <p className='message-text'>{message?.content}</p>
           </Col>
-          <Col span={1} className='message-option'>
-            <Popover placement="bottomLeft"
+          <Col span={1} className='message-option' style={{overflow: 'unset'}}>
+            <Popover 
               content={
                 <div className="message-options-popover">
                   <Button type="text">
@@ -64,7 +64,9 @@ const ChatingMessageCard = (props) => {
                   </Button>
                 </div>
               }
-              trigger="click">
+              trigger="click" 
+              visible={visible}
+              onVisibleChange={handleVisibleChange}>
               <Button type="text">
                 <HiDotsVertical />
               </Button>
