@@ -11,6 +11,7 @@ const ChattingHomeUi = (props) => {
   const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll, handleBlur, isTyping, sendHiMessage, messageStatus } = props;
   const messagesEndRef = useRef(null)
 
+  console.log(allMessage);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView();
@@ -24,7 +25,7 @@ const ChattingHomeUi = (props) => {
         <div className="chatting-content">
           <div className="all-messages-content" onScroll={handleScroll} >
             {
-              allMessage.length > 0 && allMessage.slice(0).reverse().map((filterMessages, index) => (
+              allMessage.length > 0 && allMessage.map((filterMessages, index) => (
                 <MessageBox
                   key={index}
                   currentUserStatus={currentUserProfile}
@@ -54,18 +55,29 @@ const ChattingHomeUi = (props) => {
               </div>
             }
 
-            {
-              messageStatus === 'choose' &&
-              <div className="message-choose-card">
-                
-              </div>
-
-            }
 
             <div ref={messagesEndRef}></div>
+
           </div>
+          {
+            messageStatus === 'choose' &&
+            <div className="message-choose-card">
+              <p className="message-choose-text">This sender is not your list.</p>
+              <div className="message-choose-buttons">
+                <Button type="primary" danger>
+                  Reject
+                </Button>
+                <Button type="primary">
+                  Accept
+                </Button>
+              </div>
+            </div>
+
+          }
         </div>
+
         <div className="chatting-bottom">
+
           {isTyping && <div className="user-typing">
             <Avatar
               className="user-typing-img"

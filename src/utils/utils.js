@@ -28,11 +28,15 @@ export function getDateWiseMessages(list) {
     }
 
     for (let key in datewiseFilteredObj) {
-      formattedMessageArray.push({ [key]: datewiseFilteredObj[key] })
+      formattedMessageArray.push({ [key]: {
+        date: new Date(key).toDateString(),
+        data: datewiseFilteredObj[key],
+      } })
     }
   }
+  const reverseMessages = formattedMessageArray.reverse();
 
-  return formattedMessageArray
+  return reverseMessages
 }
 
 // Time formating funtion

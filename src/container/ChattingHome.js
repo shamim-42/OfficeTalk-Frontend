@@ -68,7 +68,6 @@ const ChattingHome = () => {
 
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res)
       setMessageStatus(res.status);
       if (res?.messages?.length > 0) {
         let sortedData = getDateWiseMessages(res.messages)
