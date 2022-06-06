@@ -1,8 +1,7 @@
-import { Button, Switch } from 'antd';
+import { Button } from 'antd';
 import React from 'react';
-import { IoMdSettings } from "react-icons/io";
-import { BsMoon } from "react-icons/bs";
 import { BiRightArrowCircle } from "react-icons/bi";
+import { IoMdSettings } from "react-icons/io";
 
 
 const SettingPopover = ({ onChangeSwitch, handleLogout }) => {
@@ -16,7 +15,7 @@ const SettingPopover = ({ onChangeSwitch, handleLogout }) => {
         <IoMdSettings />
         <span style={{ marginLeft: '10px' }}>Setting</span>
       </p>
-      <div style={{
+      {/* <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         gap: '20px',
@@ -26,7 +25,7 @@ const SettingPopover = ({ onChangeSwitch, handleLogout }) => {
           <span style={{ marginLeft: '10px' }}>Night mode</span>
         </p>
         <Switch size="small" defaultChecked onChange={onChangeSwitch} />
-      </div>
+      </div> */}
       <div>
         <Button type="text" style={{
           display: 'flex',

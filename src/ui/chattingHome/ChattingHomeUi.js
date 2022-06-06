@@ -7,21 +7,7 @@ import ChatInputBox from "../form/ChatInputBox";
 import MessageBox from "./MessageBox";
 
 const ChattingHomeUi = (props) => {
-  const {
-    currentUserProfile,
-    handleChangeMessage,
-    handleSubmitMessage,
-    allMessage,
-    userProfile,
-    isOnline,
-    isLoading,
-    messagesText,
-    handleScroll,
-    handleBlur,
-    isTyping,
-    sendHiMessage,
-    messageStatus,
-  } = props;
+  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll, handleBlur, isTyping, sendHiMessage, messageStatus, userRequestFunction } = props;
   const messagesEndRef = useRef(null);
 
   console.log(allMessage);
@@ -70,12 +56,17 @@ const ChattingHomeUi = (props) => {
             {/* {
             messageStatus === 'choose' &&
             <div className="message-choose-card">
-              <p className="message-choose-text">This sender is not your list.</p>
+              <p className="message-choose-text">This sender is not in your list.</p>
               <div className="message-choose-buttons">
-                <Button type="primary" danger>
+                <Button
+                  type="primary"
+                  onClick={() => userRequestFunction("rejected")}
+                  danger>
                   Reject
                 </Button>
-                <Button type="primary">
+                <Button
+                  onClick={() => userRequestFunction("accepted")}
+                  type="primary">
                   Accept
                 </Button>
               </div>
