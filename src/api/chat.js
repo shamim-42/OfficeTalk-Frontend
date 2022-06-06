@@ -7,7 +7,7 @@ export const sendMessageApi = async function (id, payload, options = {}) {
 };
 
 export const getAllMessageApi = async function (id, payload, options = {}) {
-  const url = `3000/chat/${id}/messages`;
+  const url = `3000/chat/${id}/messages?page=${options.urlParams.page}`;
   return connector.post(url, payload, options);
 };
 

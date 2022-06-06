@@ -69,9 +69,9 @@ const ChattingHome = () => {
     async function successHandler(response) {
       const res = await response.json();
       setMessageStatus(res.status);
+      console.log(res)
       if (res?.messages?.length > 0) {
-        let sortedData = getDateWiseMessages(res.messages)
-        setAllMessage(sortedData)
+        setAllMessage(res?.messages)
       } else {
         setAllMessage([])
       }
@@ -79,12 +79,13 @@ const ChattingHome = () => {
     }
 
     async function handleBadReq(response) {
-      // let error = await response.json();
-      // console.log(error)
+      await response.json();
       setIsLoading(false);
     }
 
-    return await getAllMessageApi(id, { userId: userId }, { successHandler, handleBadReq })
+    return await getAllMessageApi( id, { userId: userId }, { successHandler, handleBadReq, 
+        urlParams: { page: 1 } 
+      })
   }, [userId])
 
 

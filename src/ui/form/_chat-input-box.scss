@@ -1,0 +1,87 @@
+@use "sass:map";
+%button_control {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    transition: 0.25s;
+    @include set-display-flex(center, center);
+}
+
+%svg_font {
+    font-size: 1.25rem;
+    color: map.get($theme-colors, "gray-text-60");
+    transition: .25s;
+}
+
+.chat-input-form {
+  width: 100%;
+  @include set-display-flex(center, space-between, 0.5rem);
+  border: none;
+  min-height: 52px;
+  background-color: map.get($theme-colors, "gray-ea");
+  border-radius: 999px;
+  padding: 0.25rem;
+  height: fit-content;
+
+  & button {
+    @extend %button_control;  
+
+    & svg {
+      @extend %svg_font;
+    }
+
+    &:hover, &:focus {
+      background-color: map.get($theme-colors, "gray-ea");
+      box-shadow: none;
+      
+      & svg {
+          color: map.get($theme-colors, "primary-button-19");
+        }
+    }
+  }
+
+  & .chat-textArea {
+    background-color: transparent;
+    border: none;
+    padding: 4px;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.chat-input-attachment {
+    height: fit-content;
+    min-height: 52px;
+    @include set-display-flex(center, flex-start, .5rem);
+
+    & button {
+        @extend %button_control;
+        background-color: map.get($theme-colors, "gray-ea");
+
+        & svg {
+            @extend %svg_font;
+        }
+        
+        &:hover, &:focus {
+            background-color: map.get($theme-colors, "gray-ea");
+            box-shadow: none;
+            
+            & svg {
+                color: map.get($theme-colors, "primary-button-19");
+              }
+        }
+
+        &.chat-sent-control, &.chat-sent-control:hover, &.chat-sent-control:focus  {
+            background-color: map.get($theme-colors, "primary-button-19");
+
+            & svg {
+                color: map.get($theme-colors, "white");
+            }
+        }
+    }
+}

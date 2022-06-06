@@ -1,4 +1,4 @@
-import { Layout } from 'antd';
+import { Affix, Layout } from 'antd';
 import React, { useRef } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../sidebar/Sidebar';
@@ -10,6 +10,7 @@ const HomeUi = (props) => {
 
   return (
     <>
+    <Affix offsetTop={0}>
       <Sider
         width={460}
         className="sider-component"
@@ -30,7 +31,7 @@ const HomeUi = (props) => {
           users={users}
           onlineUsers={onlineUsers} />
       </Sider>
-
+      </Affix>
       <Content className="content-area">
         <Outlet ji="ji" />
       </Content>

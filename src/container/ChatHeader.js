@@ -1,3 +1,4 @@
+import { Affix } from 'antd';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -10,9 +11,11 @@ const ChatHeader = ({ currentUserProfile }) => {
   const isOnline = onlineUsers.indexOf(parseInt(chatId)) !== -1;
 
   return (
+    <Affix offsetTop={0}>
     <ChattingHeader
       isOnline={isOnline}
       currentUserProfile={currentUserProfile} />
+      </Affix>
   );
 };
 

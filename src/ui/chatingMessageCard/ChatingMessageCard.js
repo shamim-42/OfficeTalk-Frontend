@@ -38,7 +38,7 @@ const ChatingMessageCard = (props) => {
             <p className='message-time'>{timeFormat(message.createdAt)}</p>
             <p className='message-text'>{message?.content}</p>
           </Col>
-          <Col span={1} className='message-option' style={{overflow: 'unset'}}>
+          <Col span={1} className='message-option' style={{position: "relative"}}>
             <Popover 
               content={
                 <div className="message-options-popover">

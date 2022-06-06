@@ -16,7 +16,7 @@ const SendMessageCard = ({ profile, message, isOnline}) => {
     <Row className="user-message">
       <Col span={14}>
         <Row className="message-text-card">
-          <Col span={1} className='message-option'>
+          <Col span={1} className='message-option' style={{position: 'relative'}}>
             <Popover placement="bottomRight"
               content={
                 <div className="message-options-popover">

@@ -5,8 +5,8 @@ import SendMessageCard from '../chatingMessageCard/SendMessageCard';
 
 const MessageBox = (props) => {
   const { filterMessages, currentUserStatus, userProfile, isOnline } = props;
-  const messageDate = (Object.keys(filterMessages));
-  const messages = (filterMessages[Object.keys(filterMessages)]);
+  // const messageDate = (Object.keys(filterMessages));
+  // const messages = (filterMessages[Object.keys(filterMessages)]);
   const [popoverVisible, setPopoverVisible] = useState('');
 
   function handlePopoverVisiblity(isOpen, msgId) {
@@ -16,17 +16,18 @@ const MessageBox = (props) => {
       setPopoverVisible("")
     }
   }
+  console.log(filterMessages)
 
   return (
     <>
       <Row className="chatting-date">
         <Col span={6} className="chatting-date-card">
-          {messages?.date}
+          {filterMessages?.date}
         </Col>
       </Row>
       <div className="message-list">
         {
-          messages?.data.length > 0 && messages?.data.map((message) => {
+          filterMessages?.messages.length > 0 && filterMessages?.messages.map((message) => {
             if (message?.senderId !== userProfile.id) {
               return <ChatingMessageCard
                 profile={currentUserStatus}

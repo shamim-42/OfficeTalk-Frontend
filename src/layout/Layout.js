@@ -26,8 +26,8 @@ function Layout() {
                 <Route path="/editprofile" element={<EditProfile />} exact />
                 <Route path="/editpassword" element={<EditPassword />} exact />
             </Route>
-            <Route path="/login" element={<Login />} exact />
-            <Route path="/signup" element={<Registration />} exact />
+            {/* <Route path="/login" element={<Login />} exact />
+            <Route path="/signup" element={<Registration />} exact /> */}
         </Routes>
     )
 }
