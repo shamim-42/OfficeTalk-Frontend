@@ -1,16 +1,14 @@
-import { Affix, Avatar, Button, Col, Input, Row, Spin } from "antd";
+import { Affix, Avatar, Button, Row, Spin } from "antd";
 import React, { Fragment, useEffect, useRef } from "react";
-
 import hi from "../../assest/image/hi.gif";
 import ChatHeader from "../../container/ChatHeader";
 import ChatInputBox from "../form/ChatInputBox";
 import MessageBox from "./MessageBox";
 
+
 const ChattingHomeUi = (props) => {
   const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll, handleBlur, isTyping, sendHiMessage, messageStatus, userRequestFunction } = props;
   const messagesEndRef = useRef(null);
-
-  console.log(allMessage);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView();
@@ -94,8 +92,8 @@ const ChattingHomeUi = (props) => {
               )}
               <Row className="message-input-container">
                 <ChatInputBox messagesValue={messagesText} onSubmit={handleSubmitMessage}
-                 onChange={handleChangeMessage} onBlur={handleBlur} />
-                
+                  onChange={handleChangeMessage} onBlur={handleBlur} />
+
               </Row>
             </div>
           </Affix>

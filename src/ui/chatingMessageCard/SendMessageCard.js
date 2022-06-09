@@ -1,22 +1,22 @@
+import { Button, Col, Popover, Row } from 'antd';
 import React from 'react';
-import { BsReply } from "react-icons/bs";
-import { MdOutlineContentCopy } from "react-icons/md";
 import { BiEditAlt } from "react-icons/bi";
-import { TiArrowForwardOutline } from "react-icons/ti";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { HiDotsVertical } from "react-icons/hi";
+import { BsFillHeartFill, BsReply } from "react-icons/bs";
 import { FaRegGrinAlt } from "react-icons/fa";
-import { BsFillHeartFill } from "react-icons/bs";
-import { Avatar, Badge, Button, Col, Popover, Row } from 'antd';
+import { HiDotsVertical } from "react-icons/hi";
+import { MdOutlineContentCopy } from "react-icons/md";
+import { RiDeleteBinLine } from "react-icons/ri";
+import { TiArrowForwardOutline } from "react-icons/ti";
 import { timeFormat } from '../../utils/utils';
+import CustomAvatar from '../helper/CustomAvatar';
 
-const SendMessageCard = ({ profile, message, isOnline}) => {
-  
+const SendMessageCard = ({ profile, message, isOnline }) => {
+
   return (
-    <Row className="user-message">
+    <Row className="user-message" justify="end">
       <Col span={14}>
         <Row className="message-text-card">
-          <Col span={1} className='message-option' style={{position: 'relative'}}>
+          <Col span={1} className='message-option' style={{ position: 'relative' }}>
             <Popover placement="bottomRight"
               content={
                 <div className="message-options-popover">
@@ -70,22 +70,12 @@ const SendMessageCard = ({ profile, message, isOnline}) => {
             <p className='message-text'>{message.content}</p>
           </Col>
 
-          <Col span={3} style={{ textAlign: 'center' }}>
-            <Badge
-              offset={["-5%", "85%"]}
-              style={{
-                width: "8px",
-                height: "8px",
-                backgroundColor: "#67C148",
-                textAlign: "left"
-              }}
-              dot={isOnline(profile.id)}
-            >
-              <Avatar
-                className="chatting-card-img circle-img"
-                src={profile.profileImage}
-              />
-            </Badge>
+          <Col span={3} style={{ textAlign: 'right' }}>
+            <CustomAvatar
+              size={40}
+              icon={isOnline(profile?.id) && "small"}
+              src={profile?.profileImage}
+            />
           </Col>
         </Row>
       </Col>

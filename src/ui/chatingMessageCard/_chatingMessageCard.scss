@@ -9,7 +9,7 @@
 .message-text {
   color: map.get($theme-colors, "gray-text-60");
   padding: 16px;
-  border: 0.5px solid map.get($theme-colors, "black-alhpa-50");
+  border: 0.5px solid map.get($theme-colors, "gray-text-bc");
   border-radius: 22px;
 }
 
@@ -56,6 +56,5 @@
   width: 100%;
 }
 .friend-message {
-  justify-content: flex-start;
   width: 100%;
 }

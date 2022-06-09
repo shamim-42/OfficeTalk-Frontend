@@ -1,8 +1,9 @@
-import { Avatar, Badge, Card, Col, Row } from 'antd';
+import { Avatar, Card, Col, Row } from 'antd';
 import React from 'react';
 import { IoCheckmarkCircleOutline, IoCheckmarkCircleSharp } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { conversationTimeFormat } from '../../utils/utils';
+import CustomAvatar from '../helper/CustomAvatar';
 
 
 const SidebarCard = ({ user, isOnline, userid }) => {
@@ -18,21 +19,11 @@ const SidebarCard = ({ user, isOnline, userid }) => {
         className={unreadMessage > 0 ? 'unread-card' : "read-card"}>
         <Row>
           <Col span={5}>
-            <Badge
-              offset={["-5%", "85%"]}
-              style={{
-                width: "8px",
-                height: "8px",
-                backgroundColor: "#67C148",
-                textAlign: "left"
-              }}
-              dot={isOnline(user?.users_id)}
-            >
-              <Avatar
-                className="sidebar-card-img circle-img"
-                src={user?.users_profileImage}
-              />
-            </Badge>
+            <CustomAvatar
+              size={60}
+              icon={isOnline(user?.users_id) && "large"}
+              src={user?.users_profileImage}
+            />
           </Col>
           <Col span={14}>
             <p className="sidebar-card-user-name">{user?.users_fullname}</p>

@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Col, Dropdown, Form, Input, Menu, Modal, Popover, Row } from 'antd';
+import { Button, Col, Dropdown, Form, Input, Menu, Modal, Popover, Row } from 'antd';
 import React from 'react';
 import { BiSearch } from "react-icons/bi";
 import { BsChatTextFill } from "react-icons/bs";
@@ -9,6 +9,7 @@ import { ImUpload } from "react-icons/im";
 import { IoChevronDownOutline, IoOptions, IoPersonCircle } from "react-icons/io5";
 import { MdCall } from "react-icons/md";
 import { Link } from 'react-router-dom';
+import CustomAvatar from '../helper/CustomAvatar';
 import CreateGroupModal from '../modal/CreateGroupModal';
 import FilterPopover from './FilterPopover';
 import SettingPopover from './SettingPopover';
@@ -22,35 +23,19 @@ const SidebarHeader = (props) => {
       <Row>
         <Col md={20}>
           <div className="sidebar-user">
-            <Badge
-              offset={["-5%", "85%"]}
-              style={{
-                width: "8px",
-                height: "8px",
-                backgroundColor: "#67C148",
-                textAlign: "left"
-              }}
-              dot={true}
-            >
-              <Link to="/profile">
-                {userProfile?.profileImage ?
-                  <Avatar
-                    src={userProfile?.profileImage}
-                    style={{
-                      width: 44,
-                      height: 44,
-                      borderRadius: '50%',
-                    }}
-                  />
-                  :
-                  <IoPersonCircle style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: '50%',
-                  }} />
-                }
-              </Link>
-            </Badge>
+
+            <Link to="/profile">
+              {userProfile?.profileImage ?
+                <CustomAvatar size={44}
+                src={userProfile.profileImage} />
+                :
+                <IoPersonCircle style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: '50%',
+                }} />
+              }
+            </Link>
             <Link to="/profile">
               <p className="sidebar-user-name">{userProfile?.fullname}</p>
             </Link>
@@ -113,7 +98,6 @@ const SidebarHeader = (props) => {
             wrapperCol={{
               span: 22,
             }}
-          // onFinish={onFinish}
           >
             <Form.Item
               name="search"

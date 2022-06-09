@@ -7,7 +7,6 @@ import { selectUserProfile } from '../redux/features/authSlice';
 import { selectActiveUser, setUpdateConversation, setUpdateUnreadCount } from '../redux/features/layoutSlice';
 import ChattingHomeUi from '../ui/chattingHome/ChattingHomeUi';
 import { newSocket } from '../utils/socket';
-import { getDateWiseMessages } from '../utils/utils';
 
 
 const ChattingHome = () => {
@@ -68,9 +67,8 @@ const ChattingHome = () => {
 
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res)
       setMessageStatus(res.status);
-      console.log(res)
+      // console.log(res)
       if (res?.messages?.length > 0) {
         setAllMessage(res?.messages)
       } else {
@@ -175,7 +173,7 @@ const ChattingHome = () => {
 
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res)
+      // console.log(res)
       setMessageStatus(res.status)
     }
 
@@ -191,7 +189,7 @@ const ChattingHome = () => {
       senderId: chatId,
     }
     async function successHandler(response) {
-      console.log("first")
+      // console.log("first")
       dispatch(setUpdateUnreadCount(chatId))
     }
 
@@ -229,7 +227,7 @@ const ChattingHome = () => {
   }, [makeReadMessage])
 
   useEffect(() => {
-    console.log("user: ", userId)
+    // console.log("user: ", userId)
     newSocket.on(`isWriting/${userId}`, (res) => {
       if (parseInt(res.userId) === parseInt(chatId)) {
         setIsTyping(true);

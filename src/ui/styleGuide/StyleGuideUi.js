@@ -1,6 +1,7 @@
 import { Button, Card, Col, Row } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import CustomAvatar from '../helper/CustomAvatar';
 
 const StyleGuideUi = () => {
   return (
@@ -13,8 +14,11 @@ const StyleGuideUi = () => {
               our goal is to write less css code as possible, Thank you!</p>
           </Col>
         </Row>
+        <Row style={{margin: '300px'}}>
+          <CustomAvatar size={40} icon="small" />
+        </Row>
         <Row className>
-          <Col lg={8} className="m-auto">
+          <Col lg={24} className="m-auto">
             <Card className="p-3 my-3 shadow-lg border-0">
               <h1 className="primary-color mb-2">Heading H1 with - ".primary-color"</h1>
               <h1 className="primary-color font-bold mb-2">Heading H1 with - ".font-bold"</h1>
@@ -41,32 +45,32 @@ const StyleGuideUi = () => {
                 <Button className="btn-theme-primary medium-size filled-btn" role="Button" aria-label='Tag'>Tag</Button>
 
                 <Link to="/">
-                  <Button className="btn-theme-primary medium-size filled-btn" ariaLabel='Tag'>
+                  <Button className="btn-theme-primary medium-size filled-btn" aria-label='Tag'>
                     Tag
                   </Button>
                 </Link>
                 <Link to="/">
-                  <Button className="btn-theme-primary medium-size outlined-btn" ariaLabel='Tag'>
+                  <Button className="btn-theme-primary medium-size outlined-btn" aria-label='Tag'>
                     Tag
                   </Button>
                 </Link>
                 <Link to="/">
-                  <Button className="btn-theme-primary medium-size outlined-btn" ariaLabel='Tag'>
+                  <Button className="btn-theme-primary medium-size outlined-btn" aria-label='Tag'>
                     Tag
                   </Button>
                 </Link>
                 <Link to="/">
-                  <Button className="btn-theme-primary medium-size outlined-btn" ariaLabel='Tag'>
+                  <Button className="btn-theme-primary medium-size outlined-btn" aria-label='Tag'>
                     Tag
                   </Button>
                 </Link>
                 <Link to="/">
-                  <Button className="btn-theme-primary medium-size outlined-btn" ariaLabel='Tag'>
+                  <Button className="btn-theme-primary medium-size outlined-btn" aria-label='Tag'>
                     Tag
                   </Button>
                 </Link>
                 <Link to="/">
-                  <Button className="btn-theme-primary medium-size outlined-btn" ariaLabel='Tag'>
+                  <Button className="btn-theme-primary medium-size outlined-btn" aria-label='Tag'>
                     Tag
                   </Button>
                 </Link>

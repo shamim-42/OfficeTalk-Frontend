@@ -3,11 +3,10 @@ import config from "../config/config.json";
 import connector from '../connector/index';
 import EditPassword from "../container/auth/EditPassword";
 import EditProfile from "../container/auth/EditProfile";
-import Login from "../container/auth/Login";
 import ProfileView from "../container/auth/ProfileView";
-import Registration from "../container/auth/Registration";
 import ChattingHome from "../container/ChattingHome";
 import HomePage from "../container/HomePage";
+import StyleGuide from "../container/StyleGuide";
 import WelcomeHome from "../ui/welcomeHome/WelcomeHome";
 connector.baseUrl = config.baseUrl;
 
@@ -19,6 +18,8 @@ function Layout() {
     return (
 
         <Routes>
+                <Route path="/gude" element={<StyleGuide />} />
+
             <Route path="/" element={<HomePage />}>
                 <Route index element={<WelcomeHome />} />
                 <Route path="/chat/:chatId" element={<ChattingHome />} />

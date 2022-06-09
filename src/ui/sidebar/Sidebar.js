@@ -1,8 +1,9 @@
-import { Avatar, Badge, Divider, Tooltip } from 'antd';
+import { Avatar, Divider } from 'antd';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectConversationList } from '../../redux/features/layoutSlice';
+import CustomAvatar from '../helper/CustomAvatar';
 import SidebarCard from './SidebarCard';
 import SidebarHeader from './SidebarHeader';
 
@@ -33,27 +34,11 @@ const Sidebar = (props) => {
           {
             users.map((user, index) => (
               <Link to={`chat/${user.id}`} key={user.id || index}>
-                <Tooltip title={user.fullname} overlayInnerStyle={{
-                  padding: '0 4px',
-                  minHeight: 'fit-content',
-                  fontSize: '12px',
-                }} placement="top">
-                  <Badge
-                    offset={["-5%", "85%"]}
-                    className="online-badge"
-                    style={{
-                      width: "8px",
-                      height: "8px",
-                      backgroundColor: "#67C148"
-                    }}
-                    dot={isOnline(user.id)}
-                  >
-                    <Avatar
-                      className="online-user-img"
-                      src={user.profileImage}
-                    />
-                  </Badge>
-                </Tooltip>
+                <CustomAvatar
+                  size={40}
+                  src={user.profileImage}
+                  icon={isOnline(user.id) && "small"}
+                />
               </Link>
             ))
           }
@@ -74,3 +59,4 @@ const Sidebar = (props) => {
 };
 
 export default Sidebar;
+

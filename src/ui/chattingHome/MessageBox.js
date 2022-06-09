@@ -16,8 +16,7 @@ const MessageBox = (props) => {
       setPopoverVisible("")
     }
   }
-  console.log(filterMessages)
-
+  
   return (
     <>
       <Row className="chatting-date">

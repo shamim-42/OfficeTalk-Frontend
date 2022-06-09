@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Col, Popover, Row } from 'antd';
+import { Button, Col, Popover, Row } from 'antd';
 import React from 'react';
 import { AiFillLike } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
@@ -9,37 +9,28 @@ import { MdOutlineContentCopy } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { TiArrowForwardOutline } from "react-icons/ti";
 import { timeFormat } from '../../utils/utils';
+import CustomAvatar from '../helper/CustomAvatar';
 
 const ChatingMessageCard = (props) => {
   const { profile, message, isOnline, visible, handleVisibleChange } = props;
-  
+
   return (
-    <Row className="friend-message">
+    <Row className="friend-message" justify="start">
       <Col span={14}>
         <Row className="friend-message-card">
           <Col span={3} style={{ textAlign: 'center' }}>
-            <Badge
-              offset={["-5%", "85%"]}
-              style={{
-                width: "8px",
-                height: "8px",
-                backgroundColor: "#67C148",
-                textAlign: "left"
-              }}
-              dot={isOnline(profile?.id)}
-            >
-              <Avatar
-                className="chatting-card-img circle-img"
-                src={profile?.profileImage}
-              />
-            </Badge>
+            <CustomAvatar
+              size={40}
+              icon={isOnline(profile?.id) && "small"}
+              src={profile?.profileImage}
+            />
           </Col>
           <Col span={20}>
             <p className='message-time'>{timeFormat(message.createdAt)}</p>
             <p className='message-text'>{message?.content}</p>
           </Col>
-          <Col span={1} className='message-option' style={{position: "relative"}}>
-            <Popover 
+          <Col span={1} className='message-option' style={{ position: "relative" }}>
+            <Popover
               content={
                 <div className="message-options-popover">
                   <Button type="text">
@@ -64,7 +55,7 @@ const ChatingMessageCard = (props) => {
                   </Button>
                 </div>
               }
-              trigger="click" 
+              trigger="click"
               visible={visible}
               onVisibleChange={handleVisibleChange}>
               <Button type="text">
