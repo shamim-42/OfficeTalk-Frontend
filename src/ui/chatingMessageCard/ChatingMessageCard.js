@@ -12,7 +12,7 @@ import { timeFormat } from '../../utils/utils';
 import CustomAvatar from '../helper/CustomAvatar';
 
 const ChatingMessageCard = (props) => {
-  const { profile, message, isOnline, visible, handleVisibleChange } = props;
+  const { profile, message, isOnline } = props;
 
   return (
     <Row className="friend-message" justify="start">
@@ -31,6 +31,7 @@ const ChatingMessageCard = (props) => {
           </Col>
           <Col span={1} className='message-option' style={{ position: "relative" }}>
             <Popover
+            placement="rightTop"
               content={
                 <div className="message-options-popover">
                   <Button type="text">
@@ -56,8 +57,7 @@ const ChatingMessageCard = (props) => {
                 </div>
               }
               trigger="click"
-              visible={visible}
-              onVisibleChange={handleVisibleChange}>
+            >
               <Button type="text">
                 <HiDotsVertical />
               </Button>

@@ -1,5 +1,6 @@
 import { Button, Col, Popover, Row } from 'antd';
 import React from 'react';
+import { AiFillLike } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
 import { BsFillHeartFill, BsReply } from "react-icons/bs";
 import { FaRegGrinAlt } from "react-icons/fa";
@@ -10,17 +11,26 @@ import { TiArrowForwardOutline } from "react-icons/ti";
 import { timeFormat } from '../../utils/utils';
 import CustomAvatar from '../helper/CustomAvatar';
 
-const SendMessageCard = ({ profile, message, isOnline }) => {
+const MessageCard = (props) => {
+  const { profile, message, isOnline } = props;
 
   return (
-    <Row className="user-message" justify="end">
+    <Row className="friend-message" justify="start">
       <Col span={14}>
-        <Row className="message-text-card">
+        <Row className="friend-message-card">
+          <Col span={3} className='message-sender-img'>
+            <CustomAvatar
+              size={40}
+              icon={isOnline(profile?.id) && "small"}
+              src={profile?.profileImage}
+            />
+          </Col>
           <Col span={21}>
-            <p className='message-time' style={{ textAlign: 'right' }}>
-              {timeFormat(message.createdAt)}
-            </p>
+            <p className='message-time'>{timeFormat(message.createdAt)}</p>
             <Row>
+              <Col span={23}>
+                <p className='message-text'>{message.content}</p>
+              </Col>
               <Col span={1} className="message-option">
                 <Popover placement="bottomRight"
                   content={<MessageOption />}
@@ -31,26 +41,14 @@ const SendMessageCard = ({ profile, message, isOnline }) => {
                 </Popover>
 
                 <Popover placement="left"
-                  content={<MessageReact />} 
+                  content={<MessageReact />}
                   trigger="click">
                   <Button type="text">
                     <FaRegGrinAlt />
                   </Button>
                 </Popover>
               </Col>
-              <Col span={23}>
-                <p className='message-text'>{message.content}</p>
-              </Col>
             </Row>
-          </Col>
-
-          <Col span={3}
-            className='message-sender-img'>
-            <CustomAvatar
-              size={40}
-              icon={isOnline(profile?.id) && "small"}
-              src={profile?.profileImage}
-            />
           </Col>
         </Row>
       </Col>
@@ -58,7 +56,7 @@ const SendMessageCard = ({ profile, message, isOnline }) => {
   );
 };
 
-export default SendMessageCard;
+export default MessageCard;
 
 
 const MessageOption = () => {
@@ -92,7 +90,7 @@ const MessageOption = () => {
 const MessageReact = () => {
   return (
     <div style={{ fontSize: '24px', display: 'flex', gap: '10px' }}>
-      <BsFillHeartFill />
+      <AiFillLike />
       <BsFillHeartFill />
       <BsFillHeartFill />
       <BsFillHeartFill />
@@ -101,3 +99,4 @@ const MessageReact = () => {
     </div>
   );
 };
+

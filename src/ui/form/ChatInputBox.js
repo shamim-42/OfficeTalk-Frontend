@@ -1,6 +1,6 @@
 import { Button, Col, Form, Input } from "antd";
 import React, { Fragment } from "react";
-import { BsFillMicFill, BsEmojiSmile, BsPencil } from "react-icons/bs";
+import { BsEmojiSmile, BsFillMicFill, BsPencil } from "react-icons/bs";
 import { FaRegPaperPlane } from "react-icons/fa";
 import { IoImagesOutline } from "react-icons/io5";
 const { TextArea } = Input;
@@ -27,7 +27,7 @@ function ChatInputBox(props) {
         </Form>
       </Col>
       <Col span={8} className="chat-input-attachment">
-        {messagesValue && <Button shape="circle" icon={<FaRegPaperPlane />} className="chat-sent-control" />}
+        {messagesValue.trim() && <Button shape="circle" icon={<FaRegPaperPlane />} className="chat-sent-control" />}
         <Button shape="circle" icon={<IoImagesOutline />} />
         <Button shape="circle" icon={<BsFillMicFill />} />
       </Col>

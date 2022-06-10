@@ -18,9 +18,15 @@
   height: 40px;
 }
 
+.message-sender-img {
+  display: flex;
+  justify-content: center;
+}
+
 .message-option {
   position: relative;
-  @include set-display-flex(center, space-between, 0, column);
+  @include set-display-flex(flex-start, space-between, 0, column);
+  margin-top: 0;
 
   & .ant-btn {
     height: 15px;
@@ -28,7 +34,6 @@
 
   & > Button {
     padding: 0;
-    margin-top: 10px;
 
     &:hover,
     &:focus,

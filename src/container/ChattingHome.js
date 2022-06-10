@@ -82,9 +82,10 @@ const ChattingHome = () => {
       setIsLoading(false);
     }
 
-    return await getAllMessageApi( id, { userId: userId }, { successHandler, handleBadReq, 
-        urlParams: { page: 1 } 
-      })
+    return await getAllMessageApi(id, { userId: userId }, {
+      successHandler, handleBadReq,
+      urlParams: { page: 1 }
+    })
   }, [userId])
 
 
@@ -110,7 +111,7 @@ const ChattingHome = () => {
   // Send message function
   async function handleSubmitMessage() {
     newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
-    if (messagesText.length <= 0 || messagesText === " ") {
+    if (messagesText.trim().length <= 0) {
       return
     }
     const messageData = {
