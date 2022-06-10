@@ -1,6 +1,5 @@
 import { Button, Col, Popover, Row } from 'antd';
 import React from 'react';
-import { AiFillLike } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
 import { BsFillHeartFill, BsReply } from "react-icons/bs";
 import { FaRegGrinAlt } from "react-icons/fa";
@@ -12,12 +11,71 @@ import { timeFormat } from '../../utils/utils';
 import CustomAvatar from '../helper/CustomAvatar';
 
 const MessageCard = (props) => {
-  const { profile, message, isOnline } = props;
+  const { profile, message, isOnline, senderCard } = props;
+
+  if (senderCard) {
+    return (
+      <Row className="message-card" justify="end">
+        <Col span={14}>
+          <Row>
+            <Col span={21}>
+              <p className='message-time' style={{ textAlign: 'right' }}>
+                {timeFormat(message.createdAt)}
+              </p>
+              <Row>
+                <Col span={1} className="message-option">
+                  <Popover placement="bottomRight"
+                    content={<MessageOption />}
+                    trigger="click">
+                    <Button type="text">
+                      <HiDotsVertical />
+                    </Button>
+                  </Popover>
+
+                  <Popover placement="left"
+                    content={<MessageReact />}
+                    trigger="click">
+                    <Button type="text">
+                      <FaRegGrinAlt />
+                    </Button>
+                  </Popover>
+                </Col>
+                <Col span={23}>
+                  <p className='message-text'>{message.content}</p>
+                  <Popover
+                    content={<div>
+                      <BsFillHeartFill />
+                      <BsFillHeartFill />
+                    </div>}
+                  >
+                    <div className="reaction-count">
+                      <p>4</p>
+                      <BsFillHeartFill />
+                      <BsFillHeartFill />
+                    </div>
+                  </Popover>
+                </Col>
+              </Row>
+            </Col>
+
+            <Col span={3}
+              className='message-sender-img'>
+              <CustomAvatar
+                size={40}
+                icon={isOnline(profile?.id) && "small"}
+                src={profile?.profileImage}
+              />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    )
+  }
 
   return (
-    <Row className="friend-message" justify="start">
+    <Row className="message-card" justify="start">
       <Col span={14}>
-        <Row className="friend-message-card">
+        <Row>
           <Col span={3} className='message-sender-img'>
             <CustomAvatar
               size={40}
@@ -28,11 +86,24 @@ const MessageCard = (props) => {
           <Col span={21}>
             <p className='message-time'>{timeFormat(message.createdAt)}</p>
             <Row>
-              <Col span={23}>
+              <Col span={23} className='message-area'>
                 <p className='message-text'>{message.content}</p>
+                <Popover
+                  content={<div>
+                    <p>4</p>
+                    <BsFillHeartFill />
+                    <BsFillHeartFill />
+                  </div>}
+                >
+                  <div className="reaction-count">
+                    <p>4</p>
+                    <BsFillHeartFill />
+                    <BsFillHeartFill />
+                  </div>
+                </Popover>
               </Col>
               <Col span={1} className="message-option">
-                <Popover placement="bottomRight"
+                <Popover placement="bottomLeft"
                   content={<MessageOption />}
                   trigger="click">
                   <Button type="text">
@@ -40,7 +111,7 @@ const MessageCard = (props) => {
                   </Button>
                 </Popover>
 
-                <Popover placement="left"
+                <Popover placement="bottomLeft"
                   content={<MessageReact />}
                   trigger="click">
                   <Button type="text">
@@ -89,13 +160,13 @@ const MessageOption = () => {
 
 const MessageReact = () => {
   return (
-    <div style={{ fontSize: '24px', display: 'flex', gap: '10px' }}>
-      <AiFillLike />
-      <BsFillHeartFill />
-      <BsFillHeartFill />
-      <BsFillHeartFill />
-      <BsFillHeartFill />
-      <BsFillHeartFill />
+    <div className="message-react">
+      <span className="icon">👍</span>
+      <span className="icon">❤️</span>
+      <span className="icon">😁</span>
+      <span className="icon">😮</span>
+      <span className="icon">😢</span>
+      <span className="icon">😠</span>
     </div>
   );
 };

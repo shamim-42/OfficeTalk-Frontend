@@ -1,6 +1,5 @@
 import { Col, Row } from 'antd';
 import React from 'react';
-import SendMessageCard from '../chatingMessageCard/SendMessageCard';
 import MessageCard from './MessageCard';
 
 const MessageBox = (props) => {
@@ -26,7 +25,8 @@ const MessageBox = (props) => {
                 key={message?.id}
               />
             } else {
-              return <SendMessageCard
+              return <MessageCard
+                senderCard={true}
                 profile={userProfile}
                 isOnline={isOnline}
                 message={message}
