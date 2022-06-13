@@ -22,7 +22,7 @@ const ChattingHome = () => {
   const onlineUsers = useSelector(selectActiveUser)
   const dispatch = useDispatch();
   const userId = userProfile.id;
-
+  const state={value: userId};
 
   // check user online status function
   function isOnline(id) {
@@ -215,6 +215,7 @@ const ChattingHome = () => {
 
   useEffect(() => {
     getNewMessage(chatId)
+    return () => newSocket.off('newMessage/user/' + userId);
   }, [chatId, getNewMessage])
 
 
@@ -243,6 +244,8 @@ const ChattingHome = () => {
 
     return () => {
       setIsTyping(false);
+      newSocket.off(`isWriting/${userId}`);
+      newSocket.off(`isNotWriting/${userId}`);
     }
   }, [userId, chatId])
 

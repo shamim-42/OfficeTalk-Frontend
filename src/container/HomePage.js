@@ -115,7 +115,7 @@ const HomePage = () => {
       setUnreadCount(res)
     })
 
-    newSocket.on('newMessage/user/' + userId, (msg) => {
+    newSocket.on('newMessagesidebar/user/' + userId, (msg) => {
       updateConversationList(msg)
     })
   }
