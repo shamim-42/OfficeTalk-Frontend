@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../api/auth';
@@ -68,7 +68,7 @@ const ChattingHome = () => {
     async function successHandler(response) {
       const res = await response.json();
       setMessageStatus(res.status);
-      // console.log(res)
+      console.log(res.messages)
       if (res?.messages?.length > 0) {
         setAllMessage(res?.messages)
       } else {
