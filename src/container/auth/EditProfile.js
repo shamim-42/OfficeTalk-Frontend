@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { editprofileApi, editprofilePhotoApi } from '../../api/auth';
@@ -31,15 +31,11 @@ const EditProfile = () => {
     }
     setLoader(true);
     const formData = new FormData();
-    const fileName = uploadPhoto?.name?.replace(/ /g, "_");
-    const dateTime = new Date().toString().replace(/ /g, "_");
-    const randomNumber = Math.floor(Math.random() * (1000, 9999) + 1000);
-    const fullFileName = fileName + dateTime + randomNumber;
-    formData.append("file", uploadPhoto, fullFileName);
+    formData.append("file", uploadPhoto);
 
     async function successHandler(response) {
       const data = await response.json();
-      newProfile.profileImage = data?.original?.Location;
+      newProfile.profileImage = data?.Location;
       dispatch(setUserProfile(newProfile))
       setPhotoChange(false);
       setLoader(false);

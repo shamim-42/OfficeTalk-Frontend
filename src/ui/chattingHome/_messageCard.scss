@@ -13,43 +13,115 @@
     color: map.get($theme-colors, "gray-text-8b");
   }
 
+  & .message-body {
+    width: 100%;
+    @include set-display-flex(stretch, flex-end, 10px);
+
+    & .message-option {
+      position: relative;
+      @include set-display-flex(flex-start, space-between, 0, column);
+      margin-top: 0;
+
+      & .ant-btn {
+        height: 15px;
+      }
+
+      & > Button {
+        padding: 0;
+
+        &:hover,
+        &:focus,
+        &:active {
+          background: transparent;
+        }
+      }
+    }
+  }
+
   & .reaction-count {
     background-color: map.get($theme-colors, "white");
     width: fit-content;
     box-shadow: 1px 2px 5px map.get($theme-colors, "black-alhpa-25");
     border-radius: 22px;
     padding: 1px 6px;
-    @include set-display-flex(center, space-between, 3px);
+    @include set-display-flex(center, space-between, 2px);
     position: absolute;
-    left: 30px;
     bottom: -10px;
-    font-size: 14px;
+    left: 15px;
+
+    & .icon {
+      font-size: 14px;
+    }
   }
 
-  & .message-text {
-    color: map.get($theme-colors, "gray-text-60");
+  & .img-message {
+    position: relative;
+    width: fit-content;
+
+    & .messages-img {
+      width: 214px;
+      height: 214px;
+      float: right;
+    }
+
+    & .message-double-img {
+      width: 274px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+
+      & .image {
+        width: 137px;
+        height: 137px;
+      }
+    }
+
+    & .message-three-img {
+      position: relative;
+      width: 274px;
+      height: fit-content;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+
+      & .image {
+        z-index: 0;
+        width: 137px;
+        height: 137px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+
+        & .more-button-dark {
+          width: 137px;
+          height: 137px;
+          background-color: rgba(2, 2, 2, 0.41);
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          z-index: 2;
+        }
+
+        & .more-img-button {
+          width: 137px;
+          height: 137px;
+          font-size: 36px;
+          color: map.get($theme-colors, "white");
+          font-weight: 700;
+          z-index: 9;
+        }
+      }
+    }
+  }
+
+  & .text-message {
+    position: relative;
+    width: 95%;
     padding: 20px;
     border: 0.5px solid map.get($theme-colors, "gray-text-bc");
     border-radius: 22px;
-  }
 
-  & .message-option {
-    position: relative;
-    @include set-display-flex(flex-start, space-between, 0, column);
-    margin-top: 0;
-
-    & .ant-btn {
-      height: 15px;
-    }
-
-    & > Button {
-      padding: 0;
-
-      &:hover,
-      &:focus,
-      &:active {
-        background: transparent;
-      }
+    & .message-text {
+      color: map.get($theme-colors, "gray-text-60");
+      word-wrap: break-word;
     }
   }
 }

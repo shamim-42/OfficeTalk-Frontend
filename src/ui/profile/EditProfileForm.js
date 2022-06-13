@@ -1,13 +1,15 @@
 import { Button, Form, Input, Spin } from 'antd';
-import React from 'react';
+import { useEffect } from 'react';
 import UploadProfile from './UploadProfile';
 
 
 const EditProfileForm = (props) => {
-  const { handleEditProfile, userProfile, handleEditProfileImage, handleImageChange, photoChange,loader } = props;
-  const { fullname, email, username, aboutMe, city, phoneNumber } = userProfile;
+  const { handleEditProfile, userProfile, handleEditProfileImage, handleImageChange, photoChange, loader } = props;
   const [form] = Form.useForm();
-  form.setFieldsValue({ fullname, email, username, aboutMe, city, phoneNumber });
+
+  useEffect(() => {
+    form.setFieldsValue({ fullname: userProfile.fullname, email: userProfile.email, username: userProfile.username, aboutMe: userProfile.aboutMe, city: userProfile.city, phoneNumber: userProfile.phoneNumber });
+  }, [form, userProfile])
 
 
   return (
