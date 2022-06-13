@@ -6,7 +6,7 @@ import Login from './container/auth/Login';
 import Registration from './container/auth/Registration';
 import Layout from './layout/Layout';
 import { selectUserProfile, selectUserToken } from './redux/features/authSlice';
-import { newSocket } from './utils/socket';
+
 
 const PrivateRoute = ({ children }) => {
   const userProfile = useSelector(selectUserProfile)
@@ -62,8 +62,7 @@ function App() {
       }
     }
 
-    newSocket.connect()
-    return () => newSocket.close();
+    
   }, [accessToken]);
   return (
     <Routes>

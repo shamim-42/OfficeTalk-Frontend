@@ -88,7 +88,7 @@ const HomePage = () => {
       localStorage.removeItem("authToken");
       localStorage.removeItem("userProfile");
       navigate('/login');
-      newSocket.disconnect()
+      newSocket.disconnect();
       dispatch(resetUser());
     }
 
@@ -142,9 +142,11 @@ const HomePage = () => {
   }, [userId, dispatch])
 
   useEffect(() => {
-    fetchUserList()
-    fetchConversationList()
-    getOnlineUsers()
+    fetchUserList();
+    fetchConversationList();
+    getOnlineUsers();
+    newSocket.connect();
+    return () => newSocket.close();
   }, [])
 
   return (
