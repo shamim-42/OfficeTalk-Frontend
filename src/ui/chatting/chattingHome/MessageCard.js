@@ -6,9 +6,9 @@ import MessageOption from './MessageOption';
 import TextMessageCard from './TextMessageCard';
 
 const MessageCard = (props) => {
-  const { profile, message, isOnline, senderCard } = props;
+  const { CurrentUserProfile, message, isOnline, userProfile } = props;
 
-  if (senderCard) {
+  if (message.senderId === userProfile.id) {
     return (
       <Row className="message-card" justify="end">
         <Col span={14}>
@@ -32,8 +32,8 @@ const MessageCard = (props) => {
               className='message-sender-img'>
               <CustomAvatar
                 size={40}
-                icon={isOnline(profile?.id) && "small"}
-                src={profile?.profileImage}
+                icon={isOnline(userProfile?.id) && "small"}
+                src={userProfile?.profileImage}
               />
             </Col>
           </Row>
@@ -49,8 +49,8 @@ const MessageCard = (props) => {
           <Col span={3} className='message-sender-img'>
             <CustomAvatar
               size={40}
-              icon={isOnline(profile?.id) && "small"}
-              src={profile?.profileImage}
+              icon={isOnline(CurrentUserProfile?.id) && "small"}
+              src={CurrentUserProfile?.profileImage}
             />
           </Col>
           <Col span={21}>

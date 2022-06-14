@@ -28,10 +28,12 @@ export function getDateWiseMessages(list) {
     }
 
     for (let key in datewiseFilteredObj) {
-      formattedMessageArray.push({ [key]: {
-        date: new Date(key).toDateString(),
-        data: datewiseFilteredObj[key],
-      } })
+      formattedMessageArray.push({
+        [key]: {
+          date: new Date(key).toDateString(),
+          data: datewiseFilteredObj[key],
+        }
+      })
     }
   }
   const reverseMessages = formattedMessageArray.reverse();
@@ -174,5 +176,36 @@ export function conversationTimeFormat(dateParam) {
 
   return getFormattedDateTime(date);
 };
+
+// // Check is messages contain link
+// export function checkLink(text) {
+//   const urlRegex = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+
+//   const url = text.match(urlRegex);
+//   if (url) {
+//     return url;
+//   } else {
+//     return false;
+//   }
+// }
+// Check is messages contain link
+export function checkLink(text) {
+  const geturl = new RegExp(
+    "(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;/?:@&~=%-]*))?([A-Za-z0-9$_+!*();/?:~-]))"
+    , "g"
+  );
+
+  const url = text.match(geturl);
+  if (url) {
+    return url;
+  } else {
+    return false;
+  }
+}
+
+
+
+
+
 
 

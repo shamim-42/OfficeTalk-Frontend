@@ -7,6 +7,7 @@ import { selectUserProfile } from '../../redux/features/authSlice';
 import { selectActiveUser, setUpdateConversation, setUpdateUnreadCount } from '../../redux/features/layoutSlice';
 import ChattingHomeUi from '../../ui/chatting/chattingHome/ChattingHomeUi';
 import { newSocket } from '../../utils/socket';
+import { checkLink } from '../../utils/utils';
 
 
 const ChattingHome = () => {
@@ -23,9 +24,6 @@ const ChattingHome = () => {
   const dispatch = useDispatch();
   const userId = userProfile.id;
   // const state={value: userId};
-
-
-  console.log("chat", chatId);
 
   // check user online status function
   function isOnline(id) {
@@ -117,6 +115,7 @@ const ChattingHome = () => {
     if (messagesText.trim().length <= 0) {
       return
     }
+    console.log(checkLink(messagesText))
     const messageData = {
       message: messagesText,
       senderId: userId,
@@ -219,7 +218,7 @@ const ChattingHome = () => {
   useEffect(() => {
     getNewMessage(chatId)
     return () => newSocket.off('newMessage/user/' + userId);
-  }, [chatId, getNewMessage])
+  }, [chatId, getNewMessage, userId])
 
 
 
