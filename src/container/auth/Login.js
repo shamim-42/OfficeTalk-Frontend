@@ -1,10 +1,10 @@
 import { Alert, Form, message, Modal, Spin } from 'antd';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { userLoginApi } from '../../api/auth';
 import { setUser, setUserProfile } from '../../redux/features/authSlice';
-import LoginUi from '../../ui/login/LoginUi';
+import LoginUi from '../../ui/auth/login/LoginUi';
 
 const Login = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);

@@ -1,7 +1,7 @@
 import { Button, Popover } from 'antd';
 
 const ImageMessageCard = ({ message }) => {
-  const { Images } = message;
+  const { Images, sender } = message;
 
   return (
     <div className="img-message">

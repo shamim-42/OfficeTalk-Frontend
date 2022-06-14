@@ -4,10 +4,10 @@ import connector from '../connector/index';
 import EditPassword from "../container/auth/EditPassword";
 import EditProfile from "../container/auth/EditProfile";
 import ProfileView from "../container/auth/ProfileView";
-import ChattingHome from "../container/ChattingHome";
+import ChattingHome from "../container/chat/ChattingHome";
 import HomePage from "../container/HomePage";
 import StyleGuide from "../container/StyleGuide";
-import WelcomeHome from "../ui/welcomeHome/WelcomeHome";
+import WelcomeHome from "../ui/home/WelcomeHome";
 connector.baseUrl = config.baseUrl;
 
 
@@ -18,7 +18,7 @@ function Layout() {
     return (
 
         <Routes>
-                <Route path="/gude" element={<StyleGuide />} />
+            <Route path="/gude" element={<StyleGuide />} />
 
             <Route path="/" element={<HomePage />}>
                 <Route index element={<WelcomeHome />} />

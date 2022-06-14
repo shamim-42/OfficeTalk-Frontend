@@ -1,5 +1,4 @@
 import { Button, Col, Dropdown, Form, Input, Menu, Modal, Popover, Row } from 'antd';
-import React from 'react';
 import { BiSearch } from "react-icons/bi";
 import { BsChatTextFill } from "react-icons/bs";
 import { CgMenuGridO } from "react-icons/cg";

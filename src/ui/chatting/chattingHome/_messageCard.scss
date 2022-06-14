@@ -6,6 +6,8 @@
   & .message-sender-img {
     display: flex;
     justify-content: center;
+    height: fit-content;
+    width: fit-content;
   }
 
   & .message-time {
@@ -15,9 +17,9 @@
 
   & .message-body {
     width: 100%;
-    @include set-display-flex(stretch, flex-end, 10px);
+    @include set-display-flex(stretch, flex-start, 10px);
 
-    & .message-option {
+    & .message-options {
       position: relative;
       @include set-display-flex(flex-start, space-between, 0, column);
       margin-top: 0;
@@ -38,6 +40,14 @@
     }
   }
 
+  & .message-right {
+    justify-content: flex-end;
+  }
+
+  & .message-left {
+    justify-content: flex-start;
+  }
+
   & .reaction-count {
     background-color: map.get($theme-colors, "white");
     width: fit-content;
@@ -51,64 +61,6 @@
 
     & .icon {
       font-size: 14px;
-    }
-  }
-
-  & .img-message {
-    position: relative;
-    width: fit-content;
-
-    & .messages-img {
-      width: 214px;
-      height: 214px;
-      float: right;
-    }
-
-    & .message-double-img {
-      width: 274px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-
-      & .image {
-        width: 137px;
-        height: 137px;
-      }
-    }
-
-    & .message-three-img {
-      position: relative;
-      width: 274px;
-      height: fit-content;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-
-      & .image {
-        z-index: 0;
-        width: 137px;
-        height: 137px;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-
-        & .more-button-dark {
-          width: 137px;
-          height: 137px;
-          background-color: rgba(2, 2, 2, 0.41);
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          z-index: 2;
-        }
-
-        & .more-img-button {
-          width: 137px;
-          height: 137px;
-          font-size: 36px;
-          color: map.get($theme-colors, "white");
-          font-weight: 700;
-          z-index: 9;
-        }
-      }
     }
   }
 
@@ -140,9 +92,6 @@
   }
 }
 
-.ant-popover.ant-popover-placement-top {
-  padding: 2px;
-}
 .message-react {
   font-size: 24px;
   display: flex;

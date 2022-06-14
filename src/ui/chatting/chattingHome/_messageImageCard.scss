@@ -1,0 +1,59 @@
+@use "sass:map";
+
+.img-message {
+  position: relative;
+  width: fit-content;
+
+  & .messages-img {
+    width: 214px;
+    height: 214px;
+    float: right;
+  }
+
+  & .message-double-img {
+    width: 274px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    & .image {
+      width: 137px;
+      height: 137px;
+    }
+  }
+
+  & .message-three-img {
+    position: relative;
+    width: 274px;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    & .image {
+      z-index: 0;
+      width: 137px;
+      height: 137px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+
+      & .more-button-dark {
+        width: 137px;
+        height: 137px;
+        background-color: rgba(2, 2, 2, 0.41);
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+      }
+
+      & .more-img-button {
+        width: 137px;
+        height: 137px;
+        font-size: 36px;
+        color: map.get($theme-colors, "white");
+        font-weight: 700;
+        z-index: 9;
+      }
+    }
+  }
+}

@@ -11,8 +11,9 @@ const MessageOption = (props) => {
   const { align } = props;
 
   return (
-    <div className="message-option">
+    <div className="message-options">
       <Popover placement={align === "left" ? "bottomLeft" : "bottomRight"}
+        className="message-option"
         content={<MessageOptions />}
         trigger="click">
         <Button type="text">

@@ -1,10 +1,10 @@
 import { message, Spin } from 'antd';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { userRegistrationApi } from '../../api/auth';
 import { setUser, setUserProfile } from '../../redux/features/authSlice';
-import RegistrationUi from '../../ui/registration/RegistrationUi';
+import RegistrationUi from '../../ui/auth/registration/RegistrationUi';
 
 const Registration = () => {
   const [loading, setLoading] = useState(false)

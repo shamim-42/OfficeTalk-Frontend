@@ -1,11 +1,10 @@
 import { Button } from 'antd';
-import React from 'react';
 import { BiSearch } from "react-icons/bi";
 import { IoIosCall } from "react-icons/io";
 import { IoCloseOutline, IoPersonCircleSharp, IoVideocam } from "react-icons/io5";
 import { Link } from 'react-router-dom';
-import { activeTimeFormat } from '../../utils/utils';
-import CustomAvatar from '../helper/CustomAvatar';
+import { activeTimeFormat } from '../../../utils/utils';
+import CustomAvatar from '../../helper/CustomAvatar';
 
 const ChattingHeader = (props) => {
   const { currentUserProfile, isOnline } = props;

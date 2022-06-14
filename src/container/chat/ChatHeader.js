@@ -1,9 +1,8 @@
 import { Affix } from 'antd';
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { selectActiveUser } from '../redux/features/layoutSlice';
-import ChattingHeader from '../ui/chattingHeader/ChattingHeader';
+import { selectActiveUser } from '../../redux/features/layoutSlice';
+import ChattingHeader from '../../ui/chatting/chattingHeader/ChattingHeader';
 
 const ChatHeader = ({ currentUserProfile }) => {
   const { chatId } = useParams();

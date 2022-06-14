@@ -1,8 +1,8 @@
 import { Affix, Avatar, Button, Row, Spin } from "antd";
-import React, { Fragment, useEffect, useRef } from "react";
-import hi from "../../assest/image/hi.gif";
-import ChatHeader from "../../container/ChatHeader";
-import ChatInputBox from "../form/ChatInputBox";
+import { Fragment, useEffect, useRef } from "react";
+import hi from "../../../assest/image/hi.gif";
+import ChatHeader from "../../../container/chat/ChatHeader";
+import ChatInputBox from "../../form/ChatInputBox";
 import MessageBox from "./MessageBox";
 
 

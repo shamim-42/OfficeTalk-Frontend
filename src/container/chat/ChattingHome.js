@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { userActiveStatusApi } from '../api/auth';
-import { acceptUserApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../api/chat';
-import { selectUserProfile } from '../redux/features/authSlice';
-import { selectActiveUser, setUpdateConversation, setUpdateUnreadCount } from '../redux/features/layoutSlice';
-import ChattingHomeUi from '../ui/chattingHome/ChattingHomeUi';
-import { newSocket } from '../utils/socket';
+import { userActiveStatusApi } from '../../api/auth';
+import { acceptUserApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../../api/chat';
+import { selectUserProfile } from '../../redux/features/authSlice';
+import { selectActiveUser, setUpdateConversation, setUpdateUnreadCount } from '../../redux/features/layoutSlice';
+import ChattingHomeUi from '../../ui/chatting/chattingHome/ChattingHomeUi';
+import { newSocket } from '../../utils/socket';
 
 
 const ChattingHome = () => {
@@ -22,7 +22,10 @@ const ChattingHome = () => {
   const onlineUsers = useSelector(selectActiveUser)
   const dispatch = useDispatch();
   const userId = userProfile.id;
-  const state={value: userId};
+  // const state={value: userId};
+
+
+  console.log("chat", chatId);
 
   // check user online status function
   function isOnline(id) {
@@ -239,7 +242,6 @@ const ChattingHome = () => {
 
     newSocket.on(`isNotWriting/${userId}`, (res) => {
       setIsTyping(false);
-      console.log("chat", chatId);
     });
 
     return () => {
