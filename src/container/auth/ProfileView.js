@@ -1,7 +1,6 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectUserProfile } from '../../redux/features/authSlice';
-import ProfileViewUi from '../../ui/profile/ProfileViewUi';
+import ProfileViewUi from '../../ui/auth/profile/ProfileViewUi';
 
 const ProfileView = () => {
   const userProfile = useSelector(selectUserProfile);

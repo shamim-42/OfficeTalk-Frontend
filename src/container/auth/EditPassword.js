@@ -1,10 +1,10 @@
 import { message, Spin } from 'antd';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { editPasswordApi } from '../../api/auth';
 import { selectUserProfile } from '../../redux/features/authSlice';
-import EditPasswordForm from '../../ui/profile/EditPasswordForm';
+import EditPasswordForm from '../../ui/auth/profile/EditPasswordForm';
 
 
 const EditPassword = () => {

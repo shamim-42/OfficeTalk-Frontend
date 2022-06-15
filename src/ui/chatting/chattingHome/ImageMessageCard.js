@@ -1,29 +1,29 @@
 import { Button, Popover } from 'antd';
 
 const ImageMessageCard = ({ message }) => {
-  const { Images, sender } = message;
+  const { images } = message;
 
   return (
     <div className="img-message">
       {
-        Images.length === 1 &&
-        <img className="messages-img" src={Images[0]} alt="" />
+        images.length === 1 &&
+        <img className="messages-img" src={images[0]} alt="" />
       }
       {
-        (Images.length === 2 || Images.length === 4) &&
+        (images.length === 2 || images.length === 4) &&
         <div className="message-double-img">
           {
-            Images.map((image, index) =>
+            images.map((image, index) =>
               <img key={index} className="image" src={image} alt="" />
             )
           }
         </div>
       }
       {
-        Images.length === 3 &&
+        images.length === 3 &&
         <div className="message-three-img">
-          <img className="image" src={Images[0]} alt="" />
-          <div className="image" style={{ backgroundImage: `url(${Images[1]})` }}>
+          <img className="image" src={images[0]} alt="" />
+          <div className="image" style={{ backgroundImage: `url(${images[1]})` }}>
             <div className="more-button-dark"></div>
             <Button type="text"
               className="more-img-button">
@@ -33,16 +33,16 @@ const ImageMessageCard = ({ message }) => {
         </div>
       }
       {
-        Images.length > 4 &&
+        images.length > 4 &&
         <div className="message-three-img">
-          <img className="image" src={Images[0]} alt="" />
-          <img className="image" src={Images[1]} alt="" />
-          <img className="image" src={Images[2]} alt="" />
-          <div className="image" style={{ backgroundImage: `url(${Images[3]})` }}>
+          <img className="image" src={images[0]} alt="" />
+          <img className="image" src={images[1]} alt="" />
+          <img className="image" src={images[2]} alt="" />
+          <div className="image" style={{ backgroundImage: `url(${images[3]})` }}>
             <div className="more-button-dark"></div>
             <Button type="text"
               className="more-img-button">
-              {`+${Images.length - 4}`}
+              {`+${images.length - 4}`}
             </Button>
           </div>
         </div>

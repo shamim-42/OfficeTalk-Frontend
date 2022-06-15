@@ -1,4 +1,5 @@
-import { Col, Row } from 'antd';
+import { Divider } from 'antd';
+import { conversationTimeFormat } from '../../../utils/utils';
 import MessageCard from './MessageCard';
 
 const MessageBox = (props) => {
@@ -6,11 +7,7 @@ const MessageBox = (props) => {
 
   return (
     <>
-      <Row className="chatting-date">
-        <Col span={6} className="chatting-date-card">
-          {filterMessages?.date}
-        </Col>
-      </Row>
+      <Divider className="chatting-date">{conversationTimeFormat(filterMessages?.date)}</Divider>
       <div className="message-list">
         {
           filterMessages?.messages.length > 0 && filterMessages?.messages.map((message) => (

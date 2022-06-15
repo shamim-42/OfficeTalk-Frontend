@@ -31,16 +31,10 @@
 
       & .chatting-date {
         justify-content: center;
-
-        & .chatting-date-card {
-          border: 1px solid map.get($theme-colors, "gray-text-71");
-          color: map.get($theme-colors, "gray-text-71");
-          font-size: 14px;
-          padding: 6px 20px;
-          text-align: center;
-          border-radius: 18px;
-          margin: 30px auto;
-        }
+        padding: 30px 20px;
+        color: map.get($theme-colors, "gray-text-71");
+        font-size: 14px;
+        text-align: center;
       }
 
       & .message-list {

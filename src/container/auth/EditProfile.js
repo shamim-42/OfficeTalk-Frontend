@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { editprofileApi, editprofilePhotoApi } from '../../api/auth';
 import { selectUserProfile, setUserProfile } from '../../redux/features/authSlice';
-import EditProfileForm from '../../ui/profile/EditProfileForm';
+import EditProfileForm from '../../ui/auth/profile/EditProfileForm';
 
 
 const EditProfile = () => {
