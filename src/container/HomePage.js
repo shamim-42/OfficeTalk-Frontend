@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { allUserListApi, userLogoutApi } from '../api/auth';
@@ -67,7 +67,7 @@ const HomePage = () => {
   async function fetchConversationList() {
     async function successHandler(response) {
       const res = await response.json();
-      // console.log(res)
+      console.log(res)
       dispatch(setConversationList(res))
     }
 

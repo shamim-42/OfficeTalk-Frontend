@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const FilterPopover = () => {
   const [filter, setFilter] = useState("all")
@@ -8,11 +8,7 @@ const FilterPopover = () => {
   }
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '10px',
-    }}>
+    <div className="filter-popover" >
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <label htmlFor="all">All</label>
         <input

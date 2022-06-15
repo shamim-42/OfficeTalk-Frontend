@@ -74,7 +74,7 @@ const ImageMessageCard = ({ message }) => {
           </div>
         }
         <Popover
-          content={<div>
+          content={<div className="reaction-view-popover">
             <span className="icon">👍</span>
             <span className="icon">❤️</span>
           </div>}

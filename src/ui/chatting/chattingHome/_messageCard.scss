@@ -79,7 +79,8 @@
 }
 
 .message-options-popover {
-  @include set-display-flex(flex-start, flex-start, 16px, column);
+  @include set-display-flex(flex-start, flex-start, 12px, column);
+  padding: 12px;
 
   & > Button {
     font-size: 16px;
@@ -93,6 +94,7 @@
 }
 
 .message-react {
+  padding: 4px 8px;
   font-size: 24px;
   display: flex;
   gap: 4px;
@@ -107,4 +109,8 @@
       transform: scale(1.5);
     }
   }
+}
+
+.reaction-view-popover {
+  padding: 8px 12px;
 }

@@ -5,7 +5,7 @@ const TextMessageCard = ({message}) => {
     <div className="text-message">
       <p className='message-text'>{message.content}</p>
       <Popover
-        content={<div>
+        content={<div className="reaction-view-popover">
           <span className="icon">👍</span>
           <span className="icon">❤️</span>
         </div>}

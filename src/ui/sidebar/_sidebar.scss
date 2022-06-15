@@ -206,17 +206,6 @@
   }
 }
 
-.ant-tooltip-arrow {
-  display: none;
-}
-
-.ant-tooltip-placement-top {
-  padding-bottom: 4px;
-}
-.ant-popover-placement-bottomLeft {
-  padding-top: 0;
-}
-
 .ant-modal.join-meeting-modal {
   position: fixed;
   top: 30%;
@@ -289,4 +278,20 @@
       }
     }
   }
+}
+
+.filter-popover {
+  @include set-display-flex(stretch, stretch, 10px, column);
+  padding: 16px;
+}
+
+.ant-tooltip-arrow {
+  display: none;
+}
+
+.ant-tooltip-placement-top {
+  padding-bottom: 4px;
+}
+.ant-popover-placement-bottomLeft {
+  padding-top: 0;
 }
