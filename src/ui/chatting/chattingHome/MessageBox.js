@@ -1,9 +1,16 @@
 import { Divider } from 'antd';
+import { useEffect, useRef } from 'react';
 import { conversationTimeFormat } from '../../../utils/utils';
 import MessageCard from './MessageCard';
 
 const MessageBox = (props) => {
   const { filterMessages, currentUserStatus, userProfile, isOnline } = props;
+
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView();
+  }, []);
 
   return (
     <>
@@ -21,6 +28,7 @@ const MessageBox = (props) => {
           ))
         }
       </div>
+      <div ref={messagesEndRef}></div>
     </>
   );
 };

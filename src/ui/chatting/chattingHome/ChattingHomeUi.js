@@ -1,5 +1,5 @@
 import { Affix, Avatar, Button, Row, Spin } from "antd";
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment } from "react";
 import hi from "../../../assest/image/hi.gif";
 import ChatHeader from "../../../container/chat/ChatHeader";
 import ChatInputBox from "../../form/ChatInputBox";
@@ -8,17 +8,30 @@ import MessageBox from "./MessageBox";
 
 const ChattingHomeUi = (props) => {
   const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll, handleBlur, isTyping, sendHiMessage, messageStatus, userRequestFunction } = props;
-  const messagesEndRef = useRef(null);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView();
-  }, [allMessage]);
+
 
   return (
     <Fragment>
       <Spin spinning={isLoading}>
         <div className="chatting-home">
           <ChatHeader currentUserProfile={currentUserProfile} />
+          {allMessage.length <= 0 && (
+            <div className="sayhi-card">
+              <Avatar className="sayhi-emoji" src={hi} />
+              <p className="sayhi-message">
+                {`Say hi to ${currentUserProfile.fullname}.`}
+              </p>
+              <Button
+                className="btn-theme-primary-fluid filled-btn sayhi-btn"
+                type="primary"
+                onClick={sendHiMessage}
+                htmlType="submit"
+              >
+                Say Hi
+              </Button>
+            </div>
+          )}
           <div className="chatting-content">
             <div className="all-messages-content" onScroll={handleScroll}>
               {allMessage.length > 0 &&
@@ -32,24 +45,6 @@ const ChattingHomeUi = (props) => {
                     filterMessages={filterMessages}
                   />
                 ))}
-              {allMessage.length <= 0 && (
-                <div className="sayhi-card">
-                  <Avatar className="sayhi-emoji" src={hi} />
-                  <p className="sayhi-message">
-                    {`Say hi to ${currentUserProfile.fullname}.`}
-                  </p>
-                  <Button
-                    className="btn-theme-primary-fluid filled-btn sayhi-btn"
-                    type="primary"
-                    onClick={sendHiMessage}
-                    htmlType="submit"
-                  >
-                    Say Hi
-                  </Button>
-                </div>
-              )}
-
-              <div ref={messagesEndRef}></div>
             </div>
             {/* {
             messageStatus === 'choose' &&

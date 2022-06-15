@@ -57,3 +57,33 @@
     }
   }
 }
+
+.video-player-control {
+  width: 50vw;
+  height: 70vh;
+  object-fit: inherit;
+  border-radius: 30px;
+}
+.react-lightbox-component-icon-left {
+  left: 15% !important;
+}
+.react-lightbox-component-icon-right {
+  right: 15% !important;
+}
+.video-close-icon {
+  position: absolute;
+  top: 10%;
+  z-index: 50;
+  left: 75%;
+  border: 0;
+  padding: 0px 10px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 100%;
+  color: map.get($theme-colors, "orange-text-ff");
+  box-shadow: none;
+
+  &:hover {
+    color: map.get($theme-colors, "orange-text-ff");
+  }
+}
