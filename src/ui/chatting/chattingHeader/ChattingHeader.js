@@ -3,7 +3,7 @@ import { BiSearch } from "react-icons/bi";
 import { IoIosCall } from "react-icons/io";
 import { IoCloseOutline, IoPersonCircleSharp, IoVideocam } from "react-icons/io5";
 import { Link } from 'react-router-dom';
-import { activeTimeFormat } from '../../../utils/utils';
+import { activeTimeFormat } from '../../../utils/timeFormat';
 import CustomAvatar from '../../helper/CustomAvatar';
 
 const ChattingHeader = (props) => {

@@ -38,7 +38,6 @@ const MessageOption = (props) => {
 export default MessageOption;
 
 
-
 const MessageOptions = ({ deleteMessage, message, copyToClipboard }) => {
   return (
     <div className="message-options-popover">
@@ -46,6 +45,9 @@ const MessageOptions = ({ deleteMessage, message, copyToClipboard }) => {
         <BsReply />
         <span style={{ marginLeft: '20px' }}>Reply Message</span>
       </Button>
+      {
+        
+      }
       <Button type="text" onClick={() => copyToClipboard(message.content)}>
         <MdOutlineContentCopy />
         <span style={{ marginLeft: '20px' }}>Copy Message</span>

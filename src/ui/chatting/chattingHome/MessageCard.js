@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd';
 import ChatMessageOption from '../../../container/chat/ChatMessageOption';
-import { timeFormat } from '../../../utils/utils';
+import { timeFormat } from '../../../utils/timeFormat';
 import CustomAvatar from '../../helper/CustomAvatar';
 import ImageMessageCard from './ImageMessageCard';
 import TextMessageCard from './TextMessageCard';

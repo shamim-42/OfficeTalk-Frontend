@@ -1,8 +1,7 @@
 import { Avatar, Card, Col, Row } from 'antd';
-import React from 'react';
 import { IoCheckmarkCircleOutline, IoCheckmarkCircleSharp } from "react-icons/io5";
 import { Link } from 'react-router-dom';
-import { conversationTimeFormat } from '../../utils/utils';
+import { conversationTimeFormat } from '../../utils/timeFormat';
 import CustomAvatar from '../helper/CustomAvatar';
 
 

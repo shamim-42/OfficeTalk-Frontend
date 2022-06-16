@@ -1,6 +1,6 @@
 import { Divider } from 'antd';
 import { useEffect, useRef } from 'react';
-import { conversationTimeFormat } from '../../../utils/utils';
+import { conversationTimeFormat } from '../../../utils/timeFormat';
 import MessageCard from './MessageCard';
 
 const MessageBox = (props) => {

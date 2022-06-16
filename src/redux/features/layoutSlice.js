@@ -55,7 +55,6 @@ export const layoutSlice = createSlice({
 
     deleteSingleConversation: (state, action) => {
       let newList = [...state.conversationList];
-      console.log(action.payload);
       let index = newList.findIndex(item => parseInt(item.users_id) === parseInt(action.payload));
       if (index > -1) {
         newList.splice(index, 1);
