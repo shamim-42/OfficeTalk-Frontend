@@ -1,10 +1,11 @@
+import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../../api/auth';
-import { acceptUserApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../../api/chat';
+import { acceptUserApi, deleteMessageApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../../api/chat';
 import { selectUserProfile } from '../../redux/features/authSlice';
-import { selectActiveUser, setUpdateConversation, setUpdateUnreadCount } from '../../redux/features/layoutSlice';
+import { deleteSingleConversation, selectActiveUser, setUpdateConversation, setUpdateUnreadCount } from '../../redux/features/layoutSlice';
 import ChattingHomeUi from '../../ui/chatting/chattingHome/ChattingHomeUi';
 import { newSocket } from '../../utils/socket';
 import { checkLink } from '../../utils/utils';
@@ -23,28 +24,36 @@ const ChattingHome = () => {
   const onlineUsers = useSelector(selectActiveUser)
   const dispatch = useDispatch();
   const userId = userProfile.id;
-  // const state={value: userId};
+
+
+
 
   // check user online status function
   function isOnline(id) {
     return onlineUsers.indexOf(id) !== -1;
   }
 
-  // handle on change message function
-  const handleChangeMessage = (e) => {
-    setMessagesText(e.target.value);
-    newSocket.emit('isWriting', { chatId: chatId, userId: userId });
-    if (timer) {
-      clearTimeout(timer);
+  // Handle delete message
+  async function deleteMessage(id) {
+    async function successHandler(response) {
+      const res = await response.json();
+      console.log(res);
+      getAllMessage(chatId);
+      if (res.deleteall) {
+        dispatch(deleteSingleConversation(chatId))
+      }
+      newSocket.emit('isdeleted', { chatId: chatId, userId: userId });
+      message.success(res.message);
     }
+
+    async function handleBadReq(response) {
+      let error = await response.json();
+      message.error(error.message);
+    }
+
+    return await deleteMessageApi(id, userId, chatId, { successHandler, handleBadReq })
   }
 
-  // handle on blur event function
-  const handleBlur = () => {
-    setTimer(setTimeout(() => {
-      newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
-    }, 2000));
-  }
 
   // get current user profile function
   const getCurrentUserProfile = useCallback(async () => {
@@ -202,10 +211,7 @@ const ChattingHome = () => {
     return await makeReadApi(userProfile.id, payload, { successHandler, handleBadReq })
   }, [dispatch, chatId, userProfile.id])
 
-  useEffect(() => {
-    getCurrentUserProfile()
-  }, [getCurrentUserProfile])
-
+  // *** All Socket Function below *** //
   const getNewMessage = useCallback((chatId) => {
     newSocket.on('newMessage/user/' + userId, (msg) => {
       if (parseInt(msg.senderId) === parseInt(chatId)) {
@@ -215,12 +221,31 @@ const ChattingHome = () => {
     })
   }, [userId, getAllMessage, makeReadMessage])
 
+  // handle on blur event function
+  const handleBlur = () => {
+    setTimer(setTimeout(() => {
+      newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
+    }, 2000));
+  }
+
+  // handle on change message function
+  const handleChangeMessage = (e) => {
+    setMessagesText(e.target.value);
+    newSocket.emit('isWriting', { chatId: chatId, userId: userId });
+    if (timer) {
+      clearTimeout(timer);
+    }
+  }
+
+  // *** All useEffect Function below
+  useEffect(() => {
+    getCurrentUserProfile()
+  }, [getCurrentUserProfile])
+
   useEffect(() => {
     getNewMessage(chatId)
     return () => newSocket.off('newMessage/user/' + userId);
   }, [chatId, getNewMessage, userId])
-
-
 
   useEffect(() => {
     getAllMessage(chatId)
@@ -231,16 +256,18 @@ const ChattingHome = () => {
   }, [makeReadMessage])
 
   useEffect(() => {
-    // console.log("user: ", userId)
     newSocket.on(`isWriting/${userId}`, (res) => {
       if (parseInt(res.userId) === parseInt(chatId)) {
         setIsTyping(true);
       }
-      console.log("chat", chatId);
     });
 
     newSocket.on(`isNotWriting/${userId}`, (res) => {
       setIsTyping(false);
+    });
+
+    newSocket.on(`isdeleted/${userId}`, (res) => {
+      getAllMessage(chatId)
     });
 
     return () => {
@@ -248,7 +275,7 @@ const ChattingHome = () => {
       newSocket.off(`isWriting/${userId}`);
       newSocket.off(`isNotWriting/${userId}`);
     }
-  }, [userId, chatId])
+  }, [userId, chatId, getAllMessage]);
 
 
   return (
@@ -260,6 +287,7 @@ const ChattingHome = () => {
       allMessage={allMessage}
       userProfile={userProfile}
       sendHiMessage={sendHiMessage}
+      deleteMessage={deleteMessage}
       messageStatus={messageStatus}
       isOnline={isOnline}
       isTyping={isTyping}

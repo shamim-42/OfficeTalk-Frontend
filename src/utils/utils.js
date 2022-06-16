@@ -41,6 +41,21 @@ export function getDateWiseMessages(list) {
   return reverseMessages
 }
 
+// Check is messages contain link
+export function checkLink(text) {
+  const geturl = new RegExp(
+    "(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;/?:@&~=%-]*))?([A-Za-z0-9$_+!*();/?:~-]))"
+    , "g"
+  );
+
+  const url = text.match(geturl);
+  if (url) {
+    return url;
+  } else {
+    return false;
+  }
+}
+
 // Time formating funtion
 export function timeFormat(time) {
   const newTime = new Date(time).toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit' });
@@ -129,14 +144,26 @@ function getFormattedDateTime(date, prefomattedDate = false, hideYear = false) {
   const day = date.getDate();
   const month = MONTH_NAMES[date.getMonth()];
   const year = date.getFullYear();
-  const hours = date.getHours();
+  let hours = date.getHours();
   let minutes = date.getMinutes();
-  const period = hours < 12 ? 'AM' : 'PM';
+  let period = 'PM';
+  if (minutes < 10) {
+    // Adding leading zero to minutes
+    minutes = `0${minutes}`;
+  }
+  if (hours > 12) {
+    hours = hours - 12;
+    if (hours < 10){
+      hours = `0${hours}`
+    }
+    period = 'PM'
+  }
+
 
 
   if (prefomattedDate) {
     if (prefomattedDate === 'Today') {
-      if (!hours || !minutes){
+      if (!hours) {
         return 'Today';
       }
       return `${hours}:${minutes} ${period}`;
@@ -180,20 +207,6 @@ export function conversationTimeFormat(dateParam) {
   return getFormattedDateTime(date);
 };
 
-// Check is messages contain link
-export function checkLink(text) {
-  const geturl = new RegExp(
-    "(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;/?:@&~=%-]*))?([A-Za-z0-9$_+!*();/?:~-]))"
-    , "g"
-  );
- 
-  const url = text.match(geturl);
-  if (url) {
-    return url;
-  } else {
-    return false;
-  }
-}
 
 
 

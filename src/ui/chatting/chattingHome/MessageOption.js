@@ -8,13 +8,16 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { TiArrowForwardOutline } from "react-icons/ti";
 
 const MessageOption = (props) => {
-  const { align } = props;
+  const { align, deleteMessage, message, copyToClipboard } = props;
 
   return (
     <div className="message-options">
       <Popover placement={align === "left" ? "bottomLeft" : "bottomRight"}
         className="message-option"
-        content={<MessageOptions />}
+        content={<MessageOptions
+          deleteMessage={deleteMessage}
+          copyToClipboard={copyToClipboard}
+          message={message} />}
         trigger="click">
         <Button type="text">
           <HiDotsVertical />
@@ -36,14 +39,14 @@ export default MessageOption;
 
 
 
-const MessageOptions = () => {
+const MessageOptions = ({ deleteMessage, message, copyToClipboard }) => {
   return (
     <div className="message-options-popover">
       <Button type="text">
         <BsReply />
         <span style={{ marginLeft: '20px' }}>Reply Message</span>
       </Button>
-      <Button type="text">
+      <Button type="text" onClick={() => copyToClipboard(message.content)}>
         <MdOutlineContentCopy />
         <span style={{ marginLeft: '20px' }}>Copy Message</span>
       </Button>
@@ -55,7 +58,7 @@ const MessageOptions = () => {
         <TiArrowForwardOutline />
         <span style={{ marginLeft: '20px' }}>Forward Message</span>
       </Button>
-      <Button type="text">
+      <Button type="text" onClick={() => deleteMessage(message.id)}>
         <RiDeleteBinLine />
         <span style={{ marginLeft: '20px', color: 'red' }}>Remove Message</span>
       </Button>

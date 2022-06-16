@@ -1,6 +1,7 @@
 import { Popover } from 'antd';
 
 const TextMessageCard = ({message}) => {
+
   return (
     <div className="text-message">
       <p className='message-text'>{message.content}</p>

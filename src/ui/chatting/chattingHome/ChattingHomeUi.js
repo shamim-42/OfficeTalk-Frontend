@@ -7,7 +7,7 @@ import MessageBox from "./MessageBox";
 
 
 const ChattingHomeUi = (props) => {
-  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll, handleBlur, isTyping, sendHiMessage, messageStatus, userRequestFunction } = props;
+  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll, handleBlur, isTyping, sendHiMessage, messageStatus, userRequestFunction, deleteMessage } = props;
 
 
 
@@ -43,6 +43,7 @@ const ChattingHomeUi = (props) => {
                     userProfile={userProfile}
                     messageStatus={messageStatus}
                     filterMessages={filterMessages}
+                    deleteMessage={deleteMessage}
                   />
                 ))}
             </div>

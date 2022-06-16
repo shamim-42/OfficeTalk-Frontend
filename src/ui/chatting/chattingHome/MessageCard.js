@@ -1,31 +1,47 @@
 import { Col, Row } from 'antd';
+import ChatMessageOption from '../../../container/chat/ChatMessageOption';
 import { timeFormat } from '../../../utils/utils';
 import CustomAvatar from '../../helper/CustomAvatar';
 import ImageMessageCard from './ImageMessageCard';
-import MessageOption from './MessageOption';
 import TextMessageCard from './TextMessageCard';
 
 const MessageCard = (props) => {
-  const { CurrentUserProfile, message, isOnline, userProfile } = props;
+  const { CurrentUserProfile, message, isOnline, userProfile, deleteMessage } = props;
+
 
   if (message.senderId === userProfile.id) {
     return (
       <Row className="message-card" justify="end">
         <Col span={14}>
           <Row>
-            <Col span={21}>
+            <Col span={21} className="messages-area">
               <p className='message-time' style={{ textAlign: 'right' }}>
                 {timeFormat(message.createdAt)}
               </p>
               <div className='message-body message-right'>
-                <MessageOption align="right" />
+                <ChatMessageOption
+                  deleteMessage={deleteMessage}
+                  message={message}
+                  align="right" />
                 {message.type === 'image' &&
-                  <ImageMessageCard sender={true} message={message} />
+                  <ImageMessageCard
+                    sender={true}
+                    message={message} />
                 }
                 {message.type === 'text' &&
-                  <TextMessageCard message={message} />
+                  <TextMessageCard
+                    message={message} />
                 }
               </div>
+              {(message.content && message.type !== 'text') &&
+                <div className='message-body message-right'>
+                  <ChatMessageOption
+                    deleteMessage={deleteMessage}
+                    message={message}
+                    align="right" />
+                  <TextMessageCard message={message} />
+                </div>
+              }
             </Col>
 
             <Col span={3}
@@ -53,7 +69,7 @@ const MessageCard = (props) => {
               src={CurrentUserProfile?.profileImage}
             />
           </Col>
-          <Col span={21}>
+          <Col span={21} className="messages-area">
             <p className='message-time'>{timeFormat(message.createdAt)}</p>
             <div className='message-body message-left'>
               {message.type === 'image' &&
@@ -62,8 +78,14 @@ const MessageCard = (props) => {
               {message.type === 'text' &&
                 <TextMessageCard message={message} />
               }
-              <MessageOption align="left" />
+              <ChatMessageOption deleteMessage={deleteMessage} message={message} align="left" />
             </div>
+            {(message.content && message.type !== 'text') &&
+              <div className='message-body message-left'>
+                <TextMessageCard message={message} />
+                <ChatMessageOption deleteMessage={deleteMessage} message={message} align="left" />
+              </div>
+            }
           </Col>
         </Row>
       </Col>

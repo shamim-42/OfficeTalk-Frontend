@@ -73,6 +73,7 @@ const ImageMessageCard = ({ message }) => {
             </div>
           </div>
         }
+
         <Popover
           content={<div className="reaction-view-popover">
             <span className="icon">👍</span>
@@ -86,12 +87,13 @@ const ImageMessageCard = ({ message }) => {
           </div>
         </Popover>
       </div>
+
       {visible && <ReactSimpleImageVideoLightbox
         data={data}
         onCloseCallback={() => setVisible(false)}
         backdropBg="rgba(50, 48, 48, 0.6)"
         imageStyle={{ width: "50vw", height: "70vh", borderRadius: '30px' }}
-        frameStyle={{ width: "50vw", height: "70vh",  borderRadius: '30px'}}
+        frameStyle={{ width: "50vw", height: "70vh", borderRadius: '30px' }}
         startIndex={1}
         frameClassname="video-player-control"
         showResourceCount={false}

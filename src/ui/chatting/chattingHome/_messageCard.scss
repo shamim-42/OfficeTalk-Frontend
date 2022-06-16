@@ -15,6 +15,12 @@
     color: map.get($theme-colors, "gray-text-8b");
   }
 
+  & .messages-area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
   & .message-body {
     width: 100%;
     @include set-display-flex(stretch, flex-start, 10px);
@@ -66,13 +72,15 @@
 
   & .text-message {
     position: relative;
+    background-color: map.get($theme-colors, "white-f1");
     width: 95%;
     padding: 20px;
-    border: 0.5px solid map.get($theme-colors, "gray-text-bc");
+    // border: 0.5px solid map.get($theme-colors, "gray-text-bc");
     border-radius: 22px;
 
     & .message-text {
-      color: map.get($theme-colors, "gray-text-60");
+      // color: map.get($theme-colors, "gray-text-60");
+      color: map.get($theme-colors, "black");
       word-wrap: break-word;
     }
   }

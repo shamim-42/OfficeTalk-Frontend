@@ -4,7 +4,7 @@ import { conversationTimeFormat } from '../../../utils/utils';
 import MessageCard from './MessageCard';
 
 const MessageBox = (props) => {
-  const { filterMessages, currentUserStatus, userProfile, isOnline } = props;
+  const { filterMessages, currentUserStatus, userProfile, isOnline, deleteMessage } = props;
 
   const messagesEndRef = useRef(null);
 
@@ -21,6 +21,7 @@ const MessageBox = (props) => {
             <MessageCard
               CurrentUserProfile={currentUserStatus}
               userProfile={userProfile}
+              deleteMessage={deleteMessage}
               message={message}
               isOnline={isOnline}
               key={message?.id}

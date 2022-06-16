@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { allUserListApi, userLogoutApi } from '../api/auth';
@@ -48,7 +48,7 @@ const HomePage = () => {
   };
 
   // Handle loading user list
-  async function fetchUserList() {
+  const fetchUserList = useCallback(async () => {
     async function successHandler(response) {
       const res = await response.json();
       setUsers(res)
@@ -61,10 +61,10 @@ const HomePage = () => {
     }
 
     return await allUserListApi({ successHandler, handleBadReq })
-  }
+  }, [dispatch])
 
   // get all conversations list
-  async function fetchConversationList() {
+  const fetchConversationList = useCallback(async () => {
     async function successHandler(response) {
       const res = await response.json();
       console.log(res)
@@ -77,7 +77,7 @@ const HomePage = () => {
     }
 
     return await getConversationsApi(userId, { successHandler, handleBadReq })
-  }
+  }, [dispatch, userId])
 
   // handle User sign out and
   async function handleLogout() {
@@ -101,9 +101,24 @@ const HomePage = () => {
     return await userLogoutApi(userId, { successHandler, handleBadReq })
   }
 
+  // add or update message on conversations List
+  const updateConversationList = useCallback((res) => {
+
+    const newMessage = {
+      users_id: res.senderId,
+      users_profileImage: res.senderImage,
+      users_fullname: res.senderName,
+      message_Status_lastMessage: res?.content,
+      message_Status_lastMessageTime: res?.createdAt,
+      message_Status_unreadMessages: res.unread,
+      message_Status_status: 'seen',
+    }
+    dispatch(setUpdateConversation(newMessage))
+  }, [dispatch])
+
 
   // Get all online users function
-  const getOnlineUsers = () => {
+  const getOnlineUsers = useCallback(() => {
     newSocket.on('users/online', (users) => {
       const allOnlineUsers = users.filter(user => user !== userId)
       setOnlineUsers(allOnlineUsers)
@@ -118,22 +133,13 @@ const HomePage = () => {
     newSocket.on('newMessagesidebar/user/' + userId, (msg) => {
       updateConversationList(msg)
     })
-  }
 
-  // add or update message on conversations List
-  const updateConversationList = (res) => {
+    newSocket.on(`isdeleted/${userId}`, (res) => {
+      fetchConversationList();
+    });
+  }, [dispatch, updateConversationList, userId, fetchConversationList])
 
-    const newMessage = {
-      users_id: res.senderId,
-      users_profileImage: res.senderImage,
-      users_fullname: res.senderName,
-      message_Status_lastMessage: res?.content,
-      message_Status_lastMessageTime: res?.createdAt,
-      message_Status_unreadMessages: res.unread,
-      message_Status_status: 'seen',
-    }
-    dispatch(setUpdateConversation(newMessage))
-  }
+
 
   useEffect(() => {
     newSocket.on('message-seen-status' + userId, (res) => {
@@ -147,7 +153,7 @@ const HomePage = () => {
     getOnlineUsers();
     newSocket.connect();
     return () => newSocket.close();
-  }, [])
+  }, [fetchUserList, fetchConversationList, getOnlineUsers])
 
   return (
     <HomeUi
