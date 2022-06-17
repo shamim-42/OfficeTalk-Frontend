@@ -142,11 +142,19 @@
   }
 
   .message-input-container {
-    @include set-display-flex(center, flex-start, 0.5rem);
+    width: 100%;
+    @include set-display-flex(center, center, 0.5rem);
 
-    & .ant-input {
-      border-radius: 22px;
-      height: 44px;
+    & .message-input {
+      border-radius: 999px;
+      padding: 8px;
+
+      & button {
+        display: block;
+        border: none;
+        padding: 7px;
+        background: none;
+      }
     }
   }
 }

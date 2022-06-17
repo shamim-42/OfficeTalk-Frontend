@@ -1,9 +1,19 @@
-import { Popover } from 'antd';
+import { Divider, Popover } from 'antd';
+import { activeTimeFormat } from '../../../utils/timeFormat';
 
-const TextMessageCard = ({message}) => {
+const TextMessageCard = ({ message, CurrentUserProfile, userProfile, }) => {
+  const senderName = (message?.children?.senderId === userProfile.id) ? userProfile.fullname : CurrentUserProfile.fullname;
 
   return (
     <div className="text-message">
+      {
+        message.children &&
+        <>
+          <p className='message-reply-text'>{message.children.content}</p>
+          <p className="reply-message-author">{`${senderName}, ${activeTimeFormat(message.children.createdAt)}`}</p>
+          <Divider className="message-reply-divider" />
+        </>
+      }
       <p className='message-text'>{message.content}</p>
       <Popover
         content={<div className="reaction-view-popover">

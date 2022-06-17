@@ -1,13 +1,14 @@
-import { Affix, Avatar, Button, Row, Spin } from "antd";
+import { Affix, Avatar, Button, Col, Input, Row, Spin } from "antd";
 import { Fragment } from "react";
+import { BsEmojiSmile } from "react-icons/bs";
+import { FaRegPaperPlane } from "react-icons/fa";
 import hi from "../../../assest/image/hi.gif";
 import ChatHeader from "../../../container/chat/ChatHeader";
-import ChatInputBox from "../../form/ChatInputBox";
 import MessageBox from "./MessageBox";
 
 
 const ChattingHomeUi = (props) => {
-  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll, handleBlur, isTyping, sendHiMessage, messageStatus, userRequestFunction, deleteMessage } = props;
+  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll, handleBlur, isTyping, messageStatus, userRequestFunction, deleteMessage } = props;
 
 
 
@@ -25,7 +26,7 @@ const ChattingHomeUi = (props) => {
               <Button
                 className="btn-theme-primary-fluid filled-btn sayhi-btn"
                 type="primary"
-                onClick={sendHiMessage}
+                onClick={(e) => handleSubmitMessage(e, "Hi !")}
                 htmlType="submit"
               >
                 Say Hi
@@ -87,9 +88,22 @@ const ChattingHomeUi = (props) => {
                 </div>
               )}
               <Row className="message-input-container">
-                <ChatInputBox messagesValue={messagesText} onSubmit={handleSubmitMessage}
-                  onChange={handleChangeMessage} onBlur={handleBlur} />
-
+                <Col span={14}>
+                  <Input
+                    prefix={<Button shape="circle" icon={<BsEmojiSmile />} />}
+                    className="message-input"
+                    value={messagesText}
+                    placeholder="Type a message"
+                    onChange={handleChangeMessage}
+                    onBlur={handleBlur}
+                    onPressEnter={handleSubmitMessage}
+                    size="large"
+                  />
+                </Col>
+                <Col span={1} className="chat-input-attachment">
+                  {messagesText.trim() && <Button shape="circle"
+                    onClick={handleSubmitMessage} icon={<FaRegPaperPlane />} className="chat-sent-control" />}
+                </Col>
               </Row>
             </div>
           </Affix>

@@ -14,7 +14,7 @@ const MessageBox = (props) => {
 
   return (
     <>
-      <Divider className="chatting-date">{conversationTimeFormat(filterMessages?.date)}</Divider>
+      <Divider className="chatting-date">{conversationTimeFormat(filterMessages?.date, true)}</Divider>
       <div className="message-list">
         {
           filterMessages?.messages.length > 0 && filterMessages?.messages.map((message) => (

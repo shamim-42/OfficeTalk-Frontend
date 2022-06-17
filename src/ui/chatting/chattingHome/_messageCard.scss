@@ -78,6 +78,23 @@
     // border: 0.5px solid map.get($theme-colors, "gray-text-bc");
     border-radius: 22px;
 
+    & .message-reply-text {
+      color: map.get($theme-colors, "gray-text-60");
+      @include set-line-clamp(2);
+    }
+
+    & .reply-message-author {
+      font-size: 14px;
+      color: map.get($theme-colors, "gray-text-9b");
+      padding-top: 4px;
+    }
+
+    & .message-reply-divider {
+      margin: 14px 0;
+      background-color: map.get($theme-colors, "gray-text-bc");
+      height: 2px;
+    }
+
     & .message-text {
       // color: map.get($theme-colors, "gray-text-60");
       color: map.get($theme-colors, "black");

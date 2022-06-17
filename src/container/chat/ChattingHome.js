@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../../api/auth';
 import { acceptUserApi, deleteMessageApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../../api/chat';
 import { selectUserProfile } from '../../redux/features/authSlice';
-import { deleteSingleConversation, selectActiveUser, setUpdateConversation, setUpdateUnreadCount } from '../../redux/features/layoutSlice';
+import { deleteSingleConversation, selectActiveUser, setUpdateConversation, setUpdateUnreadCount, updateConversationMessage } from '../../redux/features/layoutSlice';
 import ChattingHomeUi from '../../ui/chatting/chattingHome/ChattingHomeUi';
 import { newSocket } from '../../utils/socket';
 import { checkLink } from '../../utils/utils';
@@ -25,12 +25,19 @@ const ChattingHome = () => {
   const dispatch = useDispatch();
   const userId = userProfile.id;
 
-
-
-
   // check user online status function
   function isOnline(id) {
     return onlineUsers.indexOf(id) !== -1;
+  }
+
+  // ***** All function for handle messages ***** \\
+  // handle on change message function
+  const handleChangeMessage = (e) => {
+    setMessagesText(e.target.value);
+    newSocket.emit('isWriting', { chatId: chatId, userId: userId });
+    if (timer) {
+      clearTimeout(timer);
+    }
   }
 
   // Handle delete message
@@ -39,9 +46,13 @@ const ChattingHome = () => {
       const res = await response.json();
       console.log(res);
       getAllMessage(chatId);
-      if (res.deleteall) {
+
+      if (!res.deleteall) {
+        dispatch(updateConversationMessage({ id: chatId, lastmessage: res.lastmessage }))
+      } else {
         dispatch(deleteSingleConversation(chatId))
       }
+
       newSocket.emit('isdeleted', { chatId: chatId, userId: userId });
       message.success(res.message);
     }
@@ -54,27 +65,8 @@ const ChattingHome = () => {
     return await deleteMessageApi(id, userId, chatId, { successHandler, handleBadReq })
   }
 
-
-  // get current user profile function
-  const getCurrentUserProfile = useCallback(async () => {
-    async function successHandler(response) {
-      const res = await response.json();
-      setCurrentUserProfile(res.user)
-      setIsLoading(false);
-    }
-
-    async function handleBadReq(response) {
-      // let error = await response.json();
-      // console.log(error.message);
-      setIsLoading(false);
-    }
-
-    return await userActiveStatusApi(chatId, { successHandler, handleBadReq })
-  }, [chatId])
-
-  // get current user all message list function
+  // get current user all messages function
   const getAllMessage = useCallback(async (id) => {
-
     async function successHandler(response) {
       const res = await response.json();
       setMessageStatus(res.status);
@@ -91,13 +83,42 @@ const ChattingHome = () => {
       await response.json();
       setIsLoading(false);
     }
-
     return await getAllMessageApi(id, { userId: userId }, {
       successHandler, handleBadReq,
       urlParams: { page: 1 }
     })
   }, [userId])
 
+  // Send message to current user function
+  async function handleSubmitMessage(e, msg = null) {
+    newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
+    if (messagesText.trim().length <= 0 && !msg) {
+      return
+    }
+    let messageLinks = null;
+    const isLink = checkLink(messagesText)
+    if (isLink) messageLinks = isLink;
+
+    const messageData = {
+      message: msg || messagesText,
+      senderId: userId,
+      type: "text",
+      links: messageLinks,
+    }
+    async function successHandler(response) {
+      const res = await response.json();
+      // console.log(res);
+      updateConversationList(res.result)
+      setMessagesText('')
+      getAllMessage(chatId);
+    }
+
+    async function handleBadReq(response) {
+      // let error = await response.json();
+      setIsLoading(false);
+    }
+    return await sendMessageApi(chatId, messageData, { successHandler, handleBadReq })
+  }
 
   // add or update message on conversations List
   const updateConversationList = (res) => {
@@ -118,71 +139,44 @@ const ChattingHome = () => {
     dispatch(setUpdateConversation(newMessage))
   }
 
-  // Send message function
-  async function handleSubmitMessage() {
-    newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
-    if (messagesText.trim().length <= 0) {
-      return
+  // make message as read message 
+  const makeReadMessage = useCallback(async () => {
+    const payload = {
+      senderId: chatId,
     }
-    console.log(checkLink(messagesText))
-    const messageData = {
-      message: messagesText,
-      senderId: userId,
-      type: "text"
+    async function successHandler(response) {
+      dispatch(setUpdateUnreadCount(chatId))
     }
 
+    async function handleBadReq(response) {
+    }
+    return await makeReadApi(userProfile.id, payload, { successHandler, handleBadReq })
+  }, [dispatch, chatId, userProfile.id])
+
+
+  // ***** All function about current user *****\
+  // get current user profile function
+  const getCurrentUserProfile = useCallback(async () => {
     async function successHandler(response) {
       const res = await response.json();
-      updateConversationList(res.result)
-      setMessagesText('')
-      getAllMessage(chatId);
+      setCurrentUserProfile(res.user)
+      setIsLoading(false);
     }
 
     async function handleBadReq(response) {
       // let error = await response.json();
-      // console.log(error.message);
       setIsLoading(false);
     }
-
-    return await sendMessageApi(chatId, messageData, { successHandler, handleBadReq })
-  }
-
-
-
-  // Send message function
-  async function sendHiMessage() {
-    setIsLoading(true);
-    newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
-    const messageData = {
-      message: "Hi !",
-      senderId: userId,
-      type: "text"
-    }
-
-    async function successHandler(response) {
-      const res = await response.json();
-      updateConversationList(res.result)
-      getAllMessage(chatId);
-      setIsLoading(false);
-    }
-
-    async function handleBadReq(response) {
-      setIsLoading(false);
-    }
-
-    return await sendMessageApi(chatId, messageData, { successHandler, handleBadReq })
-  }
-
+    return await userActiveStatusApi(chatId, { successHandler, handleBadReq })
+  }, [chatId])
 
   // Accept or Reject a user function
-
   async function userRequestFunction(msg) {
     const requestData = {
       desicion: msg,
       senderId: chatId,
       receiverId: userId,
     }
-
     async function successHandler(response) {
       const res = await response.json();
       // console.log(res)
@@ -191,27 +185,11 @@ const ChattingHome = () => {
 
     async function handleBadReq(response) {
     }
-
     return await acceptUserApi(requestData, { successHandler, handleBadReq })
   }
 
-  // make message as read message 
-  const makeReadMessage = useCallback(async () => {
-    const payload = {
-      senderId: chatId,
-    }
-    async function successHandler(response) {
-      // console.log("first")
-      dispatch(setUpdateUnreadCount(chatId))
-    }
 
-    async function handleBadReq(response) {
-    }
-
-    return await makeReadApi(userProfile.id, payload, { successHandler, handleBadReq })
-  }, [dispatch, chatId, userProfile.id])
-
-  // *** All Socket Function below *** //
+  // ***** All Socket Function below ***** //
   const getNewMessage = useCallback((chatId) => {
     newSocket.on('newMessage/user/' + userId, (msg) => {
       if (parseInt(msg.senderId) === parseInt(chatId)) {
@@ -228,16 +206,8 @@ const ChattingHome = () => {
     }, 2000));
   }
 
-  // handle on change message function
-  const handleChangeMessage = (e) => {
-    setMessagesText(e.target.value);
-    newSocket.emit('isWriting', { chatId: chatId, userId: userId });
-    if (timer) {
-      clearTimeout(timer);
-    }
-  }
 
-  // *** All useEffect Function below
+  // ***** All useEffect Function below ***** //
   useEffect(() => {
     getCurrentUserProfile()
   }, [getCurrentUserProfile])
@@ -286,7 +256,6 @@ const ChattingHome = () => {
       handleBlur={handleBlur}
       allMessage={allMessage}
       userProfile={userProfile}
-      sendHiMessage={sendHiMessage}
       deleteMessage={deleteMessage}
       messageStatus={messageStatus}
       isOnline={isOnline}

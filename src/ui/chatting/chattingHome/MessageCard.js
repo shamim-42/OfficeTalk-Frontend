@@ -6,8 +6,7 @@ import ImageMessageCard from './ImageMessageCard';
 import TextMessageCard from './TextMessageCard';
 
 const MessageCard = (props) => {
-  const { CurrentUserProfile, message, isOnline, userProfile, deleteMessage } = props;
-
+  const { CurrentUserProfile, userProfile, message, isOnline, deleteMessage } = props;
 
   if (message.senderId === userProfile.id) {
     return (
@@ -30,6 +29,8 @@ const MessageCard = (props) => {
                 }
                 {message.type === 'text' &&
                   <TextMessageCard
+                    CurrentUserProfile={CurrentUserProfile}
+                    userProfile={userProfile}
                     message={message} />
                 }
               </div>
@@ -39,7 +40,10 @@ const MessageCard = (props) => {
                     deleteMessage={deleteMessage}
                     message={message}
                     align="right" />
-                  <TextMessageCard message={message} />
+                  <TextMessageCard
+                    CurrentUserProfile={CurrentUserProfile}
+                    userProfile={userProfile}
+                    message={message} />
                 </div>
               }
             </Col>
@@ -76,13 +80,19 @@ const MessageCard = (props) => {
                 <ImageMessageCard message={message} />
               }
               {message.type === 'text' &&
-                <TextMessageCard message={message} />
+                <TextMessageCard
+                  CurrentUserProfile={CurrentUserProfile}
+                  userProfile={userProfile}
+                  message={message} />
               }
               <ChatMessageOption deleteMessage={deleteMessage} message={message} align="left" />
             </div>
             {(message.content && message.type !== 'text') &&
               <div className='message-body message-left'>
-                <TextMessageCard message={message} />
+                <TextMessageCard
+                  CurrentUserProfile={CurrentUserProfile}
+                  userProfile={userProfile}
+                  message={message} />
                 <ChatMessageOption deleteMessage={deleteMessage} message={message} align="left" />
               </div>
             }

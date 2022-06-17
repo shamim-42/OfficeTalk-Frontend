@@ -16,7 +16,6 @@ function getFormattedDateTime(date, prefomattedDate = false, hideYear = false) {
   const year = date.getFullYear();
   let hours = date.getHours();
   let minutes = date.getMinutes();
-  const second = date.getSeconds();
   let period = hours < 12 ? 'AM' : 'PM';
   if (minutes < 10) {
     // Adding leading zero to minutes
@@ -32,9 +31,6 @@ function getFormattedDateTime(date, prefomattedDate = false, hideYear = false) {
 
   if (prefomattedDate) {
     if (prefomattedDate === 'Today') {
-      if (second === 0 && hours === 0 && parseInt(minutes) === 0) {
-        return 'Today';
-      }
       return `${hours}:${minutes} ${period}`;
     } else if (prefomattedDate === 'Week') {
       return date.toLocaleDateString(undefined, { weekday: 'long' })
@@ -48,9 +44,8 @@ function getFormattedDateTime(date, prefomattedDate = false, hideYear = false) {
   return `${day} ${month} ${year}`;
 }
 
-
 // Date and time formating function for conversations list
-export function conversationTimeFormat(dateParam) {
+export function conversationTimeFormat(dateParam, getToday = false) {
   if (!dateParam) {
     return null;
   }
@@ -65,11 +60,14 @@ export function conversationTimeFormat(dateParam) {
   const isThisYear = today.getFullYear() === date.getFullYear();
 
   if (isToday) {
+    if (getToday) {
+      return 'Today';
+    }
     return getFormattedDateTime(date, 'Today'); //  10:20 AM
   } else if (isYesterday) {
-    return getFormattedDateTime(date, 'Yesterday'); // Yesterday at 10:20 AM
+    return getFormattedDateTime(date, 'Yesterday'); // Yesterday
   } else if (isThisWeek) {
-    return getFormattedDateTime(date, 'Week'); // Yesterday at 10:20 AM
+    return getFormattedDateTime(date, 'Week'); // Friday
   } else if (isThisYear) {
     return getFormattedDateTime(date, false, true); // 10. January at 10:20
   }
