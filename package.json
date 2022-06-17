@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@dhaiwat10/react-link-preview": "^1.14.0",
     "@reduxjs/toolkit": "^1.8.0",
     "@santigp258/react-simple-lightbox-video-image": "^1.0.3",
     "@testing-library/jest-dom": "^4.2.4",

@@ -139,3 +139,22 @@
 .reaction-view-popover {
   padding: 8px 12px;
 }
+
+.Container.link-preview > .LowerContainer {
+  & > .Title {
+    font-size: 16px;
+    line-height: normal;
+    @include set-line-clamp(2);
+  }
+
+  & .Description.Secondary {
+    @include set-line-clamp(3);
+    font-size: 15px;
+    color: map.get($theme-colors, "gray-text-9b");
+  }
+
+  & .SiteDetails {
+    @include set-line-clamp(1);
+    font-size: 14px;
+  }
+}

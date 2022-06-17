@@ -1,3 +1,4 @@
+import { LinkPreview } from "@dhaiwat10/react-link-preview";
 import { Col, Row } from 'antd';
 import ChatMessageOption from '../../../container/chat/ChatMessageOption';
 import { timeFormat } from '../../../utils/timeFormat';
@@ -27,6 +28,12 @@ const MessageCard = (props) => {
                     sender={true}
                     message={message} />
                 }
+              </div>
+              <div className='message-body message-right'>
+                <ChatMessageOption
+                  deleteMessage={deleteMessage}
+                  message={message}
+                  align="right" />
                 {message.type === 'text' &&
                   <TextMessageCard
                     CurrentUserProfile={CurrentUserProfile}
@@ -34,6 +41,13 @@ const MessageCard = (props) => {
                     message={message} />
                 }
               </div>
+              <LinkPreview
+                margin="30px auto"
+                width="300px"
+                className="link-preview"
+                height="320px"
+                url="https://www.youtube.com/watch?v=AkRAdpNPwWQ&list=WL&index=1&t=573s"
+              />
               {(message.content && message.type !== 'text') &&
                 <div className='message-body message-right'>
                   <ChatMessageOption
