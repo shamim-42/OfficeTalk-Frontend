@@ -5,7 +5,7 @@ import Sidebar from '../sidebar/Sidebar';
 const { Sider, Content } = Layout;
 
 const HomeUi = (props) => {
-  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, isJoinMeetingModalVisible, showJoinMeetingModal, handleJoinMeetingCancel, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel } = props;
+  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel } = props;
   const sideBarRef = useRef(null)
 
   return (
@@ -24,7 +24,7 @@ const HomeUi = (props) => {
           onChangeSwitch={onChangeSwitch}
           isJoinMeetingModalVisible={isJoinMeetingModalVisible}
           showJoinMeetingModal={showJoinMeetingModal}
-          handleJoinMeetingCancel={handleJoinMeetingCancel}
+          cancelJoinMeetingModal={cancelJoinMeetingModal}
           isChatGroupModalVisible={isChatGroupModalVisible}
           showChatGroupModal={showChatGroupModal}
           handleChatGroupCancel={handleChatGroupCancel}

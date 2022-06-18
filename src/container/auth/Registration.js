@@ -11,7 +11,7 @@ const Registration = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // on registration submit function
+  // on submit registration function
   const onRegisterHandler = async (values) => {
     setLoading(true);
     const userData = {
@@ -21,7 +21,7 @@ const Registration = () => {
       password: values.password,
     }
 
-    // Success Handler func
+    // Success Handler function
     async function successHandler(response) {
       let data = await response.json();
       setLoading(false);
@@ -31,7 +31,7 @@ const Registration = () => {
       navigate('/');
     }
 
-    // Bad Request Handler func
+    // Bad Request Handler function
     async function handleBadReq(response) {
       let err = await response.json();
       console.log("Register Error", err);

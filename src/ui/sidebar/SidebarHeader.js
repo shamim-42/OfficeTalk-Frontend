@@ -15,7 +15,7 @@ import SettingPopover from './SettingPopover';
 
 
 const SidebarHeader = (props) => {
-  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, handleJoinMeetingCancel, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel } = props;
+  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel } = props;
 
   return (
     <div className="sidebar-header">
@@ -122,7 +122,7 @@ const SidebarHeader = (props) => {
         width="auto"
       >
         <Button
-          onClick={handleJoinMeetingCancel}
+          onClick={cancelJoinMeetingModal}
           className="modal-cross-button">
           X
         </Button>

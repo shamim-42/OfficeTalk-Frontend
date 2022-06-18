@@ -31,11 +31,12 @@ const HomePage = () => {
     console.log(evt)
   }
 
+  // All function for handle sidebar modal
   const showJoinMeetingModal = () => {
     setIsJoinMeetingModalVisible(true);
   };
 
-  const handleJoinMeetingCancel = () => {
+  const cancelJoinMeetingModal = () => {
     setIsJoinMeetingModalVisible(false);
   };
 
@@ -79,7 +80,7 @@ const HomePage = () => {
     return await getConversationsApi(userId, { successHandler, handleBadReq })
   }, [dispatch, userId])
 
-  // handle User sign out and
+  // handle User sign out and redirect back to login page
   async function handleLogout() {
 
     async function successHandler(response) {
@@ -116,9 +117,8 @@ const HomePage = () => {
     dispatch(setUpdateConversation(newMessage))
   }, [dispatch])
 
-
-  // Get all online users function
-  const getOnlineUsers = useCallback(() => {
+  // Run socket connection with this function
+  const runSocketFunction = useCallback(() => {
     newSocket.on('users/online', (users) => {
       const allOnlineUsers = users.filter(user => user !== userId)
       setOnlineUsers(allOnlineUsers)
@@ -137,10 +137,9 @@ const HomePage = () => {
     newSocket.on(`isdeleted/${userId}`, (res) => {
       fetchConversationList();
     });
-  }, [dispatch, updateConversationList, userId, fetchConversationList])
+  }, [dispatch, updateConversationList, userId, fetchConversationList]);
 
-
-
+  // All useEffect function below
   useEffect(() => {
     newSocket.on('message-seen-status' + userId, (res) => {
       dispatch(updateConversationStatus(res))
@@ -150,10 +149,10 @@ const HomePage = () => {
   useEffect(() => {
     fetchUserList();
     fetchConversationList();
-    getOnlineUsers();
+    runSocketFunction();
     newSocket.connect();
     return () => newSocket.close();
-  }, [fetchUserList, fetchConversationList, getOnlineUsers])
+  }, [fetchUserList, fetchConversationList, runSocketFunction])
 
   return (
     <HomeUi
@@ -163,7 +162,7 @@ const HomePage = () => {
       onChangeSwitch={onChangeSwitch}
       isJoinMeetingModalVisible={isJoinMeetingModalVisible}
       onlineUsers={onlineUsers}
-      handleJoinMeetingCancel={handleJoinMeetingCancel}
+      cancelJoinMeetingModal={cancelJoinMeetingModal}
       showJoinMeetingModal={showJoinMeetingModal}
       unreadCount={unreadCount}
       isChatGroupModalVisible={isChatGroupModalVisible}

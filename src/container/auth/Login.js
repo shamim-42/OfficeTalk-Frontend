@@ -15,9 +15,9 @@ const Login = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [form] = Form.useForm();
 
+  // All function for handle login page modal
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -37,7 +37,18 @@ const Login = () => {
     setIsErrorModal(false);
   };
 
+  const onFinishModal = (values) => {
+    console.log(values);
+    setModalNumber(2)
+  };
 
+  const onFinishPassword = (values) => {
+    console.log(values);
+    setModalNumber(1)
+    handleCancel()
+  };
+
+  // function for handle otp
   const onFinishOtp = (values) => {
     console.log(values);
     setModalNumber(3)
@@ -51,7 +62,7 @@ const Login = () => {
       password: values.password,
     }
 
-
+    // on Login success handler function
     async function successHandler(response) {
       let res = await response.json();
       const userLoginData = res.profile;
@@ -63,7 +74,7 @@ const Login = () => {
       navigate('/');
     }
 
-    // Bad Request Handler func
+    // Bad Request Handler function
     async function handleBadReq(response) {
       let err = await response.json();
       const message = err.message;
@@ -77,17 +88,6 @@ const Login = () => {
       successHandler,
       handleBadReq,
     });
-  };
-
-  const onFinishModal = (values) => {
-    console.log(values);
-    setModalNumber(2)
-  };
-
-  const onFinishPassword = (values) => {
-    console.log(values);
-    setModalNumber(1)
-    handleCancel()
   };
 
 

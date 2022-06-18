@@ -80,8 +80,6 @@ const EditProfile = () => {
     return await editprofileApi(userId, newProfile, { successHandler, handleBadReq })
   }
 
-
-
   return (
     <>
       <EditProfileForm

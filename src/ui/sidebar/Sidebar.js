@@ -8,7 +8,7 @@ import SidebarCard from './SidebarCard';
 import SidebarHeader from './SidebarHeader';
 
 const Sidebar = (props) => {
-  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, isJoinMeetingModalVisible, showJoinMeetingModal, handleJoinMeetingCancel, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel } = props;
+  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel } = props;
   const conversationList = useSelector(selectConversationList);
 
 
@@ -21,7 +21,7 @@ const Sidebar = (props) => {
       <SidebarHeader
         handleLogout={handleLogout}
         isJoinMeetingModalVisible={isJoinMeetingModalVisible}
-        handleJoinMeetingCancel={handleJoinMeetingCancel}
+        cancelJoinMeetingModal={cancelJoinMeetingModal}
         showJoinMeetingModal={showJoinMeetingModal}
         userProfile={userProfile}
         onChangeSwitch={onChangeSwitch}
