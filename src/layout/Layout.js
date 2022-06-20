@@ -5,6 +5,7 @@ import EditPassword from "../container/auth/EditPassword";
 import EditProfile from "../container/auth/EditProfile";
 import ProfileView from "../container/auth/ProfileView";
 import ChattingHome from "../container/chat/ChattingHome";
+import GroupHome from "../container/group/GroupHome";
 import HomePage from "../container/HomePage";
 import StyleGuide from "../container/StyleGuide";
 import WelcomeHome from "../ui/home/WelcomeHome";
@@ -23,6 +24,7 @@ function Layout() {
             <Route path="/" element={<HomePage />}>
                 <Route index element={<WelcomeHome />} />
                 <Route path="/chat/:chatId" element={<ChattingHome />} />
+                <Route path="/group/:id" element={<GroupHome />} />
                 <Route path="/profile" element={<ProfileView />} exact />
                 <Route path="/editprofile" element={<EditProfile />} exact />
                 <Route path="/editpassword" element={<EditPassword />} exact />

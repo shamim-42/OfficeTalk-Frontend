@@ -9,12 +9,15 @@ const SidebarCard = ({ user, isOnline, userid }) => {
   const unreadMessage = user?.message_Status_unreadMessages || user?.unreadmessage;
   const messageStatus = user?.message_Status_status || user?.status;
 
+  const cardLink = user.type === "single" ? `chat/${user?.users_id}`
+    : `group/${user?.groupId}`;
+
   return (
     <Card
       // if active card will be add .focushed class with .sidebar-card
       className="sidebar-card"
     >
-      <Link to={`chat/${user?.users_id}`}
+      <Link to={cardLink}
         className={unreadMessage > 0 ? 'unread-card' : "read-card"}>
         <Row>
           <Col span={5}>

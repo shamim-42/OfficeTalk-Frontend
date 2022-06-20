@@ -15,10 +15,10 @@ const ChattingHeader = (props) => {
         <CustomAvatar
           size={40}
           icon={isOnline && "small"}
-          src={currentUserProfile?.profileImage}
+          src={currentUserProfile?.profileImage || currentUserProfile?.status_groupImage}
         />
         <div>
-          <p className="user-name">{currentUserProfile?.fullname || ""}</p>
+          <p className="user-name">{currentUserProfile?.fullname || currentUserProfile.room_name || ""}</p>
           <p className="user-status">
             {isOnline ? "Active Now" : (currentUserProfile?.lastLoggedin && ("Last seen " + activeTimeFormat(currentUserProfile?.lastLoggedin)))}
           </p>
