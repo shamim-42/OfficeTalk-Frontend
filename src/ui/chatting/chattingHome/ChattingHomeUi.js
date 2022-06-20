@@ -48,26 +48,26 @@ const ChattingHomeUi = (props) => {
                   />
                 ))}
             </div>
-            {/* {
-            messageStatus === 'choose' &&
-            <div className="message-choose-card">
-              <p className="message-choose-text">This sender is not in your list.</p>
-              <div className="message-choose-buttons">
-                <Button
-                  type="primary"
-                  onClick={() => userRequestFunction("rejected")}
-                  danger>
-                  Reject
-                </Button>
-                <Button
-                  onClick={() => userRequestFunction("accepted")}
-                  type="primary">
-                  Accept
-                </Button>
+            {
+              messageStatus === 'choose' &&
+              <div className="message-choose-card">
+                <p className="message-choose-text">This sender is not in your list.</p>
+                <div className="message-choose-buttons">
+                  <button
+                    onClick={() => userRequestFunction("rejected")}
+                    className="reject-button"
+                  >
+                    Reject
+                  </button>
+                  <button
+                    onClick={() => userRequestFunction("accepted")}
+                    className="accept-button"
+                  >
+                    Accept
+                  </button>
+                </div>
               </div>
-            </div>
-
-          } */}
+            }
           </div>
 
           <Affix offsetBottom={0}>

@@ -1,4 +1,3 @@
-import { LinkPreview } from "@dhaiwat10/react-link-preview";
 import { Col, Row } from 'antd';
 import ChatMessageOption from '../../../container/chat/ChatMessageOption';
 import { timeFormat } from '../../../utils/timeFormat';
@@ -19,35 +18,47 @@ const MessageCard = (props) => {
                 {timeFormat(message.createdAt)}
               </p>
               <div className='message-body message-right'>
-                <ChatMessageOption
-                  deleteMessage={deleteMessage}
-                  message={message}
-                  align="right" />
+
                 {message.type === 'image' &&
-                  <ImageMessageCard
-                    sender={true}
-                    message={message} />
+                  <>
+                    <ChatMessageOption
+                      deleteMessage={deleteMessage}
+                      message={message}
+                      align="right" />
+                    <ImageMessageCard
+                      sender={true}
+                      message={message} />
+                  </>
                 }
               </div>
               <div className='message-body message-right'>
-                <ChatMessageOption
-                  deleteMessage={deleteMessage}
-                  message={message}
-                  align="right" />
+
                 {message.type === 'text' &&
-                  <TextMessageCard
-                    CurrentUserProfile={CurrentUserProfile}
-                    userProfile={userProfile}
-                    message={message} />
+                  <>
+                    <ChatMessageOption
+                      deleteMessage={deleteMessage}
+                      message={message}
+                      align="right" />
+                    <TextMessageCard
+                      CurrentUserProfile={CurrentUserProfile}
+                      userProfile={userProfile}
+                      message={message} />
+                  </>
                 }
               </div>
-              <LinkPreview
-                margin="30px auto"
-                width="300px"
-                className="link-preview"
-                height="320px"
-                url="https://www.youtube.com/watch?v=AkRAdpNPwWQ&list=WL&index=1&t=573s"
-              />
+              {/* {
+                message?.links?.length > 0 && message.links.map((link, index) => (
+                  <LinkPreview
+                    key={index}
+                    margin="30px auto"
+                    width="300px"
+                    className="link-preview"
+                    height="320px"
+                    url="https://www.youtube.com"
+                  />
+                ))
+              } */}
+
               {(message.content && message.type !== 'text') &&
                 <div className='message-body message-right'>
                   <ChatMessageOption

@@ -8,8 +8,8 @@ import { ImUpload } from "react-icons/im";
 import { IoChevronDownOutline, IoOptions, IoPersonCircle } from "react-icons/io5";
 import { MdCall } from "react-icons/md";
 import { Link } from 'react-router-dom';
+import CreateGroup from '../../container/CreateGroup';
 import CustomAvatar from '../helper/CustomAvatar';
-import CreateGroupModal from '../modal/CreateGroupModal';
 import FilterPopover from './FilterPopover';
 import SettingPopover from './SettingPopover';
 
@@ -26,7 +26,7 @@ const SidebarHeader = (props) => {
             <Link to="/profile">
               {userProfile?.profileImage ?
                 <CustomAvatar size={44}
-                src={userProfile.profileImage} />
+                  src={userProfile.profileImage} />
                 :
                 <IoPersonCircle style={{
                   width: 44,
@@ -145,7 +145,7 @@ const SidebarHeader = (props) => {
         footer={null}
         width="auto"
       >
-        <CreateGroupModal handleChatGroupCancel={handleChatGroupCancel} userProfile={userProfile} />
+        <CreateGroup handleChatGroupCancel={handleChatGroupCancel} />
       </Modal>
     </div >
   );

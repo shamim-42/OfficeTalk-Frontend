@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../../api/auth';
 import { acceptUserApi, deleteMessageApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../../api/chat';
 import { selectUserProfile } from '../../redux/features/authSlice';
-import { deleteSingleConversation, selectActiveUser, setUpdateConversation, setUpdateUnreadCount, updateConversationMessage } from '../../redux/features/layoutSlice';
+import { deleteSingleConversation, selectActiveUser, setUpdateConversation, setUpdateUnreadCount, updateConversationMessage, updateFriendList } from '../../redux/features/layoutSlice';
 import ChattingHomeUi from '../../ui/chatting/chattingHome/ChattingHomeUi';
 import { newSocket } from '../../utils/socket';
 import { checkLink } from '../../utils/utils';
@@ -179,8 +179,9 @@ const ChattingHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      // console.log(res)
+      console.log(res)
       setMessageStatus(res.status)
+      dispatch(updateFriendList(res.list))
     }
 
     async function handleBadReq(response) {

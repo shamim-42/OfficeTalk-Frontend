@@ -28,13 +28,22 @@
     }
 
     & .upload-group-photo {
-      @include set-display-flex(flex-start, center);
-      font-size: 68px;
+      @include set-display-flex(center, stretch, 0, column);
 
-      & > svg {
-        border: 1px solid map.get($theme-colors, "black");
-        padding: 16px;
-        border-radius: 100%;
+      & .input-upload-cover {
+        font-size: 0px;
+        visibility: hidden;
+      }
+
+      & .input-upload-cover-btn {
+        margin: 0 auto;
+        & > svg {
+          font-size: 68px;
+          border: 1px solid map.get($theme-colors, "black");
+          padding: 16px;
+          border-radius: 100%;
+          margin: 0;
+        }
       }
     }
 

@@ -60,26 +60,38 @@
     }
 
     & .message-choose-card {
-      width: 80%;
+      width: 50%;
       margin: 20px auto;
-      background-color: map.get($theme-colors, "gray-e4");
-      border-radius: 8px;
-      padding: 8px;
+      background-color: map.get($theme-colors, "white-f1");
+      border-radius: 16px;
+      padding: 16px;
       text-align: center;
 
       & .message-choose-text {
         font-size: 20px;
-        font-weight: 500;
+        font-weight: 600;
       }
 
       & .message-choose-buttons {
         @include set-display-flex(center, center, 20px);
         margin: 20px auto;
 
-        & > Button {
+        & > button {
           border-radius: 4px;
-          padding: 2px 30px;
+          border: none;
+          padding: 8px 32px;
           font-size: 18px;
+          font-weight: 500;
+        }
+
+        & > .reject-button {
+          background-color: map.get($theme-colors, "black");
+          color: map.get($theme-colors, "white");
+        }
+
+        & > .accept-button {
+          background-color: map.get($theme-colors, "black");
+          color: map.get($theme-colors, "white");
         }
       }
     }

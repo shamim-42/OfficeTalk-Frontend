@@ -140,21 +140,25 @@
   padding: 8px 12px;
 }
 
-.Container.link-preview > .LowerContainer {
-  & > .Title {
-    font-size: 16px;
-    line-height: normal;
-    @include set-line-clamp(2);
-  }
+.Container.link-preview {
+  margin: 16px 0 16px auto !important;
 
-  & .Description.Secondary {
-    @include set-line-clamp(3);
-    font-size: 15px;
-    color: map.get($theme-colors, "gray-text-9b");
-  }
+  & .LowerContainer {
+    & > .Title {
+      font-size: 16px;
+      line-height: normal;
+      @include set-line-clamp(2);
+    }
 
-  & .SiteDetails {
-    @include set-line-clamp(1);
-    font-size: 14px;
+    & .Description.Secondary {
+      @include set-line-clamp(3);
+      font-size: 15px;
+      color: map.get($theme-colors, "gray-text-9b");
+    }
+
+    & .SiteDetails {
+      @include set-line-clamp(1);
+      font-size: 14px;
+    }
   }
 }

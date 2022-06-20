@@ -6,6 +6,9 @@ export const layoutSlice = createSlice({
     error: null,
     alertList: [],
     allUsers: [],
+    friendList: typeof window !== "undefined" && localStorage.getItem("friendList")
+      ? JSON.parse(localStorage.getItem("friendList"))
+      : [],
     activeUser: [],
     conversationList: [],
   },
@@ -21,6 +24,12 @@ export const layoutSlice = createSlice({
 
     setAllUsers: (state, action) => {
       state.allUsers = action.payload;
+    },
+
+    updateFriendList: (state, action) => {
+      state.friendList = action.payload;
+      localStorage.setItem("friendList", JSON.stringify(action.payload));
+      console.log(state.friendList);
     },
 
     setActiveUser: (state, action) => {
@@ -97,10 +106,11 @@ export const layoutSlice = createSlice({
 
 });
 
-export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation, setUpdateUnreadCount, updateConversationStatus, deleteSingleConversation, updateConversationMessage } = layoutSlice.actions;
+export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation, setUpdateUnreadCount, updateConversationStatus, deleteSingleConversation, updateConversationMessage, updateFriendList } = layoutSlice.actions;
 
 export const selectError = (state) => state.layout.error;
 export const selectAllUser = (state) => state.layout.allUsers;
+export const selectFriendList = (state) => state.layout.friendList;
 export const selectActiveUser = (state) => state.layout.activeUser;
 export const selectConversationList = (state) => state.layout.conversationList;
 ;

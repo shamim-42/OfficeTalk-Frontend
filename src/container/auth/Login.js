@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { userLoginApi } from '../../api/auth';
 import { setUser, setUserProfile } from '../../redux/features/authSlice';
+import { updateFriendList } from '../../redux/features/layoutSlice';
 import LoginUi from '../../ui/auth/login/LoginUi';
 
 const Login = () => {
@@ -65,10 +66,12 @@ const Login = () => {
     // on Login success handler function
     async function successHandler(response) {
       let res = await response.json();
+      const friendList = res.list;
       const userLoginData = res.profile;
       const accessToken = res.accessToken;
       setLoading(false);
       message.success('User logged in successfully !');
+      dispatch(updateFriendList(friendList))
       dispatch(setUserProfile(userLoginData))
       dispatch(setUser(accessToken))
       navigate('/');
