@@ -17,7 +17,7 @@ const CreateGroupModal = (props) => {
       </h3>
       <Spin tip="Loading..." spinning={loading}>
         <div className="upload-group-photo">
-          <label for="files" class="input-upload-cover-btn"> <MdOutlinePhotoCamera /></label>
+          <label htmlFor="files" className="input-upload-cover-btn"> <MdOutlinePhotoCamera /></label>
           {
             selectFile && <p>{selectFile.name}</p>
           }

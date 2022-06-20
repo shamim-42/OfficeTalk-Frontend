@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import config from "../config/config.json";
 import connector from '../connector/index';
-import EditPassword from "../container/auth/EditPassword";
 import EditProfile from "../container/auth/EditProfile";
 import ProfileView from "../container/auth/ProfileView";
 import ChattingHome from "../container/chat/ChattingHome";
@@ -27,7 +26,6 @@ function Layout() {
                 <Route path="/group/:id" element={<GroupHome />} />
                 <Route path="/profile" element={<ProfileView />} exact />
                 <Route path="/editprofile" element={<EditProfile />} exact />
-                <Route path="/editpassword" element={<EditPassword />} exact />
             </Route>
             {/* <Route path="/login" element={<Login />} exact />
             <Route path="/signup" element={<Registration />} exact /> */}
