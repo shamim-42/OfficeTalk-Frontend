@@ -15,7 +15,7 @@ import SettingPopover from './SettingPopover';
 
 
 const SidebarHeader = (props) => {
-  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel } = props;
+  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible } = props;
 
   return (
     <div className="sidebar-header">
@@ -145,7 +145,7 @@ const SidebarHeader = (props) => {
         footer={null}
         width="auto"
       >
-        <CreateGroup handleChatGroupCancel={handleChatGroupCancel} />
+        <CreateGroup setIsChatGroupModalVisible={setIsChatGroupModalVisible} handleChatGroupCancel={handleChatGroupCancel} />
       </Modal>
     </div >
   );

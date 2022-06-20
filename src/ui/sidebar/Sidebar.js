@@ -1,5 +1,4 @@
 import { Avatar, Divider } from 'antd';
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectConversationList } from '../../redux/features/layoutSlice';
@@ -8,7 +7,7 @@ import SidebarCard from './SidebarCard';
 import SidebarHeader from './SidebarHeader';
 
 const Sidebar = (props) => {
-  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel } = props;
+  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible } = props;
   const conversationList = useSelector(selectConversationList);
 
 
@@ -20,6 +19,7 @@ const Sidebar = (props) => {
     <div className="sidebar-container">
       <SidebarHeader
         handleLogout={handleLogout}
+        setIsChatGroupModalVisible={setIsChatGroupModalVisible}
         isJoinMeetingModalVisible={isJoinMeetingModalVisible}
         cancelJoinMeetingModal={cancelJoinMeetingModal}
         showJoinMeetingModal={showJoinMeetingModal}

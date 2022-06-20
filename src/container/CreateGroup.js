@@ -1,18 +1,21 @@
+import { message } from 'antd';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { creategroupApi } from '../api/chat';
 import { selectUserProfile } from '../redux/features/authSlice';
-import { selectFriendList } from '../redux/features/layoutSlice';
+import { selectFriendList, setAddConversation } from '../redux/features/layoutSlice';
 import CreateGroupModal from '../ui/modal/CreateGroupModal';
 
 const CreateGroup = (props) => {
-  const { handleChatGroupCancel } = props;
+  const { handleChatGroupCancel, setIsChatGroupModalVisible } = props;
   const userProfile = useSelector(selectUserProfile);
   const friendList = useSelector(selectFriendList);
+  const dispatch = useDispatch();
   const [selectedUser, setSelectedUser] = useState([]);
   const [selectFile, setSelectedFile] = useState(null);
   const [groupName, setGroupName] = useState('');
   const [userList, setUserList] = useState(friendList);
+  const [loading, setLoading] = useState(false);
 
   const handleChangefile = (e) => {
     setSelectedFile(e.target.files[0])
@@ -42,19 +45,34 @@ const CreateGroup = (props) => {
     if (!selectFile) {
       return
     }
+    setLoading(true);
     const formData = new FormData();
     formData.append("file", selectFile);
     formData.append("groupname", groupName);
-    formData.append("creator", userProfile.id);
+    formData.append("creator", JSON.stringify(userProfile));
     formData.append("people", selectedUser);
 
     async function successHandler(response) {
       const res = await response.json();
       console.log(res);
+      const newGroup = {
+        groupImage: res.roomimg,
+        groupId: res.roominfo.id,
+        lastMessage: res.msg,
+        message_Status_lastMessageTime: res.roominfo.updated_at,
+        type: 'group',
+        unreadmessage: 0,
+        name: res.roominfo.name,
+      }
+      dispatch(setAddConversation(newGroup));
+      setLoading(false);
+      message.success("Group created successfully!");
+      handleChatGroupCancel();
     }
 
     async function handleBadReq(response) {
       let error = await response.json();
+      setLoading(false);
       console.log(error);
     }
 
@@ -65,17 +83,18 @@ const CreateGroup = (props) => {
   };
 
   return (
-    <CreateGroupModal
-      handleChatGroupCancel={handleChatGroupCancel}
-      handleChangeUserSearch={handleChangeUserSearch}
-      handleCreateGroup={handleCreateGroup}
-      selectedUser={selectedUser}
-      addUserOnClick={addUserOnClick}
-      userList={userList}
-      selectFile={selectFile}
-      handleChangefile={handleChangefile}
-      handleChangeGroupName={handleChangeGroupName}
-    />
+      <CreateGroupModal
+        handleChatGroupCancel={handleChatGroupCancel}
+        handleChangeUserSearch={handleChangeUserSearch}
+        handleCreateGroup={handleCreateGroup}
+        selectedUser={selectedUser}
+        addUserOnClick={addUserOnClick}
+        userList={userList}
+        selectFile={selectFile}
+        handleChangefile={handleChangefile}
+        handleChangeGroupName={handleChangeGroupName}
+        loading={loading}
+      />
   );
 };
 

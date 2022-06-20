@@ -1,11 +1,11 @@
 import { Affix, Layout } from 'antd';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../sidebar/Sidebar';
 const { Sider, Content } = Layout;
 
 const HomeUi = (props) => {
-  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel } = props;
+  const { users, handleChangeSearch, onChangeSwitch, userProfile, handleLogout, onlineUsers, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible } = props;
   const sideBarRef = useRef(null)
 
   return (
@@ -28,6 +28,7 @@ const HomeUi = (props) => {
           isChatGroupModalVisible={isChatGroupModalVisible}
           showChatGroupModal={showChatGroupModal}
           handleChatGroupCancel={handleChatGroupCancel}
+          setIsChatGroupModalVisible={setIsChatGroupModalVisible}
           users={users}
           onlineUsers={onlineUsers} />
       </Sider>

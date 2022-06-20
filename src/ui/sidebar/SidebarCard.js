@@ -6,8 +6,8 @@ import CustomAvatar from '../helper/CustomAvatar';
 
 
 const SidebarCard = ({ user, isOnline, userid }) => {
-  const unreadMessage = user?.message_Status_unreadMessages;
-  const messageStatus = user?.message_Status_status;
+  const unreadMessage = user?.message_Status_unreadMessages || user?.unreadmessage;
+  const messageStatus = user?.message_Status_status || user?.status;
 
   return (
     <Card
@@ -21,13 +21,13 @@ const SidebarCard = ({ user, isOnline, userid }) => {
             <CustomAvatar
               size={60}
               icon={isOnline(user?.users_id) && "large"}
-              src={user?.users_profileImage}
+              src={user?.users_profileImage || user?.groupImage}
             />
           </Col>
           <Col span={14}>
-            <p className="sidebar-card-user-name">{user?.users_fullname}</p>
+            <p className="sidebar-card-user-name">{user?.users_fullname || user?.name}</p>
             <p className="sidebar-car-message">
-              {user?.message_Status_lastMessage}
+              {user?.message_Status_lastMessage || user?.lastMessage}
             </p>
           </Col>
           <Col span={5}>

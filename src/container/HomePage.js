@@ -168,6 +168,7 @@ const HomePage = () => {
       isChatGroupModalVisible={isChatGroupModalVisible}
       showChatGroupModal={showChatGroupModal}
       handleChatGroupCancel={handleChatGroupCancel}
+      setIsChatGroupModalVisible={setIsChatGroupModalVisible}
       users={users} />
   );
 };

@@ -21,7 +21,6 @@ export const layoutSlice = createSlice({
       state.error = null
     },
 
-
     setAllUsers: (state, action) => {
       state.allUsers = action.payload;
     },
@@ -43,10 +42,9 @@ export const layoutSlice = createSlice({
     setAddConversation: (state, action) => {
       let newList = [...state.conversationList];
       let conversation = action.payload;
-      newList.push(conversation);
+      newList.unshift(conversation);
       state.conversationList = newList;
     },
-
 
     setUpdateConversation: (state, action) => {
       let newList = [...state.conversationList];
