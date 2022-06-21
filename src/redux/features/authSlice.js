@@ -25,8 +25,13 @@ export const authSlice = createSlice({
       }
     },
 
-    resetUser: (state) => {
+    resetUserData: (state) => {
       state.user = null;
+      state.userProfile = null;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("authToken", JSON.stringify({}));
+        localStorage.setItem("userProfile", JSON.stringify({}));
+      }
     },
 
     setCurrentUser: (state, action) => {
@@ -41,7 +46,7 @@ export const authSlice = createSlice({
 
 });
 
-export const { setUserProfile, setUser, resetUser, setCurrentUser, setCurrentGroup } = authSlice.actions;
+export const { setUserProfile, setUser, resetUserData, setCurrentUser, setCurrentGroup } = authSlice.actions;
 
 export const selectUserProfile = (state) => state.auth.userProfile;
 export const selectUserToken = (state) => state.auth.user;

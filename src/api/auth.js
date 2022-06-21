@@ -40,3 +40,8 @@ export const userActiveStatusApi = async function (id, options = {}) {
   const url = `4000/users/${id}/activestatus`;
   return await connector.get(url, options);
 };
+
+export const checkJWTToken = async function (payload, options = {}) {
+  const url = '4000/auth/verifyjwt';
+  return await connector.post(url, payload, options);
+}

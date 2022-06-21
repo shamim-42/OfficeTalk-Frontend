@@ -78,6 +78,16 @@ export const layoutSlice = createSlice({
       state.conversationList = newList;
     },
 
+    updateConversationGroupMessage: (state, action) => {
+      let newList = [...state.conversationList];
+      let index = newList.findIndex(item => parseInt(item.groupId) === parseInt(action.payload.id));
+      if (index > -1) {
+        newList[index].lastMessage = action.payload.lastMessage;
+        newList[index].message_Status_lastMessageTime = action.payload.createdAt;
+      }
+      state.conversationList = newList;
+    },
+
     updateConversationStatus: (state, action) => {
       let newList = [...state.conversationList];
       let index = newList.findIndex(item => parseInt(item.message_Status_id) === parseInt(action.payload.conversationId));
@@ -104,7 +114,7 @@ export const layoutSlice = createSlice({
 
 });
 
-export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation, setUpdateUnreadCount, updateConversationStatus, deleteSingleConversation, updateConversationMessage, updateFriendList } = layoutSlice.actions;
+export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation, setUpdateUnreadCount, updateConversationStatus, deleteSingleConversation, updateConversationMessage, updateFriendList, updateConversationGroupMessage } = layoutSlice.actions;
 
 export const selectError = (state) => state.layout.error;
 export const selectAllUser = (state) => state.layout.allUsers;

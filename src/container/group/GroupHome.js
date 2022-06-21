@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getGroupInfo, getGroupMessagesApi, groupMessageSendApi } from "../../api/group";
 import { selectUserProfile, setCurrentGroup } from "../../redux/features/authSlice";
-import { selectActiveUser } from "../../redux/features/layoutSlice";
+import { selectActiveUser, updateConversationGroupMessage } from "../../redux/features/layoutSlice";
 import GroupHomeUI from "../../ui/group/GroupHomeUI";
 import { newSocket } from "../../utils/socket";
 import { checkLink } from "../../utils/utils";
@@ -119,25 +119,30 @@ const GroupHome = () => {
     return await groupMessageSendApi(id, messageData, { successHandler, handleBadReq })
   }
 
-  useEffect(() => {
-    newSocket.on("newMessage/group/", (res) => {
-      console.log(res)
-      getGroupMessages();
-    })
-    console.log("tamim")
-    newSocket.emit('joinRoom', groupInfo);
-    return () => {
-      newSocket.off("newMessage/group/");
-      newSocket.emit('leaveRoom');
-    }
-  }, [groupInfo,getGroupMessages]);
 
   useEffect(() => {
     dispatch(setCurrentGroup(id))
     return () => {
       dispatch(setCurrentGroup(null))
     }
-  }, [dispatch, id])
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    newSocket.on(`newMessage/group/${userId}`, (res) => {
+      console.log(res)
+      const newMessage = {
+        lastMessage: res.content,
+        id: res.roomId,
+        createdAt: res.createdAt,
+      }
+      dispatch(updateConversationGroupMessage(newMessage))
+      getGroupMessages();
+    })
+
+    return () => {
+      newSocket.off(`newMessage/group/${userId}`)
+    }
+  }, [id, dispatch, getGroupMessages, userId]);
 
   useEffect(() => {
     getCurrentGroupInfo()

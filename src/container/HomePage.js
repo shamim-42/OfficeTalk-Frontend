@@ -2,9 +2,9 @@ import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { allUserListApi, userLogoutApi } from '../api/auth';
+import { allUserListApi, checkJWTToken, userLogoutApi } from '../api/auth';
 import { getConversationsApi } from '../api/chat';
-import { resetUser, selectUserProfile } from '../redux/features/authSlice';
+import { resetUserData, selectUserProfile, selectUserToken } from '../redux/features/authSlice';
 import { setActiveUser, setAllUsers, setConversationList, setUpdateConversation, updateConversationStatus } from '../redux/features/layoutSlice';
 import HomeUi from '../ui/home/HomeUi';
 import { newSocket } from '../utils/socket';
@@ -19,6 +19,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userProfile = useSelector(selectUserProfile);
+  const token = useSelector(selectUserToken);
   const userId = userProfile.id;
 
   // update search input value
@@ -62,13 +63,34 @@ const HomePage = () => {
     }
 
     return await allUserListApi({ successHandler, handleBadReq })
-  }, [dispatch])
+  }, [dispatch]);
+
+  const checkJWTTokenValidity = useCallback(async () => {
+    const payload = {
+      token: token,
+    }
+    async function successHandler(response) {
+      const res = await response.json();
+      if (!res.message) {
+        dispatch(resetUserData())
+        navigate('/login');
+      }
+      // console.log(res)
+    }
+
+    async function handleBadReq(response) {
+      let error = await response.json();
+      console.log(error.message);
+    }
+
+    return await checkJWTToken(payload, { successHandler, handleBadReq })
+  }, [token, dispatch, navigate])
 
   // get all conversations list
   const fetchConversationList = useCallback(async () => {
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res)
+      // console.log(res)
       dispatch(setConversationList(res))
     }
 
@@ -90,7 +112,7 @@ const HomePage = () => {
       localStorage.removeItem("userProfile");
       navigate('/login');
       newSocket.disconnect();
-      dispatch(resetUser());
+      dispatch(resetUserData());
     }
 
     async function handleBadReq(response) {
@@ -150,9 +172,10 @@ const HomePage = () => {
     fetchUserList();
     fetchConversationList();
     runSocketFunction();
+    checkJWTTokenValidity();
     newSocket.connect();
     return () => newSocket.close();
-  }, [fetchUserList, fetchConversationList, runSocketFunction])
+  }, [fetchUserList, fetchConversationList, runSocketFunction, checkJWTTokenValidity])
 
   return (
     <HomeUi
