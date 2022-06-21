@@ -52,11 +52,6 @@
         font-size: 14px;
         text-align: center;
       }
-
-      & .message-list {
-        @include set-display-flex(flex-start, flex-end, 20px, column);
-        width: 100%;
-      }
     }
 
     & .message-choose-card {
@@ -184,4 +179,8 @@
   100% {
     transform: scale(1);
   }
+}
+.message-list {
+  @include set-display-flex(flex-start, flex-end, 24px, column);
+  width: 100%;
 }

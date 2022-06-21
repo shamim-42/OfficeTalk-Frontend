@@ -10,13 +10,8 @@ import StyleGuide from "../container/StyleGuide";
 import WelcomeHome from "../ui/home/WelcomeHome";
 connector.baseUrl = config.baseUrl;
 
-
-
 function Layout() {
-
-
     return (
-
         <Routes>
             <Route path="/gude" element={<StyleGuide />} />
 

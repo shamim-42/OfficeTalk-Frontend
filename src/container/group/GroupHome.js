@@ -1,23 +1,41 @@
 import { Spin } from "antd";
 import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getGroupInfo } from "../../api/group";
-import { selectUserProfile } from "../../redux/features/authSlice";
+import { getGroupInfo, getGroupMessagesApi, groupMessageSendApi } from "../../api/group";
+import { selectUserProfile, setCurrentGroup } from "../../redux/features/authSlice";
+import { selectActiveUser } from "../../redux/features/layoutSlice";
 import GroupHomeUI from "../../ui/group/GroupHomeUI";
+import { newSocket } from "../../utils/socket";
+import { checkLink } from "../../utils/utils";
+
 
 const GroupHome = () => {
-  let { id } = useParams();
-  const userProfile = useSelector(selectUserProfile);
-  const userId = userProfile.id;
   const [groupInfo, setGroupInfo] = useState({});
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [allMessage, setAllMessage] = useState([]);
+  const [messageText, setMessageText] = useState("");
+  const userProfile = useSelector(selectUserProfile);
+  const onlineUsers = useSelector(selectActiveUser);
+  let { id } = useParams();
+  const userId = userProfile.id;
+  const dispatch = useDispatch();
+
+  // Update message text function on change
+  const handleChangeMessage = (e) => {
+    setMessageText(e.target.value);
+  }
+
+  // check user online status function
+  function isOnline(id) {
+    return onlineUsers.indexOf(id) !== -1;
+  }
 
   // get current group information
   const getCurrentGroupInfo = useCallback(async () => {
     async function successHandler(response) {
       const res = await response.json();
-      // console.log(res[0]);
+      // console.log(res);
       setGroupInfo(res[0]);
       setLoading(false);
     }
@@ -29,14 +47,113 @@ const GroupHome = () => {
     return await getGroupInfo(id, userId, { successHandler, handleBadReq })
   }, [id, userId]);
 
+  // Get current group all messages
+  const getGroupMessages = useCallback(async () => {
+    const payload = {
+      userId: userId,
+    }
+    async function successHandler(response) {
+      const res = await response.json();
+      setAllMessage(res.messages);
+      // console.log(res);
+    }
+
+    async function handleBadReq(response) {
+      let error = await response.json();
+      console.log(error)
+    }
+    return await getGroupMessagesApi(id, payload, { successHandler, handleBadReq })
+  }, [id, userId]);
+
+
+  // // Handle delete message
+  // async function deleteMessage(id) {
+  //   async function successHandler(response) {
+  //     const res = await response.json();
+  //     console.log(res);
+  //     getGroupMessages();
+
+  //     if (!res.deleteall) {
+  //       dispatch(updateConversationMessage({ id: chatId, lastmessage: res.lastmessage }))
+  //     } else {
+  //       dispatch(deleteSingleConversation(chatId))
+  //     }
+
+  //     newSocket.emit('isdeleted', { chatId: chatId, userId: userId });
+  //     message.success(res.message);
+  //   }
+
+  //   async function handleBadReq(response) {
+  //     let error = await response.json();
+  //     message.error(error.message);
+  //   }
+
+  //   return await deleteMessageApi(id, userId, { successHandler, handleBadReq })
+  // }
+
+  // Send message to current user function
+  async function handleSubmitMessage() {
+    if (messageText.trim().length <= 0 && !messageText) {
+      return
+    }
+    let messageLinks = null;
+    const isLink = checkLink(messageText)
+    if (isLink) messageLinks = isLink;
+
+    const messageData = {
+      message: messageText,
+      senderId: userId,
+      type: "text",
+      // links: messageLinks,
+    }
+    async function successHandler(response) {
+      const res = await response.json();
+      console.log(res);
+      setMessageText('');
+      getGroupMessages();
+    }
+
+    async function handleBadReq(response) {
+      // let error = await response.json();
+    }
+    return await groupMessageSendApi(id, messageData, { successHandler, handleBadReq })
+  }
+
+  useEffect(() => {
+    newSocket.on("newMessage/group/", (res) => {
+      console.log(res)
+      getGroupMessages();
+    })
+    console.log("tamim")
+    newSocket.emit('joinRoom', groupInfo);
+    return () => {
+      newSocket.off("newMessage/group/");
+      newSocket.emit('leaveRoom');
+    }
+  }, [groupInfo,getGroupMessages]);
+
+  useEffect(() => {
+    dispatch(setCurrentGroup(id))
+    return () => {
+      dispatch(setCurrentGroup(null))
+    }
+  }, [dispatch, id])
+
   useEffect(() => {
     getCurrentGroupInfo()
-  }, [getCurrentGroupInfo])
+    getGroupMessages()
+  }, [getCurrentGroupInfo, getGroupMessages]);
 
   return (
     <Spin spinning={loading}>
       <GroupHomeUI
+        handleChangeMessage={handleChangeMessage}
+        userProfile={userProfile}
         groupInfo={groupInfo}
+        allMessage={allMessage}
+        isOnline={isOnline}
+        messageText={messageText}
+        handleSubmitMessage={handleSubmitMessage}
       />
     </Spin>
   );

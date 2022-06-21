@@ -1,13 +1,12 @@
 import { Button, Form, Input } from 'antd';
 
-const EditPasswordModal = ({handleEditPassword}) => {
+const EditPasswordModal = ({ handleEditPassword }) => {
   return (
     <>
       <Form
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         labelAlign="left"
-        // form={form}
         name="editProfile"
         onFinish={handleEditPassword}
         scrollToFirstError

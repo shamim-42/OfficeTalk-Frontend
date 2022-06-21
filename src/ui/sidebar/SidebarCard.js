@@ -1,11 +1,15 @@
 import { Avatar, Card, Col, Row } from 'antd';
 import { IoCheckmarkCircleOutline, IoCheckmarkCircleSharp } from "react-icons/io5";
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { selectCurrentGroup, selectCurrentUser } from '../../redux/features/authSlice';
 import { conversationTimeFormat } from '../../utils/timeFormat';
 import CustomAvatar from '../helper/CustomAvatar';
 
 
 const SidebarCard = ({ user, isOnline, userid }) => {
+  const currentUser = useSelector(selectCurrentUser)
+  const currentGroup = useSelector(selectCurrentGroup)
   const unreadMessage = user?.message_Status_unreadMessages || user?.unreadmessage;
   const messageStatus = user?.message_Status_status || user?.status;
 
@@ -15,7 +19,7 @@ const SidebarCard = ({ user, isOnline, userid }) => {
   return (
     <Card
       // if active card will be add .focushed class with .sidebar-card
-      className="sidebar-card"
+      className={`sidebar-card ${(parseInt(currentUser) === user?.users_id || parseInt(currentGroup) === user?.groupId) && "focushed"}`}
     >
       <Link to={cardLink}
         className={unreadMessage > 0 ? 'unread-card' : "read-card"}>

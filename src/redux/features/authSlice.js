@@ -10,6 +10,7 @@ export const authSlice = createSlice({
       ? JSON.parse(localStorage.getItem("authToken"))
       : null,
     currentUser: null,
+    currentGroup: null,
   },
   reducers: {
     setUserProfile: (state, action) => {
@@ -30,16 +31,21 @@ export const authSlice = createSlice({
 
     setCurrentUser: (state, action) => {
       state.currentUser = action.payload;
+    },
+
+    setCurrentGroup: (state, action) => {
+      state.currentGroup = action.payload;
     }
 
   },
 
 });
 
-export const { setUserProfile, setUser, resetUser, setCurrentUser } = authSlice.actions;
+export const { setUserProfile, setUser, resetUser, setCurrentUser, setCurrentGroup } = authSlice.actions;
 
 export const selectUserProfile = (state) => state.auth.userProfile;
 export const selectUserToken = (state) => state.auth.user;
 export const selectCurrentUser = (state) => state.auth.currentUser;
+export const selectCurrentGroup = (state) => state.auth.currentGroup;
 
 export default authSlice.reducer;

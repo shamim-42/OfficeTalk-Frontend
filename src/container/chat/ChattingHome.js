@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../../api/auth';
 import { acceptUserApi, deleteMessageApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../../api/chat';
-import { selectUserProfile } from '../../redux/features/authSlice';
+import { selectUserProfile, setCurrentUser } from '../../redux/features/authSlice';
 import { deleteSingleConversation, selectActiveUser, setUpdateConversation, setUpdateUnreadCount, updateConversationMessage, updateFriendList } from '../../redux/features/layoutSlice';
 import ChattingHomeUi from '../../ui/chatting/chattingHome/ChattingHomeUi';
 import { newSocket } from '../../utils/socket';
@@ -20,8 +20,8 @@ const ChattingHome = () => {
   const [timer, setTimer] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
   const [allMessage, setAllMessage] = useState([])
-  const userProfile = useSelector(selectUserProfile)
-  const onlineUsers = useSelector(selectActiveUser)
+  const userProfile = useSelector(selectUserProfile);
+  const onlineUsers = useSelector(selectActiveUser);
   const dispatch = useDispatch();
   const userId = userProfile.id;
 
@@ -44,7 +44,7 @@ const ChattingHome = () => {
   async function deleteMessage(id) {
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res);
+      // console.log(res);
       getAllMessage(chatId);
 
       if (!res.deleteall) {
@@ -70,7 +70,7 @@ const ChattingHome = () => {
     async function successHandler(response) {
       const res = await response.json();
       setMessageStatus(res.status);
-      console.log(res)
+      // console.log(res)
       if (res?.messages?.length > 0) {
         setAllMessage(res?.messages)
       } else {
@@ -179,7 +179,7 @@ const ChattingHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res)
+      // console.log(res)
       setMessageStatus(res.status)
       dispatch(updateFriendList(res.list))
     }
@@ -219,8 +219,13 @@ const ChattingHome = () => {
   }, [chatId, getNewMessage, userId])
 
   useEffect(() => {
+    dispatch(setCurrentUser(chatId))
     getAllMessage(chatId)
-  }, [getAllMessage, chatId])
+
+    return () => {
+      dispatch(setCurrentUser(null))
+    }
+  }, [getAllMessage, chatId, dispatch])
 
   useEffect(() => {
     makeReadMessage()

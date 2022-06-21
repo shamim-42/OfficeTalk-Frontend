@@ -8,7 +8,7 @@ import { ImUpload } from "react-icons/im";
 import { IoChevronDownOutline, IoOptions, IoPersonCircle } from "react-icons/io5";
 import { MdCall } from "react-icons/md";
 import { Link } from 'react-router-dom';
-import CreateGroup from '../../container/CreateGroup';
+import CreateGroup from '../../container/group/CreateGroup';
 import CustomAvatar from '../helper/CustomAvatar';
 import FilterPopover from './FilterPopover';
 import SettingPopover from './SettingPopover';

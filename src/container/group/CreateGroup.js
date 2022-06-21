@@ -1,10 +1,10 @@
 import { message } from 'antd';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { creategroupApi } from '../api/chat';
-import { selectUserProfile } from '../redux/features/authSlice';
-import { selectFriendList, setAddConversation } from '../redux/features/layoutSlice';
-import CreateGroupModal from '../ui/modal/CreateGroupModal';
+import { creategroupApi } from '../../api/group';
+import { selectUserProfile } from '../../redux/features/authSlice';
+import { selectFriendList, setAddConversation } from '../../redux/features/layoutSlice';
+import CreateGroupModal from '../../ui/modal/CreateGroupModal';
 
 const CreateGroup = (props) => {
   const { handleChatGroupCancel, setIsChatGroupModalVisible } = props;
@@ -54,7 +54,7 @@ const CreateGroup = (props) => {
 
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res);
+      // console.log(res);
       const newGroup = {
         groupImage: res.roomimg,
         groupId: res.roominfo.id,
@@ -83,18 +83,18 @@ const CreateGroup = (props) => {
   };
 
   return (
-      <CreateGroupModal
-        handleChatGroupCancel={handleChatGroupCancel}
-        handleChangeUserSearch={handleChangeUserSearch}
-        handleCreateGroup={handleCreateGroup}
-        selectedUser={selectedUser}
-        addUserOnClick={addUserOnClick}
-        userList={userList}
-        selectFile={selectFile}
-        handleChangefile={handleChangefile}
-        handleChangeGroupName={handleChangeGroupName}
-        loading={loading}
-      />
+    <CreateGroupModal
+      handleChatGroupCancel={handleChatGroupCancel}
+      handleChangeUserSearch={handleChangeUserSearch}
+      handleCreateGroup={handleCreateGroup}
+      selectedUser={selectedUser}
+      addUserOnClick={addUserOnClick}
+      userList={userList}
+      selectFile={selectFile}
+      handleChangefile={handleChangefile}
+      handleChangeGroupName={handleChangeGroupName}
+      loading={loading}
+    />
   );
 };
 

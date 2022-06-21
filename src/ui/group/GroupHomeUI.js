@@ -1,9 +1,10 @@
 import { Affix, Button, Col, Input, Row } from "antd";
 import { BsEmojiSmile } from "react-icons/bs";
 import ChattingHeader from "../chatting/chattingHeader/ChattingHeader";
+import GroupMessageBox from "./GroupMessageBox";
 
 const GroupHomeUI = (props) => {
-  const { groupInfo } = props;
+  const { groupInfo, allMessage, userProfile, isOnline, handleChangeMessage, messageText, handleSubmitMessage } = props;
 
   return (
     <div>
@@ -12,7 +13,20 @@ const GroupHomeUI = (props) => {
       </Affix>
 
       <div className="group-chat-content">
-        je
+        <div className="all-messages-content">
+          {allMessage?.length > 0 &&
+            allMessage.map((filterMessages, index) => (
+              <GroupMessageBox
+                key={index}
+                // currentUserStatus={currentUserProfile}
+                isOnline={isOnline}
+                userProfile={userProfile}
+                // messageStatus={messageStatus}
+                filterMessages={filterMessages}
+              // deleteMessage={deleteMessage}
+              />
+            ))}
+        </div>
       </div>
       <Affix offsetBottom={0}>
         <div className="chatting-bottom">
@@ -38,10 +52,9 @@ const GroupHomeUI = (props) => {
                 className="message-input"
                 size="large"
                 placeholder="Type a message"
-              // value={messagesText}
-              // onChange={handleChangeMessage}
-              // onBlur={handleBlur}
-              // onPressEnter={handleSubmitMessage}
+                value={messageText}
+                onChange={handleChangeMessage}
+                onPressEnter={handleSubmitMessage}
               />
             </Col>
             {/* <Col span={1} className="chat-input-attachment">

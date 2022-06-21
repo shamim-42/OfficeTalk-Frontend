@@ -8,7 +8,7 @@ import TextMessageCard from './TextMessageCard';
 const MessageCard = (props) => {
   const { CurrentUserProfile, userProfile, message, isOnline, deleteMessage } = props;
 
-  if (message.senderId === userProfile.id) {
+  if (message?.user?.id === userProfile.id) {
     return (
       <Row className="message-card" justify="end">
         <Col span={14}>
@@ -32,7 +32,6 @@ const MessageCard = (props) => {
                 }
               </div>
               <div className='message-body message-right'>
-
                 {message.type === 'text' &&
                   <>
                     <ChatMessageOption
@@ -46,6 +45,7 @@ const MessageCard = (props) => {
                   </>
                 }
               </div>
+
               {/* {
                 message?.links?.length > 0 && message.links.map((link, index) => (
                   <LinkPreview

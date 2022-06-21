@@ -6,35 +6,33 @@ import hi from "../../../assest/image/hi.gif";
 import ChatHeader from "../../../container/chat/ChatHeader";
 import MessageBox from "./MessageBox";
 
-
 const ChattingHomeUi = (props) => {
-  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleScroll, handleBlur, isTyping, messageStatus, userRequestFunction, deleteMessage } = props;
-
-
+  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleBlur, isTyping, messageStatus, userRequestFunction, deleteMessage } = props;
 
   return (
     <Fragment>
       <Spin spinning={isLoading}>
         <div className="chatting-home">
           <ChatHeader currentUserProfile={currentUserProfile} />
-          {allMessage.length <= 0 && (
-            <div className="sayhi-card">
-              <Avatar className="sayhi-emoji" src={hi} />
-              <p className="sayhi-message">
-                {`Say hi to ${currentUserProfile.fullname}.`}
-              </p>
-              <Button
-                className="btn-theme-primary-fluid filled-btn sayhi-btn"
-                type="primary"
-                onClick={(e) => handleSubmitMessage(e, "Hi !")}
-                htmlType="submit"
-              >
-                Say Hi
-              </Button>
-            </div>
-          )}
+
           <div className="chatting-content">
-            <div className="all-messages-content" onScroll={handleScroll}>
+            {allMessage.length <= 0 && (
+              <div className="sayhi-card">
+                <Avatar className="sayhi-emoji" src={hi} />
+                <p className="sayhi-message">
+                  {`Say hi to ${currentUserProfile.fullname}.`}
+                </p>
+                <Button
+                  className="btn-theme-primary-fluid filled-btn sayhi-btn"
+                  type="primary"
+                  onClick={(e) => handleSubmitMessage(e, "Hi !")}
+                  htmlType="submit"
+                >
+                  Say Hi
+                </Button>
+              </div>
+            )}
+            <div className="all-messages-content">
               {allMessage.length > 0 &&
                 allMessage.map((filterMessages, index) => (
                   <MessageBox

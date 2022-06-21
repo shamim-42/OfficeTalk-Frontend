@@ -1,14 +1,9 @@
-import { Button, Descriptions, Form, Modal, Spin } from 'antd';
+import { Button, Descriptions, Modal, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import EditPasswordModal from '../../modal/EditPasswordModal';
 
 const ProfileViewUi = (props) => {
   const { userProfile, handleEditPassword, showPasswordModal, setOpenPasswordModal, openPasswordModal, loading } = props;
-  const { fullname, email } = userProfile;
-  const [form] = Form.useForm();
-  form.setFieldsValue({ fullname, email });
-
-
 
   return (
     <>
