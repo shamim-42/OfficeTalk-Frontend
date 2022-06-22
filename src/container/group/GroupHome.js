@@ -108,7 +108,16 @@ const GroupHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res);
+      const newMessage = {
+        lastMessage: res?.content,
+        groupId: res?.room?.id,
+        message_Status_lastMessageTime: res?.createdAt,
+        name: res?.room?.name,
+        groupImage: res?.room?.groupImage,
+        unreadMessages: 0,
+        type: "group"
+      }
+      dispatch(updateConversationGroupMessage(newMessage))
       setMessageText('');
       getGroupMessages();
     }
@@ -124,11 +133,12 @@ const GroupHome = () => {
     dispatch(setCurrentGroup(id))
     return () => {
       dispatch(setCurrentGroup(null))
+      setAllMessage([])
     }
   }, [dispatch, id]);
 
   useEffect(() => {
-    newSocket.on(`newMessage/group/${userId}`, (res) => {
+    newSocket.on('newMessage/group/', (res) => {
       console.log(res)
       const newMessage = {
         lastMessage: res.content,
@@ -144,14 +154,15 @@ const GroupHome = () => {
     })
 
     return () => {
-      newSocket.off(`newMessage/group/${userId}`)
+      newSocket.off('newMessage/group/')
     }
   }, [id, dispatch, getGroupMessages, userId]);
 
   useEffect(() => {
+    newSocket.emit("JoinRoom", id);
     getCurrentGroupInfo()
     getGroupMessages()
-  }, [getCurrentGroupInfo, getGroupMessages]);
+  }, [getCurrentGroupInfo, getGroupMessages, id]);
 
   return (
     <Spin spinning={loading}>

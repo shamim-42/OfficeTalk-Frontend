@@ -1,17 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { allUserListApi, checkJWTToken } from '../api/auth';
+import { checkJWTToken } from '../api/auth';
 import { getConversationsApi } from '../api/chat';
 import { resetUserData, selectUserProfile, selectUserToken } from '../redux/features/authSlice';
-import { setActiveUser, setAllUsers, setConversationList, setUpdateConversation, updateConversationStatus } from '../redux/features/layoutSlice';
+import { setActiveUser, setConversationList, setUpdateConversation, updateConversationGroupMessage, updateConversationStatus } from '../redux/features/layoutSlice';
 import HomeUi from '../ui/home/HomeUi';
 import { newSocket } from '../utils/socket';
 
 const HomePage = () => {
-  const [users, setUsers] = useState([])
   const [onlineUsers, setOnlineUsers] = useState([])
-  const [unreadCount, setUnreadCount] = useState('')
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,21 +17,6 @@ const HomePage = () => {
   const userId = userProfile.id;
   const token = useSelector(selectUserToken);
 
-  // Handle loading user list
-  const fetchUserList = useCallback(async () => {
-    async function successHandler(response) {
-      const res = await response.json();
-      setUsers(res)
-      dispatch(setAllUsers(res))
-    }
-
-    async function handleBadReq(response) {
-      let error = await response.json();
-      console.log(error.message);
-    }
-
-    return await allUserListApi({ successHandler, handleBadReq })
-  }, [dispatch]);
 
   // Check JWT token validity function
   const checkJWTTokenValidity = useCallback(async () => {
@@ -84,6 +67,7 @@ const HomePage = () => {
       message_Status_lastMessageTime: res?.createdAt,
       message_Status_unreadMessages: res.unread,
       message_Status_status: 'seen',
+      type: "single"
     }
     dispatch(setUpdateConversation(newMessage))
   }, [dispatch])
@@ -96,18 +80,30 @@ const HomePage = () => {
       dispatch(setActiveUser(allOnlineUsers));
     })
 
-    newSocket.on('unreadMessage' + userId, (res) => {
-      console.log(res)
-      setUnreadCount(res)
-    })
 
     newSocket.on('newMessagesidebar/user/' + userId, (msg) => {
+      console.log(msg)
       updateConversationList(msg)
+    })
+
+    newSocket.on('newMessagesidebar/group/' + userId, (res) => {
+      const newMessage = {
+        lastMessage: res?.content,
+        groupId: res?.roomId,
+        message_Status_lastMessageTime: res?.createdAt,
+        name: res?.groupName,
+        groupImage: res?.groupImg,
+        unreadMessages: res?.unread,
+        type: "group"
+      }
+      dispatch(updateConversationGroupMessage(newMessage))
+      console.log(res)
     })
 
     newSocket.on(`isdeleted/${userId}`, (res) => {
       fetchConversationList();
     });
+
   }, [dispatch, updateConversationList, userId, fetchConversationList]);
 
   // All useEffect function below
@@ -118,19 +114,19 @@ const HomePage = () => {
   }, [userId, dispatch])
 
   useEffect(() => {
-    fetchUserList();
+    console.log("homepage");
     fetchConversationList();
     runSocketFunction();
     checkJWTTokenValidity();
     newSocket.connect();
     return () => newSocket.close();
-  }, [fetchUserList, fetchConversationList, runSocketFunction, checkJWTTokenValidity])
+  }, [fetchConversationList, runSocketFunction, checkJWTTokenValidity])
 
   return (
     <HomeUi
       userProfile={userProfile}
       onlineUsers={onlineUsers}
-      users={users} />
+    />
   );
 };
 

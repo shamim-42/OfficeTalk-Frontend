@@ -58,6 +58,12 @@
       font-size: 16px;
     }
 
+    & .require-message {
+      text-align: center;
+      margin: 6px auto;
+      color: map.get($theme-colors, "red-button");
+    }
+
     & .create-group-userlist {
       border-radius: 30px;
       border: 1px solid map.get($theme-colors, "gray-alpha-37");

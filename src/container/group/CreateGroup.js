@@ -16,6 +16,7 @@ const CreateGroup = (props) => {
   const [groupName, setGroupName] = useState('');
   const [userList, setUserList] = useState(friendList);
   const [loading, setLoading] = useState(false);
+  const [requiredMsg, setRequiredMsg] = useState('');
 
   const handleChangefile = (e) => {
     setSelectedFile(e.target.files[0])
@@ -23,6 +24,14 @@ const CreateGroup = (props) => {
 
   const handleChangeGroupName = (e) => {
     setGroupName(e.target.value);
+  }
+
+  const handleNameValidation = () => {
+    if (groupName.trim().length <= 0) {
+      setRequiredMsg("Group name must not be empty!")
+    } else {
+      setRequiredMsg("")
+    }
   }
 
   const addUserOnClick = (id) => {
@@ -42,6 +51,9 @@ const CreateGroup = (props) => {
 
   // Handle edit profileImage function
   const handleCreateGroup = async () => {
+    if (groupName.trim().length <= 0) {
+      return;
+    }
     setLoading(true);
     const formData = new FormData();
     formData.append("file", selectFile);
@@ -91,6 +103,8 @@ const CreateGroup = (props) => {
       handleChangefile={handleChangefile}
       handleChangeGroupName={handleChangeGroupName}
       loading={loading}
+      requiredMsg={requiredMsg}
+      handleNameValidation={handleNameValidation}
     />
   );
 };

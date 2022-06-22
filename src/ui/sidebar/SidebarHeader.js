@@ -1,4 +1,4 @@
-import { Button, Col, Dropdown, Form, Input, Menu, Modal, Popover, Row } from 'antd';
+import { Avatar, Button, Col, Dropdown, Form, Input, Menu, Modal, Popover, Row } from 'antd';
 import { BiSearch } from "react-icons/bi";
 import { BsChatTextFill } from "react-icons/bs";
 import { CgMenuGridO } from "react-icons/cg";
@@ -16,135 +16,159 @@ import SettingPopover from './SettingPopover';
 
 
 const SidebarHeaderUI = (props) => {
-  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible, showProfileOpenModal } = props;
+  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible, showProfileOpenModal, users, isOnline } = props;
 
   return (
-    <div className="sidebar-header">
-      <Row>
-        <Col md={20}>
-          <div className="sidebar-user">
-            {userProfile?.profileImage ?
-              <div onClick={showProfileOpenModal}>
-                <CustomAvatar
-                  size={44}
-                  src={userProfile.profileImage} />
-              </div>
-              :
-              <TextAvatar name={userProfile.fullname} size="44px" fontSize="20px" />
-            }
-            <Link to="/profile">
-              <p className="sidebar-user-name">{userProfile?.fullname}</p>
-            </Link>
-          </div>
-        </Col>
-        <Col md={4}>
-          <Row className="setting-preicon">
-            <Popover placement="bottomLeft"
-              content={<SettingPopover handleLogout={handleLogout} onChangeSwitch={onChangeSwitch} />}
-              trigger="click"
+    <>
+      <div className="sidebar-header">
+        <Row>
+          <Col md={20}>
+            <div className="sidebar-user">
+              {userProfile?.profileImage ?
+                <div onClick={showProfileOpenModal}>
+                  <CustomAvatar
+                    size={44}
+                    src={userProfile.profileImage} />
+                </div>
+                :
+                <TextAvatar name={userProfile.fullname} size="44px" fontSize="20px" />
+              }
+              <Link to="/profile">
+                <p className="sidebar-user-name">{userProfile?.fullname}</p>
+              </Link>
+            </div>
+          </Col>
+          <Col md={4}>
+            <Row className="setting-preicon">
+              <Popover placement="bottomLeft"
+                content={<SettingPopover handleLogout={handleLogout} onChangeSwitch={onChangeSwitch} />}
+                trigger="click"
+              >
+                <Button type="text" >
+                  <CgMenuGridO style={{ fontSize: '16px' }} />
+                </Button>
+              </Popover>
+            </Row>
+          </Col>
+        </Row>
+        <Row className="sidebar-icon-container">
+          <Col md={14} className="sidebar-header-icons">
+            <Dropdown
+              placement="bottom"
+              overlay={<Menu>
+                <Menu.Item key="1">
+                  <Button className="dropdown-menu-button" type="link">Host a meeting</Button>
+                </Menu.Item>
+                <Menu.Item key="2">
+                  <Button className="dropdown-menu-button" onClick={showJoinMeetingModal} type="link">Join a meeting</Button>
+                </Menu.Item>
+                <Menu.Item key="3">
+                  <Button className="dropdown-menu-button" onClick={showChatGroupModal} type="link">Create a chat group</Button>
+                </Menu.Item>
+              </Menu>}
+              trigger={['click']}>
+              <Button className="dropdown-button">
+                <p>Meeting / Chat</p>
+                <IoChevronDownOutline />
+              </Button>
+            </Dropdown>
+
+            <Button type="text">
+              <BsChatTextFill style={{ color: '#008DDC' }} />
+            </Button>
+            <Button type="text">
+              <MdCall />
+            </Button>
+            <Button type="text">
+              <FiVideo />
+            </Button>
+            <Button type="text">
+              <HiOutlineFolderRemove />
+            </Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={22}>
+            <Form
+              name="search_form"
+              onFinish={handleChangeSearch}
+              wrapperCol={{
+                span: 22,
+              }}
             >
-              <Button type="text" >
-                <CgMenuGridO style={{ fontSize: '16px' }} />
+              <Form.Item
+                name="search"
+              >
+                <Input prefix={<BiSearch className="site-form-item-icon" />} placeholder="people , groups , message" />
+              </Form.Item>
+            </Form>
+          </Col>
+
+          <Col md={2}>
+            <Popover placement="bottomLeft" content={<FilterPopover />} trigger="click">
+              <Button className="filter-button" type="text">
+                <IoOptions style={{ fontSize: '16px' }} />
               </Button>
             </Popover>
-          </Row>
-        </Col>
-      </Row>
-      <Row className="sidebar-icon-container">
-        <Col md={14} className="sidebar-header-icons">
-          <Dropdown
-            placement="bottom"
-            overlay={<Menu>
-              <Menu.Item key="1">
-                <Button className="dropdown-menu-button" type="link">Host a meeting</Button>
-              </Menu.Item>
-              <Menu.Item key="2">
-                <Button className="dropdown-menu-button" onClick={showJoinMeetingModal} type="link">Join a meeting</Button>
-              </Menu.Item>
-              <Menu.Item key="3">
-                <Button className="dropdown-menu-button" onClick={showChatGroupModal} type="link">Create a chat group</Button>
-              </Menu.Item>
-            </Menu>}
-            trigger={['click']}>
-            <Button className="dropdown-button">
-              <p>Meeting / Chat</p>
-              <IoChevronDownOutline />
-            </Button>
-          </Dropdown>
-
-          <Button type="text">
-            <BsChatTextFill style={{ color: '#008DDC' }} />
+          </Col>
+        </Row>
+        <Modal
+          visible={isJoinMeetingModalVisible}
+          className="join-meeting-modal"
+          closable={false}
+          footer={null}
+          width="auto"
+        >
+          <Button
+            onClick={cancelJoinMeetingModal}
+            className="modal-cross-button">
+            X
           </Button>
-          <Button type="text">
-            <MdCall />
+          <h3 className="join-meeting-title">
+            Join A Meeting
+          </h3>
+          <p className="join-meeting-subtitle">Meeting link or code</p>
+          <Input className="join-meeting-input" suffix={<ImUpload />} />
+          <Button
+            className="btn-theme-primary-fluid join-meeting-button"
+            type="primary"
+            htmlType="submit">
+            Join
           </Button>
-          <Button type="text">
-            <FiVideo />
-          </Button>
-          <Button type="text">
-            <HiOutlineFolderRemove />
-          </Button>
-        </Col>
-      </Row>
-      <Row>
-        <Col md={22}>
-          <Form
-            name="search_form"
-            onFinish={handleChangeSearch}
-            wrapperCol={{
-              span: 22,
-            }}
-          >
-            <Form.Item
-              name="search"
-            >
-              <Input prefix={<BiSearch className="site-form-item-icon" />} placeholder="people , groups , message" />
-            </Form.Item>
-          </Form>
-        </Col>
-
-        <Col md={2}>
-          <Popover placement="bottomLeft" content={<FilterPopover />} trigger="click">
-            <Button className="filter-button" type="text">
-              <IoOptions style={{ fontSize: '16px' }} />
-            </Button>
-          </Popover>
-        </Col>
-      </Row>
-      <Modal
-        visible={isJoinMeetingModalVisible}
-        className="join-meeting-modal"
-        closable={false}
-        footer={null}
-        width="auto"
-      >
-        <Button
-          onClick={cancelJoinMeetingModal}
-          className="modal-cross-button">
-          X
-        </Button>
-        <h3 className="join-meeting-title">
-          Join A Meeting
-        </h3>
-        <p className="join-meeting-subtitle">Meeting link or code</p>
-        <Input className="join-meeting-input" suffix={<ImUpload />} />
-        <Button
-          className="btn-theme-primary-fluid join-meeting-button"
-          type="primary"
-          htmlType="submit">
-          Join
-        </Button>
-      </Modal>
-      <Modal
-        visible={isChatGroupModalVisible}
-        className="create-group-modal"
-        closable={false}
-        footer={null}
-        width="auto"
-      >
-        <CreateGroup setIsChatGroupModalVisible={setIsChatGroupModalVisible} handleChatGroupCancel={handleChatGroupCancel} />
-      </Modal>
-    </div >
+        </Modal>
+        <Modal
+          visible={isChatGroupModalVisible}
+          className="create-group-modal"
+          closable={false}
+          footer={null}
+          width="auto"
+        >
+          <CreateGroup setIsChatGroupModalVisible={setIsChatGroupModalVisible} handleChatGroupCancel={handleChatGroupCancel} />
+        </Modal>
+      </div >
+      <div className="online-users">
+        <Avatar.Group className="online-user-group">
+          {
+            users.map((user, index) => (
+              <Link to={`chat/${user.id}`} key={user.id || index}>
+                {
+                  user.profileImage ?
+                    <CustomAvatar
+                      size={40}
+                      src={user.profileImage}
+                    icon={isOnline(user.id) && "small"}
+                    />
+                    :
+                    <TextAvatar name={userProfile.fullname}
+                      icon={isOnline(user.id) && "small"}
+                      size="40px" fontSize="18px" />
+                }
+              </Link>
+            ))
+          }
+        </Avatar.Group>
+      </div>
+    </>
   );
 };
 

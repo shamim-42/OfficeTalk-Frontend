@@ -228,6 +228,7 @@ const ChattingHome = () => {
   }, [getAllMessage, chatId, dispatch])
 
   useEffect(() => {
+    console.log("chating home")
     makeReadMessage()
   }, [makeReadMessage])
 
@@ -250,6 +251,7 @@ const ChattingHome = () => {
       setIsTyping(false);
       newSocket.off(`isWriting/${userId}`);
       newSocket.off(`isNotWriting/${userId}`);
+      setAllMessage([])
     }
   }, [userId, chatId, getAllMessage]);
 
