@@ -5,36 +5,33 @@ import { CgMenuGridO } from "react-icons/cg";
 import { FiVideo } from "react-icons/fi";
 import { HiOutlineFolderRemove } from "react-icons/hi";
 import { ImUpload } from "react-icons/im";
-import { IoChevronDownOutline, IoOptions, IoPersonCircle } from "react-icons/io5";
+import { IoChevronDownOutline, IoOptions } from "react-icons/io5";
 import { MdCall } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import CreateGroup from '../../container/group/CreateGroup';
 import CustomAvatar from '../helper/CustomAvatar';
+import TextAvatar from '../helper/TextAvatar';
 import FilterPopover from './FilterPopover';
 import SettingPopover from './SettingPopover';
 
 
-const SidebarHeader = (props) => {
-  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible } = props;
+const SidebarHeaderUI = (props) => {
+  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible, showProfileOpenModal } = props;
 
   return (
     <div className="sidebar-header">
       <Row>
         <Col md={20}>
           <div className="sidebar-user">
-
-            <Link to="/profile">
-              {userProfile?.profileImage ?
-                <CustomAvatar size={44}
+            {userProfile?.profileImage ?
+              <div onClick={showProfileOpenModal}>
+                <CustomAvatar
+                  size={44}
                   src={userProfile.profileImage} />
-                :
-                <IoPersonCircle style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: '50%',
-                }} />
-              }
-            </Link>
+              </div>
+              :
+              <TextAvatar name={userProfile.fullname} size="44px" fontSize="20px" />
+            }
             <Link to="/profile">
               <p className="sidebar-user-name">{userProfile?.fullname}</p>
             </Link>
@@ -151,5 +148,5 @@ const SidebarHeader = (props) => {
   );
 };
 
-export default SidebarHeader;
+export default SidebarHeaderUI;
 

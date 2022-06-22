@@ -1,0 +1,45 @@
+@use "sass:map";
+
+.text-avatar {
+  position: relative;
+  width: fit-content;
+
+  & .profile-text-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ea6053;
+    color: #ffff;
+    border-radius: 100%;
+    text-align: center;
+  }
+
+  & .online-green-icon {
+    display: inline-block;
+    border-radius: 100%;
+    position: absolute;
+    background-color: map.get($theme-colors, "green-017");
+    border: 1px solid map.get($theme-colors, "white");
+
+    &.small {
+      width: 8px;
+      height: 8px;
+      bottom: 4px;
+      right: 1px;
+    }
+
+    &.medium {
+      width: 10px;
+      height: 10px;
+      bottom: 5px;
+      right: 2px;
+    }
+
+    &.large {
+      width: 10px;
+      height: 10px;
+      bottom: 5px;
+      right: 4px;
+    }
+  }
+}

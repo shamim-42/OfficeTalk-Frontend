@@ -80,10 +80,11 @@ export const layoutSlice = createSlice({
 
     updateConversationGroupMessage: (state, action) => {
       let newList = [...state.conversationList];
-      let index = newList.findIndex(item => parseInt(item.groupId) === parseInt(action.payload.id));
+      let updatedConversation = { ...action.payload };
+      let index = newList.findIndex(item => parseInt(item.groupId) === parseInt(action.payload.groupId));
       if (index > -1) {
-        newList[index].lastMessage = action.payload.lastMessage;
-        newList[index].message_Status_lastMessageTime = action.payload.createdAt;
+        newList.splice(index, 1);
+        newList.unshift(updatedConversation)
       }
       state.conversationList = newList;
     },

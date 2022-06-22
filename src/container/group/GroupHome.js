@@ -132,8 +132,12 @@ const GroupHome = () => {
       console.log(res)
       const newMessage = {
         lastMessage: res.content,
-        id: res.roomId,
-        createdAt: res.createdAt,
+        groupId: res.roomId,
+        message_Status_lastMessageTime: res.createdAt,
+        name: res.groupName,
+        groupImage: res.groupImg,
+        unreadMessages: res.unread,
+        type: "group"
       }
       dispatch(updateConversationGroupMessage(newMessage))
       getGroupMessages();

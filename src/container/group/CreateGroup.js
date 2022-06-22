@@ -42,9 +42,6 @@ const CreateGroup = (props) => {
 
   // Handle edit profileImage function
   const handleCreateGroup = async () => {
-    if (!selectFile) {
-      return
-    }
     setLoading(true);
     const formData = new FormData();
     formData.append("file", selectFile);
@@ -54,7 +51,7 @@ const CreateGroup = (props) => {
 
     async function successHandler(response) {
       const res = await response.json();
-      // console.log(res);
+      console.log(res);
       const newGroup = {
         groupImage: res.roomimg,
         groupId: res.roominfo.id,

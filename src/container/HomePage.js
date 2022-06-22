@@ -1,8 +1,7 @@
-import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { allUserListApi, checkJWTToken, userLogoutApi } from '../api/auth';
+import { allUserListApi, checkJWTToken } from '../api/auth';
 import { getConversationsApi } from '../api/chat';
 import { resetUserData, selectUserProfile, selectUserToken } from '../redux/features/authSlice';
 import { setActiveUser, setAllUsers, setConversationList, setUpdateConversation, updateConversationStatus } from '../redux/features/layoutSlice';
@@ -13,41 +12,12 @@ const HomePage = () => {
   const [users, setUsers] = useState([])
   const [onlineUsers, setOnlineUsers] = useState([])
   const [unreadCount, setUnreadCount] = useState('')
-  const [isJoinMeetingModalVisible, setIsJoinMeetingModalVisible] = useState(false);
-  const [isChatGroupModalVisible, setIsChatGroupModalVisible] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userProfile = useSelector(selectUserProfile);
-  const token = useSelector(selectUserToken);
   const userId = userProfile.id;
-
-  // update search input value
-  function handleChangeSearch(value) {
-    console.log(value);
-  }
-
-  // change dark mode switch value
-  function onChangeSwitch(evt) {
-    console.log(evt)
-  }
-
-  // All function for handle sidebar modal
-  const showJoinMeetingModal = () => {
-    setIsJoinMeetingModalVisible(true);
-  };
-
-  const cancelJoinMeetingModal = () => {
-    setIsJoinMeetingModalVisible(false);
-  };
-
-  const showChatGroupModal = () => {
-    setIsChatGroupModalVisible(true);
-  };
-
-  const handleChatGroupCancel = () => {
-    setIsChatGroupModalVisible(false);
-  };
+  const token = useSelector(selectUserToken);
 
   // Handle loading user list
   const fetchUserList = useCallback(async () => {
@@ -65,6 +35,7 @@ const HomePage = () => {
     return await allUserListApi({ successHandler, handleBadReq })
   }, [dispatch]);
 
+  // Check JWT token validity function
   const checkJWTTokenValidity = useCallback(async () => {
     const payload = {
       token: token,
@@ -90,7 +61,7 @@ const HomePage = () => {
   const fetchConversationList = useCallback(async () => {
     async function successHandler(response) {
       const res = await response.json();
-      // console.log(res)
+      console.log(res)
       dispatch(setConversationList(res))
     }
 
@@ -101,28 +72,6 @@ const HomePage = () => {
 
     return await getConversationsApi(userId, { successHandler, handleBadReq })
   }, [dispatch, userId])
-
-  // handle User sign out and redirect back to login page
-  async function handleLogout() {
-
-    async function successHandler(response) {
-      const res = await response.json();
-      message.success(res.message);
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("userProfile");
-      navigate('/login');
-      newSocket.disconnect();
-      dispatch(resetUserData());
-    }
-
-    async function handleBadReq(response) {
-      let error = await response.json();
-      console.log(error.message);
-      message.error(error.message);
-    }
-
-    return await userLogoutApi(userId, { successHandler, handleBadReq })
-  }
 
   // add or update message on conversations List
   const updateConversationList = useCallback((res) => {
@@ -180,18 +129,7 @@ const HomePage = () => {
   return (
     <HomeUi
       userProfile={userProfile}
-      handleLogout={handleLogout}
-      handleChangeSearch={handleChangeSearch}
-      onChangeSwitch={onChangeSwitch}
-      isJoinMeetingModalVisible={isJoinMeetingModalVisible}
       onlineUsers={onlineUsers}
-      cancelJoinMeetingModal={cancelJoinMeetingModal}
-      showJoinMeetingModal={showJoinMeetingModal}
-      unreadCount={unreadCount}
-      isChatGroupModalVisible={isChatGroupModalVisible}
-      showChatGroupModal={showChatGroupModal}
-      handleChatGroupCancel={handleChatGroupCancel}
-      setIsChatGroupModalVisible={setIsChatGroupModalVisible}
       users={users} />
   );
 };

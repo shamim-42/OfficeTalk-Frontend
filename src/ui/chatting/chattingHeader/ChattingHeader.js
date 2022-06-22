@@ -5,6 +5,7 @@ import { IoCloseOutline, IoPersonCircleSharp, IoVideocam } from "react-icons/io5
 import { Link } from 'react-router-dom';
 import { activeTimeFormat } from '../../../utils/timeFormat';
 import CustomAvatar from '../../helper/CustomAvatar';
+import TextAvatar from '../../helper/TextAvatar';
 
 const ChattingHeader = (props) => {
   const { currentUserProfile, isOnline } = props;
@@ -12,11 +13,18 @@ const ChattingHeader = (props) => {
   return (
     <div className="chatting-header">
       <div className="user-info">
-        <CustomAvatar
-          size={40}
-          icon={isOnline && "small"}
-          src={currentUserProfile?.profileImage || currentUserProfile?.groupImage}
-        />
+        {
+          (currentUserProfile?.profileImage || currentUserProfile?.groupImage) ?
+            <CustomAvatar
+              size={40}
+              icon={isOnline && "small"}
+              src={currentUserProfile?.profileImage || currentUserProfile?.groupImage}
+            />
+            :
+            <TextAvatar name={currentUserProfile?.fullname || currentUserProfile.name || ""}
+              icon={isOnline && "small"}
+              size="40px" fontSize="18px" />
+        }
         <div>
           <p className="user-name">{currentUserProfile?.fullname || currentUserProfile.name || ""}</p>
           <p className="user-status">

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { selectCurrentGroup, selectCurrentUser } from '../../redux/features/authSlice';
 import { conversationTimeFormat } from '../../utils/timeFormat';
 import CustomAvatar from '../helper/CustomAvatar';
+import TextAvatar from '../helper/TextAvatar';
 
 
 const SidebarCard = ({ user, isOnline, userid }) => {
@@ -25,11 +26,18 @@ const SidebarCard = ({ user, isOnline, userid }) => {
         className={unreadMessage > 0 ? 'unread-card' : "read-card"}>
         <Row>
           <Col span={5}>
-            <CustomAvatar
-              size={60}
-              icon={isOnline(user?.users_id) && "large"}
-              src={user?.users_profileImage || user?.groupImage}
-            />
+            {
+              (user?.users_profileImage || user?.groupImage) ? <CustomAvatar
+                size={60}
+                icon={isOnline(user?.users_id) && "large"}
+                src={user?.users_profileImage || user?.groupImage}
+              /> :
+                <TextAvatar
+                  name={user?.users_fullname || user?.name}
+                  icon={isOnline(user?.users_id) && "large"}
+                  size="60px" fontSize="24px" />
+            }
+
           </Col>
           <Col span={14}>
             <p className="sidebar-card-user-name">{user?.users_fullname || user?.name}</p>

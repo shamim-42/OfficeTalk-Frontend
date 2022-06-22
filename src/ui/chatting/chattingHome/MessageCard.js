@@ -2,13 +2,14 @@ import { Col, Row } from 'antd';
 import ChatMessageOption from '../../../container/chat/ChatMessageOption';
 import { timeFormat } from '../../../utils/timeFormat';
 import CustomAvatar from '../../helper/CustomAvatar';
+import TextAvatar from '../../helper/TextAvatar';
 import ImageMessageCard from './ImageMessageCard';
 import TextMessageCard from './TextMessageCard';
 
 const MessageCard = (props) => {
   const { CurrentUserProfile, userProfile, message, isOnline, deleteMessage } = props;
 
-  if (message?.user?.id === userProfile.id) {
+  if (message?.user?.id === userProfile.id || message?.senderId === userProfile.id) {
     return (
       <Row className="message-card" justify="end">
         <Col span={14}>
@@ -75,11 +76,18 @@ const MessageCard = (props) => {
 
             <Col span={3}
               className='message-sender-img'>
-              <CustomAvatar
-                size={40}
-                icon={isOnline(userProfile?.id) && "small"}
-                src={userProfile?.profileImage}
-              />
+              {
+                userProfile?.profileImage ?
+                  <CustomAvatar
+                    size={40}
+                    icon={isOnline(userProfile?.id) && "small"}
+                    src={userProfile?.profileImage}
+                  />
+                  :
+                  <TextAvatar name={userProfile?.fullname}
+                    icon={isOnline(userProfile?.id) && "small"}
+                    size="40px" fontSize="18px" />
+              }
             </Col>
           </Row>
         </Col>
@@ -92,11 +100,18 @@ const MessageCard = (props) => {
       <Col span={14}>
         <Row>
           <Col span={3} className='message-sender-img'>
-            <CustomAvatar
-              size={40}
-              icon={isOnline(CurrentUserProfile?.id) && "small"}
-              src={CurrentUserProfile?.profileImage}
-            />
+            {
+              CurrentUserProfile?.profileImage ?
+                <CustomAvatar
+                  size={40}
+                  icon={isOnline(CurrentUserProfile?.id) && "small"}
+                  src={CurrentUserProfile?.profileImage}
+                />
+                :
+                <TextAvatar name={CurrentUserProfile?.fullname}
+                  icon={isOnline(CurrentUserProfile?.id) && "small"}
+                  size="40px" fontSize="18px" />
+            }
           </Col>
           <Col span={21} className="messages-area">
             <p className='message-time'>{timeFormat(message.createdAt)}</p>

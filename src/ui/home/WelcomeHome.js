@@ -1,5 +1,7 @@
 import { useSelector } from 'react-redux';
 import { selectUserProfile } from '../../redux/features/authSlice';
+import CustomAvatar from '../helper/CustomAvatar';
+import TextAvatar from '../helper/TextAvatar';
 
 
 const WelcomeHome = () => {
@@ -7,11 +9,12 @@ const WelcomeHome = () => {
 
   return (
     <div className="home-content">
-      <img className="circle-img"
-        src={userProfile.profileImage}
-        width="190px"
-        height="190px"
-        alt="Ellipse-7" border="0" />
+      {userProfile?.profileImage ?
+        <CustomAvatar size={190}
+          src={userProfile.profileImage} />
+        :
+        <TextAvatar name={userProfile.fullname} size="190px" fontSize="96px" />
+      }
       <h2>Hi&nbsp;{userProfile?.fullname}!</h2>
       <p className="start-chat">Start chatting ! </p>
     </div>
