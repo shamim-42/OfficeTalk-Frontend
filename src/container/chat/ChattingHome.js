@@ -228,7 +228,6 @@ const ChattingHome = () => {
   }, [getAllMessage, chatId, dispatch])
 
   useEffect(() => {
-    console.log("chating home")
     makeReadMessage()
   }, [makeReadMessage])
 

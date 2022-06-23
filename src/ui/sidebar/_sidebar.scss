@@ -295,3 +295,7 @@
 .ant-popover-placement-bottomLeft {
   padding-top: 0;
 }
+
+.card-bubble-img {
+  @include set-display-flex(center, flex-end, 4px);
+}

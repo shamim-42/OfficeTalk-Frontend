@@ -11,12 +11,13 @@ import { Link } from 'react-router-dom';
 import CreateGroup from '../../container/group/CreateGroup';
 import CustomAvatar from '../helper/CustomAvatar';
 import TextAvatar from '../helper/TextAvatar';
+import UserProfileView from '../modal/UserProfileView';
 import FilterPopover from './FilterPopover';
 import SettingPopover from './SettingPopover';
 
 
 const SidebarHeaderUI = (props) => {
-  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible, showProfileOpenModal, users, isOnline } = props;
+  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible, showProfileOpenModal, users, isOnline, openProfile, closeProfileModal } = props;
 
   return (
     <>
@@ -31,7 +32,9 @@ const SidebarHeaderUI = (props) => {
                     src={userProfile.profileImage} />
                 </div>
                 :
-                <TextAvatar name={userProfile.fullname} size="44px" fontSize="20px" />
+                <div onClick={showProfileOpenModal}>
+                  <TextAvatar name={userProfile.fullname} size="44px" fontSize="20px" />
+                </div>
               }
               <Link to="/profile">
                 <p className="sidebar-user-name">{userProfile?.fullname}</p>
@@ -145,6 +148,14 @@ const SidebarHeaderUI = (props) => {
         >
           <CreateGroup setIsChatGroupModalVisible={setIsChatGroupModalVisible} handleChatGroupCancel={handleChatGroupCancel} />
         </Modal>
+        <Modal
+          visible={openProfile}
+          className="profile-modal"
+          closable={true}
+          footer={null}
+        >
+          <UserProfileView closeProfileModal={closeProfileModal} />
+        </Modal>
       </div >
       <div className="online-users">
         <Avatar.Group className="online-user-group">
@@ -156,7 +167,7 @@ const SidebarHeaderUI = (props) => {
                     <CustomAvatar
                       size={40}
                       src={user.profileImage}
-                    icon={isOnline(user.id) && "small"}
+                      icon={isOnline(user.id) && "small"}
                     />
                     :
                     <TextAvatar name={userProfile.fullname}
@@ -168,6 +179,7 @@ const SidebarHeaderUI = (props) => {
           }
         </Avatar.Group>
       </div>
+
     </>
   );
 };

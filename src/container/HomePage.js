@@ -127,7 +127,6 @@ const HomePage = () => {
   }, [userId, dispatch])
 
   useEffect(() => {
-    console.log("homepage");
     fetchConversationList();
     runSocketFunction();
     checkJWTTokenValidity();

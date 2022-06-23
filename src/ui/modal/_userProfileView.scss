@@ -1,0 +1,14 @@
+@use "sass:map";
+
+.ant-modal.profile-modal {
+  & .ant-modal-content {
+    border-radius: 30px;
+    padding: 12px 64px;
+    width: fit-content;
+    min-height: 70vh;
+
+    & .ant-modal-body {
+      padding: 0;
+    }
+  }
+}

@@ -54,7 +54,7 @@ const SidebarCard = ({ user, isOnline, userid, isGroupOnline }) => {
               <p className="card-time" style={{ fontSize: '12px' }}>
                 {conversationTimeFormat(user?.message_Status_lastMessageTime)}
               </p>
-              <div>
+              <div className="card-bubble-img">
                 {user.type === "single" &&
                   ((
                     messageStatus === 'sent' &&
@@ -80,7 +80,8 @@ const SidebarCard = ({ user, isOnline, userid, isGroupOnline }) => {
                           : <Avatar
                             className="circle-img message-status-img"
                             src={user?.users_profileImage}
-                          />)
+                          />
+                        )
                       )
                     ))
                 }
@@ -106,10 +107,19 @@ const SidebarCard = ({ user, isOnline, userid, isGroupOnline }) => {
                     ||
                     (
                       (messageStatus === 'seen') &&
-                      <Avatar
-                        className="circle-img message-status-img"
-                        src={user?.users_profileImage}
-                      />
+                      (
+                        user?.users_seen?.length > 0 && user?.users_seen.map((usr, i) => (usr.profileImage ? <Avatar
+                          key={i}
+                          className="circle-img message-status-img"
+                          src={usr.profileImage}
+                        />
+                          :
+                          <TextAvatar
+                            name={usr?.name}
+                            size="20px" fontSize="8px" />
+                        )
+                        )
+                      )
                     )
                   )
                 }

@@ -118,6 +118,8 @@ const SidebarHead = () => {
       showChatGroupModal={showChatGroupModal}
       handleChatGroupCancel={handleChatGroupCancel}
       showProfileOpenModal={showProfileOpenModal}
+      openProfile={openProfile}
+      closeProfileModal={closeProfileModal}
       users={users}
       isOnline={isOnline}
     />
