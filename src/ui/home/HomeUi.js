@@ -5,7 +5,7 @@ import Sidebar from '../sidebar/Sidebar';
 const { Sider, Content } = Layout;
 
 const HomeUi = (props) => {
-  const { userProfile, onlineUsers } = props;
+  const { userProfile, isOnline, isGroupOnline } = props;
   const sideBarRef = useRef(null)
 
   return (
@@ -19,7 +19,8 @@ const HomeUi = (props) => {
         >
           <Sidebar
             userProfile={userProfile}
-            onlineUsers={onlineUsers} />
+            isGroupOnline={isGroupOnline}
+            isOnline={isOnline} />
         </Sider>
       </Affix>
       <Content className="content-area">

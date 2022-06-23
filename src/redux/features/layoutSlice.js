@@ -11,6 +11,7 @@ export const layoutSlice = createSlice({
       : [],
     activeUser: [],
     conversationList: [],
+    onlineGroups: [],
   },
   reducers: {
     setError: (state, action) => {
@@ -33,6 +34,10 @@ export const layoutSlice = createSlice({
 
     setActiveUser: (state, action) => {
       state.activeUser = action.payload;
+    },
+
+    updateOnlineGroupList: (state, action) => {
+      state.onlineGroups = action.payload;
     },
 
     setConversationList: (state, action) => {
@@ -78,6 +83,15 @@ export const layoutSlice = createSlice({
       state.conversationList = newList;
     },
 
+    updateConversationGroupStatus: (state, action) => {
+      let newList = [...state.conversationList];
+      let index = newList.findIndex(item => parseInt(item.groupId) === parseInt(action.payload.groupId));
+      if (index > -1) {
+        newList[index].status = action.payload.status;
+      }
+      state.conversationList = newList;
+    },
+
     updateConversationGroupMessage: (state, action) => {
       let newList = [...state.conversationList];
       let updatedConversation = { ...action.payload };
@@ -115,12 +129,13 @@ export const layoutSlice = createSlice({
 
 });
 
-export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation, setUpdateUnreadCount, updateConversationStatus, deleteSingleConversation, updateConversationMessage, updateFriendList, updateConversationGroupMessage } = layoutSlice.actions;
+export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation, setUpdateUnreadCount, updateConversationStatus, deleteSingleConversation, updateConversationMessage, updateFriendList, updateConversationGroupMessage, updateOnlineGroupList, updateConversationGroupStatus } = layoutSlice.actions;
 
 export const selectError = (state) => state.layout.error;
 export const selectAllUser = (state) => state.layout.allUsers;
 export const selectFriendList = (state) => state.layout.friendList;
 export const selectActiveUser = (state) => state.layout.activeUser;
+export const selectOnlineGroups = (state) => state.layout.onlineGroups;
 export const selectConversationList = (state) => state.layout.conversationList;
 ;
 

@@ -9,7 +9,7 @@ import TextAvatar from '../../helper/TextAvatar';
 
 const ChattingHeader = (props) => {
   const { currentUserProfile, isOnline } = props;
-
+  
   return (
     <div className="chatting-header">
       <div className="user-info">

@@ -8,7 +8,7 @@ import CustomAvatar from '../helper/CustomAvatar';
 import TextAvatar from '../helper/TextAvatar';
 
 
-const SidebarCard = ({ user, isOnline, userid }) => {
+const SidebarCard = ({ user, isOnline, userid, isGroupOnline }) => {
   const currentUser = useSelector(selectCurrentUser)
   const currentGroup = useSelector(selectCurrentGroup)
   const unreadMessage = user?.message_Status_unreadMessages || user?.unreadmessage;
@@ -19,7 +19,6 @@ const SidebarCard = ({ user, isOnline, userid }) => {
 
   return (
     <Card
-      // if active card will be add .focushed class with .sidebar-card
       className={`sidebar-card ${(parseInt(currentUser) === user?.users_id || parseInt(currentGroup) === user?.groupId) && "focushed"}`}
     >
       <Link to={cardLink}
@@ -29,12 +28,12 @@ const SidebarCard = ({ user, isOnline, userid }) => {
             {
               (user?.users_profileImage || user?.groupImage) ? <CustomAvatar
                 size={60}
-                icon={isOnline(user?.users_id) && "large"}
+                icon={(isOnline(user?.users_id) || isGroupOnline(user?.groupId)) && "large"}
                 src={user?.users_profileImage || user?.groupImage}
               /> :
                 <TextAvatar
                   name={user?.users_fullname || user?.name}
-                  icon={isOnline(user?.users_id) && "large"}
+                  icon={(isOnline(user?.users_id) || isGroupOnline(user?.groupId)) && "large"}
                   size="60px" fontSize="24px" />
             }
 

@@ -2,24 +2,26 @@ import { Spin } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getGroupInfo, getGroupMessagesApi, groupMessageSendApi } from "../../api/group";
+import { getGroupInfo, getGroupMessagesApi, groupMessageSeenApi, groupMessageSendApi } from "../../api/group";
 import { selectUserProfile, setCurrentGroup } from "../../redux/features/authSlice";
-import { selectActiveUser, updateConversationGroupMessage } from "../../redux/features/layoutSlice";
+import { selectActiveUser, selectOnlineGroups, updateConversationGroupMessage, updateConversationGroupStatus } from "../../redux/features/layoutSlice";
 import GroupHomeUI from "../../ui/group/GroupHomeUI";
 import { newSocket } from "../../utils/socket";
-import { checkLink } from "../../utils/utils";
+// import { checkLink } from "../../utils/utils";
 
 
 const GroupHome = () => {
+  let { id } = useParams();
   const [groupInfo, setGroupInfo] = useState({});
   const [loading, setLoading] = useState(false);
   const [allMessage, setAllMessage] = useState([]);
   const [messageText, setMessageText] = useState("");
   const userProfile = useSelector(selectUserProfile);
-  const onlineUsers = useSelector(selectActiveUser);
-  let { id } = useParams();
   const userId = userProfile.id;
+  const onlineUsers = useSelector(selectActiveUser);
+  const onlineGroups = useSelector(selectOnlineGroups);
   const dispatch = useDispatch();
+  const isGroupOnline = onlineGroups.includes(parseInt(id));
 
   // Update message text function on change
   const handleChangeMessage = (e) => {
@@ -46,6 +48,27 @@ const GroupHome = () => {
     }
     return await getGroupInfo(id, userId, { successHandler, handleBadReq })
   }, [id, userId]);
+
+  // make group message as read
+  const groupMessageSeen = useCallback(async () => {
+    const userInfo = {
+      userId: userId
+    }
+    async function successHandler(response) {
+      const res = await response.json();
+      const groupStatus = {
+        groupId: id,
+        status: "seen"
+      }
+      dispatch(updateConversationGroupStatus(groupStatus));
+      console.log(res);
+    }
+
+    async function handleBadReq(response) {
+      // let error = await response.json();
+    }
+    return await groupMessageSeenApi(id, userInfo, { successHandler, handleBadReq })
+  }, [id, userId, dispatch]);
 
   // Get current group all messages
   const getGroupMessages = useCallback(async () => {
@@ -96,9 +119,9 @@ const GroupHome = () => {
     if (messageText.trim().length <= 0 && !messageText) {
       return
     }
-    let messageLinks = null;
-    const isLink = checkLink(messageText)
-    if (isLink) messageLinks = isLink;
+    // let messageLinks = null;
+    // const isLink = checkLink(messageText)
+    // if (isLink) messageLinks = isLink;
 
     const messageData = {
       message: messageText,
@@ -160,9 +183,10 @@ const GroupHome = () => {
 
   useEffect(() => {
     newSocket.emit("JoinRoom", id);
+    groupMessageSeen()
     getCurrentGroupInfo()
     getGroupMessages()
-  }, [getCurrentGroupInfo, getGroupMessages, id]);
+  }, [getCurrentGroupInfo, getGroupMessages, id, groupMessageSeen]);
 
   return (
     <Spin spinning={loading}>
@@ -174,6 +198,7 @@ const GroupHome = () => {
         isOnline={isOnline}
         messageText={messageText}
         handleSubmitMessage={handleSubmitMessage}
+        isGroupOnline={isGroupOnline}
       />
     </Spin>
   );

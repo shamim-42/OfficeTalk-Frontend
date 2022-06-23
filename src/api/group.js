@@ -20,5 +20,10 @@ export const groupMessageSendApi = async function (groupId, payload, options = {
   return connector.post(url, payload, options);
 };
 
+export const groupMessageSeenApi = async function (groupId, payload, options = {}) {
+  const url = `3000/group/${groupId}/markAsRead`;
+  return connector.post(url, payload, options);
+};
+
 
 

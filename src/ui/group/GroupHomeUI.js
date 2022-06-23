@@ -4,12 +4,14 @@ import ChattingHeader from "../chatting/chattingHeader/ChattingHeader";
 import GroupMessageBox from "./GroupMessageBox";
 
 const GroupHomeUI = (props) => {
-  const { groupInfo, allMessage, userProfile, isOnline, handleChangeMessage, messageText, handleSubmitMessage } = props;
+  const { groupInfo, allMessage, userProfile, isOnline, handleChangeMessage, messageText, handleSubmitMessage, isGroupOnline } = props;
 
   return (
     <div>
       <Affix offsetTop={0}>
-        <ChattingHeader currentUserProfile={groupInfo} />
+        <ChattingHeader
+          isOnline={isGroupOnline}
+          currentUserProfile={groupInfo} />
       </Affix>
 
       <div className="group-chat-content">

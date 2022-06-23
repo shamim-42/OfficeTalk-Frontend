@@ -4,19 +4,28 @@ import { useNavigate } from 'react-router-dom';
 import { checkJWTToken } from '../api/auth';
 import { getConversationsApi } from '../api/chat';
 import { resetUserData, selectUserProfile, selectUserToken } from '../redux/features/authSlice';
-import { setActiveUser, setConversationList, setUpdateConversation, updateConversationGroupMessage, updateConversationStatus } from '../redux/features/layoutSlice';
+import { setActiveUser, setConversationList, setUpdateConversation, updateConversationGroupMessage, updateConversationStatus, updateOnlineGroupList } from '../redux/features/layoutSlice';
 import HomeUi from '../ui/home/HomeUi';
 import { newSocket } from '../utils/socket';
 
-const HomePage = () => {
-  const [onlineUsers, setOnlineUsers] = useState([])
 
+const HomePage = () => {
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [onlineGroups, setOnlineGroups] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userProfile = useSelector(selectUserProfile);
   const userId = userProfile.id;
   const token = useSelector(selectUserToken);
 
+
+  function isOnline(userid) {
+    return onlineUsers.indexOf(parseInt(userid)) !== -1;
+  }
+
+  function isGroupOnline(id) {
+    return onlineGroups.includes(id);
+  }
 
   // Check JWT token validity function
   const checkJWTTokenValidity = useCallback(async () => {
@@ -80,6 +89,10 @@ const HomePage = () => {
       dispatch(setActiveUser(allOnlineUsers));
     })
 
+    newSocket.on('groups/online', (res) => {
+      setOnlineGroups(res);
+      dispatch(updateOnlineGroupList(res))
+    })
 
     newSocket.on('newMessagesidebar/user/' + userId, (msg) => {
       console.log(msg)
@@ -125,7 +138,8 @@ const HomePage = () => {
   return (
     <HomeUi
       userProfile={userProfile}
-      onlineUsers={onlineUsers}
+      isOnline={isOnline}
+      isGroupOnline={isGroupOnline}
     />
   );
 };
