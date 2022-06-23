@@ -7,7 +7,7 @@ import { selectFriendList, setAddConversation } from '../../redux/features/layou
 import CreateGroupModal from '../../ui/modal/CreateGroupModal';
 
 const CreateGroup = (props) => {
-  const { handleChatGroupCancel, setIsChatGroupModalVisible } = props;
+  const { handleChatGroupCancel } = props;
   const userProfile = useSelector(selectUserProfile);
   const friendList = useSelector(selectFriendList);
   const dispatch = useDispatch();

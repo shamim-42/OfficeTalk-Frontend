@@ -59,13 +59,14 @@ export function checkLink(text) {
 
 // Get first two characters of user full name
 export function getTwoCharacters(text) {
+  if (!text) return
   const words = text?.trim().split(/\s+/).length;
   if (words === 1) {
     return text.substring(0, 2).toUpperCase();
   }
   const matches = text?.match(/\b(\w)/g);
-  const acronym = matches.join('').substring(0, 2);
-  const result = acronym.toUpperCase();
+  const acronym = matches?.join('').substring(0, 2);
+  const result = acronym?.toUpperCase();
   return result;
 }
 

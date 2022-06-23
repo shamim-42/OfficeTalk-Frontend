@@ -20,8 +20,8 @@ const GroupHome = () => {
   const userId = userProfile.id;
   const onlineUsers = useSelector(selectActiveUser);
   const onlineGroups = useSelector(selectOnlineGroups);
-  const dispatch = useDispatch();
   const isGroupOnline = onlineGroups.includes(parseInt(id));
+  const dispatch = useDispatch();
 
   // Update message text function on change
   const handleChangeMessage = (e) => {

@@ -2,7 +2,7 @@ import { message as Alert } from 'antd';
 import MessageOption from "../../ui/chatting/chattingHome/MessageOption";
 
 const ChatMessageOption = (props) => {
-  const { message, align, deleteMessage } = props;
+  const { message, align, deleteMessage, isDelete } = props;
 
   // Function for copy message text
   const copyToClipboard = (content) => {
@@ -18,6 +18,7 @@ const ChatMessageOption = (props) => {
 
   return (
     <MessageOption
+      isDelete={isDelete}
       deleteMessage={deleteMessage}
       copyToClipboard={copyToClipboard}
       message={message}

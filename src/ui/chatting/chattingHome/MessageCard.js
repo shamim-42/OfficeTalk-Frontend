@@ -25,6 +25,7 @@ const MessageCard = (props) => {
                     <ChatMessageOption
                       deleteMessage={deleteMessage}
                       message={message}
+                      isDelete={true}
                       align="right" />
                     <ImageMessageCard
                       sender={true}
@@ -37,6 +38,7 @@ const MessageCard = (props) => {
                   <>
                     <ChatMessageOption
                       deleteMessage={deleteMessage}
+                      isDelete={true}
                       message={message}
                       align="right" />
                     <TextMessageCard
@@ -64,6 +66,7 @@ const MessageCard = (props) => {
                 <div className='message-body message-right'>
                   <ChatMessageOption
                     deleteMessage={deleteMessage}
+                    isDelete={true}
                     message={message}
                     align="right" />
                   <TextMessageCard
@@ -125,7 +128,9 @@ const MessageCard = (props) => {
                   userProfile={userProfile}
                   message={message} />
               }
-              <ChatMessageOption deleteMessage={deleteMessage} message={message} align="left" />
+              <ChatMessageOption
+                isDelete={false}
+                message={message} align="left" />
             </div>
             {(message.content && message.type !== 'text') &&
               <div className='message-body message-left'>
@@ -133,7 +138,9 @@ const MessageCard = (props) => {
                   CurrentUserProfile={CurrentUserProfile}
                   userProfile={userProfile}
                   message={message} />
-                <ChatMessageOption deleteMessage={deleteMessage} message={message} align="left" />
+                <ChatMessageOption
+                  isDelete={false}
+                  message={message} align="left" />
               </div>
             }
           </Col>

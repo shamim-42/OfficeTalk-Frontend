@@ -55,32 +55,61 @@ const SidebarCard = ({ user, isOnline, userid, isGroupOnline }) => {
                 {conversationTimeFormat(user?.message_Status_lastMessageTime)}
               </p>
               <div>
-                {
-                  (
+                {user.type === "single" &&
+                  ((
                     messageStatus === 'sent' &&
                     <p className="message-status-icon">
                       <IoCheckmarkCircleOutline />
                     </p>
                   ) ||
-                  (
-                    messageStatus === 'delevered' &&
-                    <p className="message-status-icon">
-                      <IoCheckmarkCircleSharp />
-                    </p>
-                  ) ||
-                  (
                     (
-                      (messageStatus === 'seen' && unreadMessage > 0) &&
-                      <p className={unreadMessage ? "card-message-count" : ''}>
-                        {unreadMessage}
+                      messageStatus === 'delevered' &&
+                      <p className="message-status-icon">
+                        <IoCheckmarkCircleSharp />
                       </p>
                     ) ||
                     (
-                      (messageStatus === 'seen' && unreadMessage === 0) && (user.message_status_sentBy !== userid ? <p></p>
-                        : <Avatar
-                          className="circle-img message-status-img"
-                          src={user?.users_profileImage}
-                        />)
+                      (
+                        (messageStatus === 'seen' && unreadMessage > 0) &&
+                        <p className={unreadMessage ? "card-message-count" : ''}>
+                          {unreadMessage}
+                        </p>
+                      ) ||
+                      (
+                        (messageStatus === 'seen' && unreadMessage === 0) && (user.message_status_sentBy !== userid ? <p></p>
+                          : <Avatar
+                            className="circle-img message-status-img"
+                            src={user?.users_profileImage}
+                          />)
+                      )
+                    ))
+                }
+                {user.type === "group" &&
+                  ((
+                    messageStatus === 'sent' &&
+                    <p className="message-status-icon">
+                      <IoCheckmarkCircleOutline />
+                    </p>
+                  ) ||
+                    (
+                      messageStatus === 'delevered' &&
+                      <p className="message-status-icon">
+                        <IoCheckmarkCircleSharp />
+                      </p>
+                    ) ||
+                    (
+                      messageStatus === 'unseen' &&
+                      <p className={unreadMessage ? "card-message-count" : ''}>
+                        {unreadMessage}
+                      </p>
+                    )
+                    ||
+                    (
+                      (messageStatus === 'seen') &&
+                      <Avatar
+                        className="circle-img message-status-img"
+                        src={user?.users_profileImage}
+                      />
                     )
                   )
                 }

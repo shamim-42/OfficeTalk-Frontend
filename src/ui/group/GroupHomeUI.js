@@ -1,6 +1,6 @@
 import { Affix, Button, Col, Input, Row } from "antd";
 import { BsEmojiSmile } from "react-icons/bs";
-import ChattingHeader from "../chatting/chattingHeader/ChattingHeader";
+import GroupHead from "../../container/group/GroupHead";
 import GroupMessageBox from "./GroupMessageBox";
 
 const GroupHomeUI = (props) => {
@@ -9,9 +9,9 @@ const GroupHomeUI = (props) => {
   return (
     <div>
       <Affix offsetTop={0}>
-        <ChattingHeader
-          isOnline={isGroupOnline}
-          currentUserProfile={groupInfo} />
+        <GroupHead
+          isGroupOnline={isGroupOnline}
+          groupInfo={groupInfo} />
       </Affix>
 
       <div className="group-chat-content">

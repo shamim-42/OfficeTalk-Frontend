@@ -3,6 +3,7 @@
 .custom-avatar {
   position: relative;
   width: fit-content;
+  object-fit: cover;
 
   .online-green-icon {
     display: inline-block;

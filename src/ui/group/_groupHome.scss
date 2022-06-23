@@ -4,3 +4,40 @@
   min-height: 82vh;
   padding-bottom: 14px;
 }
+.ant-drawer.group-profile {
+  & > .ant-drawer-mask {
+    background-color: transparent;
+  }
+
+  & .ant-drawer-header {
+    height: 80px;
+
+    & .ant-drawer-header-title {
+      flex-direction: row-reverse;
+    }
+  }
+
+  & .ant-drawer-body {
+    background-color: map.get($theme-colors, "white-f1");
+    & .group-profile-info {
+      width: 100%;
+
+      & .custom-avatar {
+        width: 100%;
+        text-align: center;
+
+        & .ant-avatar {
+          border: 3px solid #ffff;
+        }
+      }
+
+      & .group-profile-name {
+        font-size: 20px;
+        font-weight: 600;
+        text-align: center;
+        text-transform: capitalize;
+        line-height: 40px;
+      }
+    }
+  }
+}
