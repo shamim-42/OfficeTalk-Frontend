@@ -107,8 +107,8 @@ const ChattingHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      // console.log(res);
-      updateConversationList(res.result)
+      console.log("tamim", res);
+      updateConversationList(res)
       setMessagesText('')
       getAllMessage(chatId);
     }
@@ -121,20 +121,21 @@ const ChattingHome = () => {
   }
 
   // add or update message on conversations List
-  const updateConversationList = (res) => {
-    let status = "seen";
-    newSocket.on('delevered/' + userId, (res) => {
-      status = res.status;
-    })
+  const updateConversationList = (data) => {
+    const res = data.result;
+    let status = data.status;
 
     const newMessage = {
+      id: data.conversationId,
       users_id: parseInt(res.receiverId),
-      users_profileImage: currentUserProfile.profileImage,
-      users_fullname: currentUserProfile.fullname,
-      message_Status_lastMessage: res?.content,
-      message_Status_lastMessageTime: res?.createdAt,
-      message_Status_unreadMessages: 0,
-      message_Status_status: status,
+      image: currentUserProfile.profileImage,
+      name: currentUserProfile.fullname,
+      lastMessage: res?.content,
+      sentBy: res.senderId,
+      lastMessageTime: res?.createdAt,
+      unreadMessages: 0,
+      status: status,
+      type: "single"
     }
     dispatch(setUpdateConversation(newMessage))
   }
@@ -145,6 +146,8 @@ const ChattingHome = () => {
       senderId: chatId,
     }
     async function successHandler(response) {
+      const res = await response.json();
+      // console.log(res)
       dispatch(setUpdateUnreadCount(chatId))
     }
 
@@ -245,6 +248,10 @@ const ChattingHome = () => {
     newSocket.on(`isdeleted/${userId}`, (res) => {
       getAllMessage(chatId)
     });
+
+    newSocket.on('delevered/' + userId, (res) => {
+      console.log(res)
+    })
 
     return () => {
       setIsTyping(false);

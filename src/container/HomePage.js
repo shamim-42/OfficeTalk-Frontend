@@ -70,12 +70,12 @@ const HomePage = () => {
 
     const newMessage = {
       users_id: res.senderId,
-      users_profileImage: res.senderImage,
-      users_fullname: res.senderName,
-      message_Status_lastMessage: res?.content,
-      message_Status_lastMessageTime: res?.createdAt,
-      message_Status_unreadMessages: res.unread,
-      message_Status_status: 'seen',
+      image: res.senderImage,
+      name: res.senderName,
+      lastMessage: res?.content,
+      lastMessageTime: res?.createdAt,
+      unreadMessages: res.unread,
+      status: 'seen',
       type: "single"
     }
     dispatch(setUpdateConversation(newMessage))
@@ -103,9 +103,9 @@ const HomePage = () => {
       const newMessage = {
         lastMessage: res?.content,
         groupId: res?.roomId,
-        message_Status_lastMessageTime: res?.createdAt,
+        lastMessageTime: res?.createdAt,
         name: res?.groupName,
-        groupImage: res?.groupImg,
+        image: res?.groupImg,
         unreadMessages: res?.unread,
         type: "group"
       }
@@ -122,6 +122,7 @@ const HomePage = () => {
   // All useEffect function below
   useEffect(() => {
     newSocket.on('message-seen-status' + userId, (res) => {
+      console.log(res);
       dispatch(updateConversationStatus(res))
     })
   }, [userId, dispatch])

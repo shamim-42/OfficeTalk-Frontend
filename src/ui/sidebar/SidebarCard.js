@@ -11,8 +11,7 @@ import TextAvatar from '../helper/TextAvatar';
 const SidebarCard = ({ user, isOnline, userid, isGroupOnline }) => {
   const currentUser = useSelector(selectCurrentUser)
   const currentGroup = useSelector(selectCurrentGroup)
-  const unreadMessage = user?.message_Status_unreadMessages || user?.unreadmessage;
-  const messageStatus = user?.message_Status_status || user?.status;
+  const unreadMessage = user?.unreadMessages;
 
   const cardLink = user.type === "single" ? `chat/${user?.users_id}`
     : `group/${user?.groupId}`;
@@ -26,22 +25,22 @@ const SidebarCard = ({ user, isOnline, userid, isGroupOnline }) => {
         <Row>
           <Col span={5}>
             {
-              (user?.users_profileImage || user?.groupImage) ? <CustomAvatar
+              (user?.image) ? <CustomAvatar
                 size={60}
                 icon={(isOnline(user?.users_id) || isGroupOnline(user?.groupId)) && "large"}
-                src={user?.users_profileImage || user?.groupImage}
+                src={user?.image}
               /> :
                 <TextAvatar
-                  name={user?.users_fullname || user?.name}
+                  name={user?.name}
                   icon={(isOnline(user?.users_id) || isGroupOnline(user?.groupId)) && "large"}
                   size="60px" fontSize="24px" />
             }
 
           </Col>
           <Col span={14}>
-            <p className="sidebar-card-user-name">{user?.users_fullname || user?.name}</p>
+            <p className="sidebar-card-user-name">{user?.name}</p>
             <p className="sidebar-car-message">
-              {user?.message_Status_lastMessage || user?.lastMessage}
+              {user?.lastMessage}
             </p>
           </Col>
           <Col span={5}>
@@ -52,61 +51,65 @@ const SidebarCard = ({ user, isOnline, userid, isGroupOnline }) => {
               gap: '10px',
             }}>
               <p className="card-time" style={{ fontSize: '12px' }}>
-                {conversationTimeFormat(user?.message_Status_lastMessageTime)}
+                {conversationTimeFormat(user?.lastMessageTime)}
               </p>
               <div className="card-bubble-img">
                 {user.type === "single" &&
                   ((
-                    messageStatus === 'sent' &&
+                    user?.status === 'sent' &&
                     <p className="message-status-icon">
                       <IoCheckmarkCircleOutline />
                     </p>
                   ) ||
                     (
-                      messageStatus === 'delevered' &&
+                      user?.status === 'delevered' &&
                       <p className="message-status-icon">
                         <IoCheckmarkCircleSharp />
                       </p>
                     ) ||
                     (
                       (
-                        (messageStatus === 'seen' && unreadMessage > 0) &&
+                        (user?.status === 'seen' && unreadMessage > 0) &&
                         <p className={unreadMessage ? "card-message-count" : ''}>
                           {unreadMessage}
                         </p>
                       ) ||
                       (
-                        (messageStatus === 'seen' && unreadMessage === 0) && (user.message_status_sentBy !== userid ? <p></p>
-                          : <Avatar
-                            className="circle-img message-status-img"
-                            src={user?.users_profileImage}
-                          />
+                        (user?.status === 'seen' && user.unreadMessages === 0) && (user.sentBy !== userid ? <p></p>
+                          : (user?.image ?
+                            <Avatar
+                              className="circle-img message-status-img"
+                              src={user?.image}
+                            />
+                            : <TextAvatar
+                              name={user?.name}
+                              size="20px" fontSize="8px" />)
                         )
                       )
                     ))
                 }
                 {user.type === "group" &&
                   ((
-                    messageStatus === 'sent' &&
+                    user?.status === 'sent' &&
                     <p className="message-status-icon">
                       <IoCheckmarkCircleOutline />
                     </p>
                   ) ||
                     (
-                      messageStatus === 'delevered' &&
+                      user?.status === 'delevered' &&
                       <p className="message-status-icon">
                         <IoCheckmarkCircleSharp />
                       </p>
                     ) ||
                     (
-                      messageStatus === 'unseen' &&
+                      user?.status === 'unseen' &&
                       <p className={unreadMessage ? "card-message-count" : ''}>
                         {unreadMessage}
                       </p>
                     )
                     ||
                     (
-                      (messageStatus === 'seen') &&
+                      (user?.status === 'seen') &&
                       (
                         user?.users_seen?.length > 0 && user?.users_seen.map((usr, i) => (usr.profileImage ? <Avatar
                           key={i}

@@ -65,12 +65,12 @@ const CreateGroup = (props) => {
       const res = await response.json();
       console.log(res);
       const newGroup = {
-        groupImage: res.roomimg,
+        image: res.roomimg,
         groupId: res.roominfo.id,
         lastMessage: res.msg,
-        message_Status_lastMessageTime: res.roominfo.updated_at,
+        lastMessageTime: res.roominfo.updated_at,
         type: 'group',
-        unreadmessage: 0,
+        unreadMessages: 0,
         name: res.roominfo.name,
       }
       dispatch(setAddConversation(newGroup));
