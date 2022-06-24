@@ -103,13 +103,19 @@ export const layoutSlice = createSlice({
       state.conversationList = newList;
     },
 
+
     updateConversationGroupMessage: (state, action) => {
       let newList = [...state.conversationList];
-      let updatedConversation = { ...action.payload };
+      let updatedData = { ...action.payload };
       let index = newList.findIndex(item => parseInt(item.groupId) === parseInt(action.payload.groupId));
       if (index > -1) {
+        const oldItem = JSON.parse(JSON.stringify(newList[index]));
+        oldItem.lastMessage = updatedData.lastMessage;
+        oldItem.lastMessageTime = updatedData.lastMessageTime;
+        oldItem.unreadMessages = updatedData.unreadMessages;
+        oldItem.status = updatedData.status;
         newList.splice(index, 1);
-        newList.unshift(updatedConversation)
+        newList.unshift(oldItem)
       }
       state.conversationList = newList;
     },

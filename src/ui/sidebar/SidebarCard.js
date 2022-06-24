@@ -111,7 +111,7 @@ const SidebarCard = ({ user, isOnline, userid, isGroupOnline }) => {
                     (
                       (user?.status === 'seen') &&
                       (
-                        user?.users_seen?.length > 0 && user?.users_seen.map((usr, i) => (usr.profileImage ? <Avatar
+                        user?.users_seen?.length > 0 && user?.users_seen.slice(user?.users_seen.length -2 , user?.users_seen?.length).map((usr, i) => (usr.profileImage ? <Avatar
                           key={i}
                           className="circle-img message-status-img"
                           src={usr.profileImage}

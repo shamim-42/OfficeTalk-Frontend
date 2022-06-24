@@ -154,7 +154,7 @@ const SidebarHeaderUI = (props) => {
           closable={true}
           footer={null}
         >
-          <UserProfileView closeProfileModal={closeProfileModal} />
+          <UserProfileView userProfile={userProfile} closeProfileModal={closeProfileModal} />
         </Modal>
       </div >
       <div className="online-users">

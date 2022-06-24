@@ -9,7 +9,6 @@ import GroupHomeUI from "../../ui/group/GroupHomeUI";
 import { newSocket } from "../../utils/socket";
 // import { checkLink } from "../../utils/utils";
 
-
 const GroupHome = () => {
   let { id } = useParams();
   const [groupInfo, setGroupInfo] = useState({});
@@ -88,32 +87,6 @@ const GroupHome = () => {
     return await getGroupMessagesApi(id, payload, { successHandler, handleBadReq })
   }, [id, userId]);
 
-
-  // // Handle delete message
-  // async function deleteMessage(id) {
-  //   async function successHandler(response) {
-  //     const res = await response.json();
-  //     console.log(res);
-  //     getGroupMessages();
-
-  //     if (!res.deleteall) {
-  //       dispatch(updateConversationMessage({ id: chatId, lastmessage: res.lastmessage }))
-  //     } else {
-  //       dispatch(deleteSingleConversation(chatId))
-  //     }
-
-  //     newSocket.emit('isdeleted', { chatId: chatId, userId: userId });
-  //     message.success(res.message);
-  //   }
-
-  //   async function handleBadReq(response) {
-  //     let error = await response.json();
-  //     message.error(error.message);
-  //   }
-
-  //   return await deleteMessageApi(id, userId, { successHandler, handleBadReq })
-  // }
-
   // Send message to current user function
   async function handleSubmitMessage() {
     if (messageText.trim().length <= 0 && !messageText) {
@@ -134,11 +107,12 @@ const GroupHome = () => {
       const newMessage = {
         lastMessage: res?.content,
         groupId: res?.room?.id,
-        message_Status_lastMessageTime: res?.createdAt,
+        lastMessageTime: res?.createdAt,
         name: res?.room?.name,
-        groupImage: res?.room?.groupImage,
+        image: res?.room?.groupImage,
         unreadMessages: 0,
-        type: "group"
+        type: "group",
+        status: 'seen',
       }
       dispatch(updateConversationGroupMessage(newMessage))
       setMessageText('');
@@ -162,24 +136,26 @@ const GroupHome = () => {
 
   useEffect(() => {
     newSocket.on('newMessage/group/', (res) => {
-      console.log(res)
       const newMessage = {
         lastMessage: res.content,
         groupId: res.roomId,
-        message_Status_lastMessageTime: res.createdAt,
+        lastMessageTime: res.createdAt,
         name: res.groupName,
-        groupImage: res.groupImg,
+        image: res.groupImg,
         unreadMessages: res.unread,
-        type: "group"
+        type: "group",
+        status: "seen"
       }
       dispatch(updateConversationGroupMessage(newMessage))
+      groupMessageSeen()
       getGroupMessages();
     })
 
     return () => {
       newSocket.off('newMessage/group/')
     }
-  }, [id, dispatch, getGroupMessages, userId]);
+
+  }, [id, dispatch, getGroupMessages, groupMessageSeen]);
 
   useEffect(() => {
     newSocket.emit("JoinRoom", id);

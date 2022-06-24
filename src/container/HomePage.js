@@ -100,6 +100,7 @@ const HomePage = () => {
     })
 
     newSocket.on('newMessagesidebar/group/' + userId, (res) => {
+      // console.log(res)
       const newMessage = {
         lastMessage: res?.content,
         groupId: res?.roomId,
@@ -107,10 +108,11 @@ const HomePage = () => {
         name: res?.groupName,
         image: res?.groupImg,
         unreadMessages: res?.unread,
-        type: "group"
+        type: "group",
+        status: "unseen",
       }
       dispatch(updateConversationGroupMessage(newMessage))
-      console.log(res)
+      // console.log(res)
     })
 
     newSocket.on(`isdeleted/${userId}`, (res) => {

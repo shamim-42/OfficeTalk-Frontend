@@ -74,6 +74,7 @@
     width: 100%;
     display: flex;
     overflow: auto;
+    scrollbar-width: none;
 
     &::-webkit-scrollbar {
       height: 3px;

@@ -3,12 +3,36 @@
 .ant-modal.profile-modal {
   & .ant-modal-content {
     border-radius: 30px;
-    padding: 12px 64px;
-    width: fit-content;
+    padding: 24px;
+    // width: fit-content;
     min-height: 70vh;
 
     & .ant-modal-body {
       padding: 0;
+
+      & .user-profile-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+
+        & .user-profile-fullname {
+          font-size: 30px;
+          font-weight: 600;
+          color: map.get($theme-colors, "black");
+          text-transform: capitalize;
+        }
+
+        & .user-profile-email {
+          font-size: 12px;
+          color: #008ddc;
+        }
+      }
+
+      & .ant-divider {
+        border-color: map.get($theme-colors, "gray-text-9b");
+      }
     }
   }
 }
