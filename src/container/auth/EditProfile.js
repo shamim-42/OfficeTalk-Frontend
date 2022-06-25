@@ -35,7 +35,7 @@ const EditProfile = () => {
 
     async function successHandler(response) {
       const data = await response.json();
-      newProfile.profileImage = data?.Location;
+      newProfile.profileImage = data?.sm.Location;
       dispatch(setUserProfile(newProfile))
       setPhotoChange(false);
       setLoader(false);
