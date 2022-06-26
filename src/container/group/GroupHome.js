@@ -136,6 +136,7 @@ const GroupHome = () => {
 
   useEffect(() => {
     newSocket.on('newMessage/group/', (res) => {
+      console.log(res);
       const newMessage = {
         lastMessage: res.content,
         groupId: res.roomId,
@@ -155,7 +156,7 @@ const GroupHome = () => {
       newSocket.off('newMessage/group/')
     }
 
-  }, [id, dispatch, getGroupMessages, groupMessageSeen]);
+  }, [id, dispatch, getGroupMessages, groupMessageSeen,newSocket]);
 
   useEffect(() => {
     newSocket.emit("JoinRoom", id);
