@@ -258,7 +258,6 @@ const ChattingHome = () => {
     }
   }, [userId, chatId, getAllMessage, dispatch]);
 
-
   return (
     <ChattingHomeUi
       handleSubmitMessage={handleSubmitMessage}

@@ -22,6 +22,23 @@ const GroupHome = () => {
   const isGroupOnline = onlineGroups.includes(parseInt(id));
   const dispatch = useDispatch();
 
+  const updateGroupBubbles = useCallback((res) => {
+    const copyMessage = JSON.parse(JSON.stringify(allMessage));
+    const prevCollection = copyMessage.find(mes => mes.date === res.prevMsgDate);
+    const lastCollection = copyMessage.find(mes => mes.date === res.lastMsgDate);
+    const prevMessage = prevCollection?.messages.find(message => message.id === res.prevMsgId);
+    const lastMessage = lastCollection?.messages.find(message => message.id === res.lasMsgId);
+    console.log(prevMessage)
+    const userSeen = JSON.parse(JSON.stringify(prevMessage?.users_seen));
+    console.log(userSeen);
+    // const prevMessageIndex = prevMessage?.findIndex(prev => prev.id === res.user.id);
+    // prevMessage?.users_seen?.pop()
+
+    // console.log(copyMessage);
+  }, [allMessage]);
+
+
+
   // Update message text function on change
   const handleChangeMessage = (e) => {
     setMessageText(e.target.value);
@@ -158,7 +175,14 @@ const GroupHome = () => {
       newSocket.off('newMessage/group/')
     }
 
-  }, [id, dispatch, getGroupMessages, groupMessageSeen,newSocket]);
+  }, [id, dispatch, getGroupMessages, groupMessageSeen]);
+
+  useEffect(() => {
+    newSocket.on("groupSeen", (res) => {
+      console.log(res)
+      updateGroupBubbles(res)
+    })
+  }, [updateGroupBubbles])
 
   useEffect(() => {
     newSocket.emit("JoinRoom", id);

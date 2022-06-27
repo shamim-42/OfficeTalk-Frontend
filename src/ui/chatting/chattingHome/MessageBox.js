@@ -1,19 +1,9 @@
 import { Divider } from 'antd';
-import { useEffect } from 'react';
-import { newSocket } from '../../../utils/socket';
 import { conversationTimeFormat } from '../../../utils/timeFormat';
 import MessageCard from './MessageCard';
 
 const MessageBox = (props) => {
   const { filterMessages, currentUserStatus, userProfile, isOnline, deleteMessage } = props;
-
-  useEffect(() => {
-    newSocket.on("groupSeen", (res) => {
-      console.log(res)
-    })
-
-  }, [])
-
 
   return (
     <>
