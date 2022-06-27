@@ -1,10 +1,18 @@
 import { Affix, Button, Col, Input, Row } from "antd";
+import { useEffect, useRef } from "react";
 import { BsEmojiSmile } from "react-icons/bs";
 import GroupHead from "../../container/group/GroupHead";
 import GroupMessageBox from "./GroupMessageBox";
 
 const GroupHomeUI = (props) => {
   const { groupInfo, allMessage, userProfile, isOnline, handleChangeMessage, messageText, handleSubmitMessage, isGroupOnline } = props;
+
+  const messagesEndRef = useRef(null);
+
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView();
+  }, []);
 
   return (
     <div>
@@ -29,6 +37,7 @@ const GroupHomeUI = (props) => {
               />
             ))}
         </div>
+        <div ref={messagesEndRef}></div>
       </div>
       <Affix offsetBottom={0}>
         <div className="chatting-bottom">

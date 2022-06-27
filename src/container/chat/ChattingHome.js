@@ -70,7 +70,7 @@ const ChattingHome = () => {
     async function successHandler(response) {
       const res = await response.json();
       setMessageStatus(res.status);
-      console.log(res)
+      // console.log(res)
       if (res?.messages?.length > 0) {
         setAllMessage(res?.messages)
       } else {
@@ -122,6 +122,7 @@ const ChattingHome = () => {
 
   // add or update message on conversations List
   const updateConversationList = (data) => {
+    console.log(data);
     const res = data.result;
     let status = data.status;
 
@@ -135,7 +136,7 @@ const ChattingHome = () => {
       lastMessageTime: res?.createdAt,
       unreadMessages: 0,
       status: status,
-      type: "single"
+      type: "single",
     }
     dispatch(setUpdateConversation(newMessage))
   }
@@ -147,7 +148,7 @@ const ChattingHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      // console.log(res)
+      console.log(res)
       dispatch(setUpdateUnreadCount(chatId))
     }
 
@@ -249,17 +250,13 @@ const ChattingHome = () => {
       getAllMessage(chatId)
     });
 
-    newSocket.on('delevered/' + userId, (res) => {
-      console.log(res)
-    })
-
     return () => {
       setIsTyping(false);
       newSocket.off(`isWriting/${userId}`);
       newSocket.off(`isNotWriting/${userId}`);
       setAllMessage([])
     }
-  }, [userId, chatId, getAllMessage]);
+  }, [userId, chatId, getAllMessage, dispatch]);
 
 
   return (

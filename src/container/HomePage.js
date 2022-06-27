@@ -110,6 +110,7 @@ const HomePage = () => {
         unreadMessages: res?.unread,
         type: "group",
         status: "unseen",
+        users_seen: []
       }
       dispatch(updateConversationGroupMessage(newMessage))
       // console.log(res)
@@ -126,6 +127,15 @@ const HomePage = () => {
     newSocket.on('message-seen-status' + userId, (res) => {
       console.log(res);
       dispatch(updateConversationStatus(res))
+    })
+
+    newSocket.on('delevered/' + userId, (res) => {
+      const data = {
+        conversationId: res.conversationId,
+        status: res.status
+      }
+      dispatch(updateConversationStatus(data))
+      console.log(res);
     })
   }, [userId, dispatch])
 

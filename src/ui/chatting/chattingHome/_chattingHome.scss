@@ -95,9 +95,6 @@
 
 .chatting-bottom {
   position: relative;
-  // position: fixed;
-  // bottom: 0;
-  // left: 0;
   width: 100%;
   padding: 1rem 1rem;
   z-index: 1000;
@@ -105,12 +102,6 @@
   .user-typing {
     @include set-display-flex(center, flex-start, 12px);
     margin-left: 88px;
-
-    & .user-typing-img {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-    }
 
     & .typing {
       @include set-display-flex(center, center);

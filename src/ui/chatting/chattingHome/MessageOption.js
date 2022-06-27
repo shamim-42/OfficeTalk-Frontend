@@ -53,10 +53,13 @@ const MessageOptions = ({ deleteMessage, message, copyToClipboard, isDelete }) =
         <MdOutlineContentCopy />
         <span style={{ marginLeft: '20px' }}>Copy Message</span>
       </Button>
-      <Button type="text">
-        <BiEditAlt />
-        <span style={{ marginLeft: '20px' }}>Edit Message</span>
-      </Button>
+      {
+        isDelete &&
+        <Button type="text">
+          <BiEditAlt />
+          <span style={{ marginLeft: '20px' }}>Edit Message</span>
+        </Button>
+      }
       <Button type="text">
         <TiArrowForwardOutline />
         <span style={{ marginLeft: '20px' }}>Forward Message</span>

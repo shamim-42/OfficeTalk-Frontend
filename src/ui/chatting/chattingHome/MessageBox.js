@@ -1,16 +1,19 @@
 import { Divider } from 'antd';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+import { newSocket } from '../../../utils/socket';
 import { conversationTimeFormat } from '../../../utils/timeFormat';
 import MessageCard from './MessageCard';
 
 const MessageBox = (props) => {
   const { filterMessages, currentUserStatus, userProfile, isOnline, deleteMessage } = props;
 
-  const messagesEndRef = useRef(null);
-
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView();
-  }, []);
+    newSocket.on("groupSeen", (res) => {
+      console.log(res)
+    })
+
+  }, [])
+
 
   return (
     <>
@@ -29,7 +32,6 @@ const MessageBox = (props) => {
           ))
         }
       </div>
-      <div ref={messagesEndRef}></div>
     </>
   );
 };

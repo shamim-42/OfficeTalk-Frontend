@@ -1,0 +1,44 @@
+@use "sass:map";
+
+.message-bubbles-popover {
+  padding: 10px;
+  color: map.get($theme-colors, "gray-text-60");
+
+  & .message-bubbles-popover-title {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  & .message-bubbles-popover-divider {
+    width: 200px;
+    margin: 8px 0;
+    border-color: map.get($theme-colors, "black-alhpa-40");
+  }
+
+  & .message-seen-users {
+    padding: 4px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    & .message-seen-user-card {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+
+      & .message-seen-user-info {
+        & .message-seen-user-name {
+          font-size: 14px;
+          text-transform: capitalize;
+          line-height: 1;
+        }
+
+        & .message-seen-time {
+          font-size: 10px;
+          color: map.get($theme-colors, "gray-text-90");
+        }
+      }
+    }
+  }
+}

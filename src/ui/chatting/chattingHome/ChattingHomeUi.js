@@ -4,6 +4,8 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { FaRegPaperPlane } from "react-icons/fa";
 import hi from "../../../assest/image/hi.gif";
 import ChatHeader from "../../../container/chat/ChatHeader";
+import CustomAvatar from "../../helper/CustomAvatar";
+import TextAvatar from "../../helper/TextAvatar";
 import MessageBox from "./MessageBox";
 
 const ChattingHomeUi = (props) => {
@@ -72,10 +74,17 @@ const ChattingHomeUi = (props) => {
             <div className="chatting-bottom">
               {isTyping && (
                 <div className="user-typing">
-                  <Avatar
-                    className="user-typing-img"
-                    src={currentUserProfile?.profileImage}
-                  />
+                  {
+                    currentUserProfile?.profileImage ?
+                      <CustomAvatar
+                        size={20}
+                        src={currentUserProfile?.profileImage}
+                      />
+                      :
+                      <TextAvatar name={currentUserProfile?.fullname}
+                        size="20px" fontSize="8px" />
+                  }
+
                   <div className="typing">
                     <span className="circle"></span>
                     <span className="circle"></span>

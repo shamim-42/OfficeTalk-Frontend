@@ -102,6 +102,23 @@
     }
   }
 }
+.message-card-bubble {
+  width: 100%;
+
+  & .bubble-images {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 4px;
+
+    & .message-card-bubble-btn {
+      font-size: 16px;
+      text-align: center;
+      padding: 0;
+      color: map.get($theme-colors, "gray-text-c4");
+    }
+  }
+}
 
 .message-options-popover {
   @include set-display-flex(flex-start, flex-start, 12px, column);

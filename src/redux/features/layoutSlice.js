@@ -67,7 +67,7 @@ export const layoutSlice = createSlice({
 
     updateConversationStatus: (state, action) => {
       let newList = [...state.conversationList];
-      let index = newList.findIndex((item) => item.id === action.payload.conversationId);
+      let index = newList.findIndex((item) => parseInt(item.id) === action.payload.conversationId);
       if (index !== -1) {
         newList[index].status = action.payload.status;
         newList[index].unreadMessages = 0;

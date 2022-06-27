@@ -77,7 +77,7 @@ const GroupHome = () => {
     async function successHandler(response) {
       const res = await response.json();
       setAllMessage(res.messages);
-      // console.log(res);
+      console.log(res);
     }
 
     async function handleBadReq(response) {
@@ -104,6 +104,7 @@ const GroupHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
+      console.log(res);
       const newMessage = {
         lastMessage: res?.content,
         groupId: res?.room?.id,
@@ -113,6 +114,7 @@ const GroupHome = () => {
         unreadMessages: 0,
         type: "group",
         status: 'seen',
+        users_seen: []
       }
       dispatch(updateConversationGroupMessage(newMessage))
       setMessageText('');
