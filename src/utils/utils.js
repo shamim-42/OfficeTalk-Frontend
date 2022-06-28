@@ -83,11 +83,14 @@ export function udateGroupMessageList(allMessages, res) {
     return allData;
   }
   const prevMessage = allData?.find(data => data.id === res.prevMsgId);
-  const userIndex = prevMessage?.users_seen?.findIndex(user => user.id === res.user.id);
-  if (userIndex > -1) {
-    prevMessage?.users_seen?.splice(userIndex, 1);
+  const userInPrev = prevMessage?.users_seen?.findIndex(user => user.id === res.user.id);
+  if (userInPrev > -1) {
+    prevMessage?.users_seen?.splice(userInPrev, 1);
   }
-  lastMessage?.users_seen?.push(res.user);
+  const userInLast = lastMessage?.users_seen?.findIndex(user => user.id === res.user.id);
+  if (userInLast === -1) {
+    lastMessage?.users_seen?.push(res.user);
+  }
   return allData;
 }
 

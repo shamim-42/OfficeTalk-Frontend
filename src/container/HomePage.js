@@ -100,7 +100,7 @@ const HomePage = () => {
     })
 
     newSocket.on('newMessagesidebar/group/' + userId, (res) => {
-      // console.log(res)
+      // console.log(res);
       const newMessage = {
         lastMessage: res?.content,
         groupId: res?.roomId,

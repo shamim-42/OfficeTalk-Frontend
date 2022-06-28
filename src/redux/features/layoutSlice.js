@@ -103,6 +103,15 @@ export const layoutSlice = createSlice({
       state.conversationList = newList;
     },
 
+    updateConversationGroupSeen: (state, action) => {
+      let newList = [...state.conversationList];
+      let index = newList.findIndex(item => parseInt(item.groupId) === parseInt(action.payload.groupId));
+      if (index > -1) {
+        newList[index].users_seen = action.payload.users_seen;
+      }
+      state.conversationList = newList;
+    },
+
 
     updateConversationGroupMessage: (state, action) => {
       let newList = [...state.conversationList];
@@ -134,7 +143,7 @@ export const layoutSlice = createSlice({
 
 });
 
-export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation, setUpdateUnreadCount, updateConversationStatus, deleteSingleConversation, updateConversationMessage, updateFriendList, updateConversationGroupMessage, updateOnlineGroupList, updateConversationGroupStatus } = layoutSlice.actions;
+export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation, setUpdateUnreadCount, updateConversationStatus, deleteSingleConversation, updateConversationMessage, updateFriendList, updateConversationGroupMessage, updateOnlineGroupList, updateConversationGroupStatus , updateConversationGroupSeen} = layoutSlice.actions;
 
 export const selectError = (state) => state.layout.error;
 export const selectAllUser = (state) => state.layout.allUsers;

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getGroupInfo, getGroupMessagesApi, groupMessageSeenApi, groupMessageSendApi } from "../../api/group";
 import { selectUserProfile, setCurrentGroup } from "../../redux/features/authSlice";
-import { selectActiveUser, selectOnlineGroups, updateConversationGroupMessage, updateConversationGroupStatus } from "../../redux/features/layoutSlice";
+import { selectActiveUser, selectOnlineGroups, updateConversationGroupMessage, updateConversationGroupSeen, updateConversationGroupStatus } from "../../redux/features/layoutSlice";
 import GroupHomeUI from "../../ui/group/GroupHomeUI";
 import { newSocket } from "../../utils/socket";
 import { udateGroupMessageList } from "../../utils/utils";
@@ -63,12 +63,19 @@ const GroupHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
+      console.log(res)
       const groupStatus = {
         groupId: id,
         status: "seen"
       }
       dispatch(updateConversationGroupStatus(groupStatus));
-      console.log(res);
+
+      if (res?.users_seen?.length > 0) {
+        dispatch(updateConversationGroupSeen({
+          groupId: id,
+          users_seen: res.users_seen
+        }));
+      }
     }
 
     async function handleBadReq(response) {
@@ -171,6 +178,7 @@ const GroupHome = () => {
 
   useEffect(() => {
     newSocket.on("groupSeen", (res) => {
+      console.log(res)
       updateGroupBubbles(res)
     })
   }, [updateGroupBubbles])
