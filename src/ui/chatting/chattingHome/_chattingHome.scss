@@ -172,6 +172,6 @@
   }
 }
 .message-list {
-  @include set-display-flex(flex-start, flex-end, 24px, column);
+  @include set-display-flex(flex-start, flex-end, 8px, column);
   width: 100%;
 }

@@ -122,7 +122,7 @@ class Connector {
       } else {
         return await this._handleBadReq(response);
       }
-    } else if (response >= 500) {
+    } else if (response.status >= 500) {
       if (options.handle500) {
         return await options.handle500(response);
       } else {

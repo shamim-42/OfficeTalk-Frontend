@@ -7,6 +7,7 @@ import { selectUserProfile, setCurrentGroup } from "../../redux/features/authSli
 import { selectActiveUser, selectOnlineGroups, updateConversationGroupMessage, updateConversationGroupStatus } from "../../redux/features/layoutSlice";
 import GroupHomeUI from "../../ui/group/GroupHomeUI";
 import { newSocket } from "../../utils/socket";
+import { udateGroupMessageList } from "../../utils/utils";
 // import { checkLink } from "../../utils/utils";
 
 const GroupHome = () => {
@@ -23,21 +24,11 @@ const GroupHome = () => {
   const dispatch = useDispatch();
 
   const updateGroupBubbles = useCallback((res) => {
-    const copyMessage = JSON.parse(JSON.stringify(allMessage));
-    const prevCollection = copyMessage.find(mes => mes.date === res.prevMsgDate);
-    const lastCollection = copyMessage.find(mes => mes.date === res.lastMsgDate);
-    const prevMessage = prevCollection?.messages.find(message => message.id === res.prevMsgId);
-    const lastMessage = lastCollection?.messages.find(message => message.id === res.lasMsgId);
-    console.log(prevMessage)
-    const userSeen = JSON.parse(JSON.stringify(prevMessage?.users_seen));
-    console.log(userSeen);
-    // const prevMessageIndex = prevMessage?.findIndex(prev => prev.id === res.user.id);
-    // prevMessage?.users_seen?.pop()
-
-    // console.log(copyMessage);
-  }, [allMessage]);
-
-
+    setAllMessage((prevMessage) => {
+      const updatedData = udateGroupMessageList(prevMessage, res);
+      return updatedData
+    })
+  }, []);
 
   // Update message text function on change
   const handleChangeMessage = (e) => {
@@ -164,7 +155,8 @@ const GroupHome = () => {
         image: res.groupImg,
         unreadMessages: res.unread,
         type: "group",
-        status: "seen"
+        status: res.status || 'sent',
+        users_seen: []
       }
       dispatch(updateConversationGroupMessage(newMessage))
       groupMessageSeen()
@@ -179,7 +171,6 @@ const GroupHome = () => {
 
   useEffect(() => {
     newSocket.on("groupSeen", (res) => {
-      console.log(res)
       updateGroupBubbles(res)
     })
   }, [updateGroupBubbles])

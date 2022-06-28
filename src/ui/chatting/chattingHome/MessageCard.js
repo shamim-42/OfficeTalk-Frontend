@@ -10,9 +10,7 @@ import TextMessageCard from './TextMessageCard';
 
 
 const MessageCard = (props) => {
-  const { CurrentUserProfile, userProfile, message, isOnline, deleteMessage } = props;
-  // if (message?.users_seen?.length > 0) console.log(message.users_seen)
-
+  const { CurrentUserProfile, userProfile, message, isOnline, deleteMessage, index, messages } = props;
 
   if (message?.user?.id === userProfile.id || message?.senderId === userProfile.id) {
     return (
@@ -21,9 +19,13 @@ const MessageCard = (props) => {
           <Col span={14}>
             <Row>
               <Col span={21} className="messages-area">
-                <p className='message-time' style={{ textAlign: 'right' }}>
-                  {timeFormat(message.createdAt)}
-                </p>
+                {((!(index > 0 && (messages[index - 1]?.senderId === message.senderId))) ||
+                  (!(index > 0 && (messages[index - 1]?.user?.id === message?.user?.id))))
+                  &&
+                  <p className='message-time' style={{ textAlign: 'right' }}>
+                    {timeFormat(message.createdAt)}
+                  </p>
+                }
                 <div className='message-body message-right'>
 
                   {message.type === 'image' &&
@@ -55,19 +57,6 @@ const MessageCard = (props) => {
                   }
                 </div>
 
-                {/* {
-                message?.links?.length > 0 && message.links.map((link, index) => (
-                  <LinkPreview
-                    key={index}
-                    margin="30px auto"
-                    width="300px"
-                    className="link-preview"
-                    height="320px"
-                    url="https://www.youtube.com"
-                  />
-                ))
-              } */}
-
                 {(message.content && message.type !== 'text') &&
                   <div className='message-body message-right'>
                     <ChatMessageOption
@@ -82,22 +71,25 @@ const MessageCard = (props) => {
                   </div>
                 }
               </Col>
-
-              <Col span={3}
-                className='message-sender-img'>
-                {
-                  userProfile?.profileImage ?
-                    <CustomAvatar
-                      size={40}
-                      icon={isOnline(userProfile?.id) && "small"}
-                      src={userProfile?.profileImage}
-                    />
-                    :
-                    <TextAvatar name={userProfile?.fullname}
-                      icon={isOnline(userProfile?.id) && "small"}
-                      size="40px" fontSize="18px" />
-                }
-              </Col>
+              {((!(index > 0 && (messages[index - 1]?.senderId === message.senderId))) ||
+                (!(index > 0 && (messages[index - 1]?.user?.id === message?.user?.id))))
+                &&
+                <Col span={3}
+                  className='message-sender-img'>
+                  {
+                    userProfile?.profileImage ?
+                      <CustomAvatar
+                        size={40}
+                        icon={isOnline(userProfile?.id) && "small"}
+                        src={userProfile?.profileImage}
+                      />
+                      :
+                      <TextAvatar name={userProfile?.fullname}
+                        icon={isOnline(userProfile?.id) && "small"}
+                        size="40px" fontSize="18px" />
+                  }
+                </Col>
+              }
             </Row>
           </Col>
         </Row>
@@ -111,22 +103,32 @@ const MessageCard = (props) => {
       <Row className="message-card" justify="start">
         <Col span={14}>
           <Row>
-            <Col span={3} className='message-sender-img'>
-              {
-                CurrentUserProfile?.profileImage ?
-                  <CustomAvatar
-                    size={40}
-                    icon={isOnline(CurrentUserProfile?.id) && "small"}
-                    src={CurrentUserProfile?.profileImage}
-                  />
-                  :
-                  <TextAvatar name={CurrentUserProfile?.fullname}
-                    icon={isOnline(CurrentUserProfile?.id) && "small"}
-                    size="40px" fontSize="18px" />
+            {((!(index > 0 && (messages[index - 1]?.senderId === message.senderId))) ||
+              (!(index > 0 && (messages[index - 1]?.user?.id === message?.user?.id))))
+              ?
+              <Col span={3} className='message-sender-img'>
+                {
+                  CurrentUserProfile?.profileImage ?
+                    <CustomAvatar
+                      size={40}
+                      icon={isOnline(CurrentUserProfile?.id) && "small"}
+                      src={CurrentUserProfile?.profileImage}
+                    />
+                    :
+                    <TextAvatar name={CurrentUserProfile?.fullname}
+                      icon={isOnline(CurrentUserProfile?.id) && "small"}
+                      size="40px" fontSize="18px" />
+                }
+              </Col>
+              :
+              <Col span={3}></Col>
+            }
+            <Col span={21} className="messages-area friend-send">
+              {((!(index > 0 && (messages[index - 1]?.senderId === message.senderId))) ||
+                (!(index > 0 && (messages[index - 1]?.user?.id === message?.user?.id))))
+                &&
+                <p className='message-time'>{timeFormat(message.createdAt)}</p>
               }
-            </Col>
-            <Col span={21} className="messages-area">
-              <p className='message-time'>{timeFormat(message.createdAt)}</p>
               <div className='message-body message-left'>
                 {message.type === 'image' &&
                   <ImageMessageCard message={message} />

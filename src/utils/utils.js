@@ -12,7 +12,7 @@ export function getDateWiseMessages(list) {
 
     return messageArray
   }
-  let formattedArray = list.length > 0 ? addDateTimefieldToItem(list) : []
+  let formattedArray = list?.length > 0 ? addDateTimefieldToItem(list) : []
   let uniqDates = [...new Set(dateList)];
 
   let formattedMessageArray = [];
@@ -30,16 +30,20 @@ export function getDateWiseMessages(list) {
 
     for (let key in datewiseFilteredObj) {
       formattedMessageArray.push({
-        [key]: {
-          date: new Date(key).toDateString(),
-          data: datewiseFilteredObj[key],
+        date: key,
+        data: {
+          date: new Date(key).toISOString(),
+          messages: datewiseFilteredObj[key],
         }
       })
     }
   }
-  const reverseMessages = formattedMessageArray.reverse();
 
-  return reverseMessages
+  formattedMessageArray.sort(function (prev, next) {
+    return new Date(prev.date) - new Date(next.date)
+  })
+
+  return formattedMessageArray
 }
 
 // Check is messages contain link
@@ -70,14 +74,27 @@ export function getTwoCharacters(text) {
   return result;
 }
 
+export function udateGroupMessageList(allMessages, res) {
 
+  const allData = JSON.parse(JSON.stringify(allMessages));
+  const lastMessage = allData?.find(data => data.id === res.lasMsgId);
+  if (!res.prevMsgId) {
+    lastMessage?.users_seen?.push(res.user);
+    return allData;
+  }
+  const prevMessage = allData?.find(data => data.id === res.prevMsgId);
+  const userIndex = prevMessage?.users_seen?.findIndex(user => user.id === res.user.id);
+  if (userIndex > -1) {
+    prevMessage?.users_seen?.splice(userIndex, 1);
+  }
+  lastMessage?.users_seen?.push(res.user);
+  return allData;
+}
 
-
-
-
-
-
-
-
-
-
+export function compareTwoTime(time1, time2) {
+  const convertedTime1 = new Date(time1);
+  const convertedTime2 = new Date(time2);
+  const differentNumber = convertedTime1 - convertedTime2;
+  const minutes = Math.floor(differentNumber / 60e3);
+  return minutes;
+}

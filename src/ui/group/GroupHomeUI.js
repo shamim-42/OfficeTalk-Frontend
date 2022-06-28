@@ -2,6 +2,7 @@ import { Affix, Button, Col, Input, Row } from "antd";
 import { useEffect, useRef } from "react";
 import { BsEmojiSmile } from "react-icons/bs";
 import GroupHead from "../../container/group/GroupHead";
+import { getDateWiseMessages } from "../../utils/utils";
 import GroupMessageBox from "./GroupMessageBox";
 
 const GroupHomeUI = (props) => {
@@ -9,6 +10,8 @@ const GroupHomeUI = (props) => {
 
   const messagesEndRef = useRef(null);
 
+  const filteredMessages = getDateWiseMessages(allMessage);
+  // console.log(filteredMessages)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView();
@@ -24,8 +27,8 @@ const GroupHomeUI = (props) => {
 
       <div className="group-chat-content">
         <div className="all-messages-content">
-          {allMessage?.length > 0 &&
-            allMessage.map((filterMessages, index) => (
+          {filteredMessages?.length > 0 &&
+            filteredMessages.map((filterMessages, index) => (
               <GroupMessageBox
                 key={index}
                 // currentUserStatus={currentUserProfile}

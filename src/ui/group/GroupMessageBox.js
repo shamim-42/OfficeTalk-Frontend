@@ -16,14 +16,16 @@ const GroupMessageBox = (props) => {
       <Divider className="chatting-date">{conversationTimeFormat(filterMessages?.date, true)}</Divider>
       <div className="message-list">
         {
-          filterMessages?.messages.length > 0 && filterMessages?.messages.map((message) => (
+          filterMessages?.data.messages?.length > 0 && filterMessages?.data.messages?.map((message, index) => (
             <MessageCard
               CurrentUserProfile={message.user}
               // deleteMessage={deleteMessage}
               message={message}
               userProfile={userProfile}
               isOnline={isOnline}
+              index={index}
               key={message?.id}
+              messages={filterMessages?.data?.messages}
             />
           ))
         }

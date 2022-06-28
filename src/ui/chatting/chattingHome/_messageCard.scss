@@ -18,8 +18,14 @@
   & .messages-area {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    // gap: 16px;
   }
+
+  // & .messages-area.friend-send {
+  //   width: 100%;
+  //   align-self: flex-end;
+  //   justify-self: flex-end;
+  // }
 
   & .message-body {
     width: 100%;
@@ -108,7 +114,7 @@
   & .bubble-images {
     display: flex;
     justify-content: flex-end;
-    align-items: flex-start;
+    align-items: center;
     gap: 4px;
 
     & .message-card-bubble-btn {
