@@ -4,12 +4,12 @@ import { conversationTimeFormat } from '../../utils/timeFormat';
 import MessageCard from '../chatting/chattingHome/MessageCard';
 
 const GroupMessageBox = (props) => {
-  const { filterMessages, userProfile, isOnline, deleteMessage } = props;
+  const { filterMessages, userProfile, isOnline, allMessage } = props;
   const messagesEndRef = useRef(null);
   
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView();
-  }, []);
+  }, [allMessage]);
 
   return (
     <>

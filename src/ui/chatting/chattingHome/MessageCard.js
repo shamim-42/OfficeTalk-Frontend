@@ -2,6 +2,7 @@ import { Button, Col, Popover, Row } from 'antd';
 import { FaPlusCircle } from "react-icons/fa";
 import ChatMessageOption from '../../../container/chat/ChatMessageOption';
 import { timeFormat } from '../../../utils/timeFormat';
+import { checkDevided } from '../../../utils/utils';
 import CustomAvatar from '../../helper/CustomAvatar';
 import TextAvatar from '../../helper/TextAvatar';
 import ImageMessageCard from './ImageMessageCard';
@@ -12,6 +13,8 @@ import TextMessageCard from './TextMessageCard';
 const MessageCard = (props) => {
   const { CurrentUserProfile, userProfile, message, isOnline, deleteMessage, index, messages } = props;
 
+
+
   if (message?.user?.id === userProfile.id || message?.senderId === userProfile.id) {
     return (
       <>
@@ -19,8 +22,8 @@ const MessageCard = (props) => {
           <Col span={14}>
             <Row>
               <Col span={21} className="messages-area">
-                {((!(index > 0 && (messages[index - 1]?.senderId === message.senderId))) ||
-                  (!(index > 0 && (messages[index - 1]?.user?.id === message?.user?.id))))
+                {
+                  checkDevided(messages[index - 1], message, index)
                   &&
                   <p className='message-time' style={{ textAlign: 'right' }}>
                     {timeFormat(message.createdAt)}
@@ -71,8 +74,8 @@ const MessageCard = (props) => {
                   </div>
                 }
               </Col>
-              {((!(index > 0 && (messages[index - 1]?.senderId === message.senderId))) ||
-                (!(index > 0 && (messages[index - 1]?.user?.id === message?.user?.id))))
+              {
+                checkDevided(messages[index - 1], message, index)
                 &&
                 <Col span={3}
                   className='message-sender-img'>
@@ -103,29 +106,29 @@ const MessageCard = (props) => {
       <Row className="message-card" justify="start">
         <Col span={14}>
           <Row>
-            {((!(index > 0 && (messages[index - 1]?.senderId === message.senderId))) ||
-              (!(index > 0 && (messages[index - 1]?.user?.id === message?.user?.id))))
-              ?
-              <Col span={3} className='message-sender-img'>
-                {
-                  CurrentUserProfile?.profileImage ?
-                    <CustomAvatar
-                      size={40}
-                      icon={isOnline(CurrentUserProfile?.id) && "small"}
-                      src={CurrentUserProfile?.profileImage}
-                    />
-                    :
-                    <TextAvatar name={CurrentUserProfile?.fullname}
-                      icon={isOnline(CurrentUserProfile?.id) && "small"}
-                      size="40px" fontSize="18px" />
-                }
-              </Col>
-              :
-              <Col span={3}></Col>
+            {
+              checkDevided(messages[index - 1], message, index)
+                ?
+                <Col span={3} className='message-sender-img'>
+                  {
+                    CurrentUserProfile?.profileImage ?
+                      <CustomAvatar
+                        size={40}
+                        icon={isOnline(CurrentUserProfile?.id) && "small"}
+                        src={CurrentUserProfile?.profileImage}
+                      />
+                      :
+                      <TextAvatar name={CurrentUserProfile?.fullname}
+                        icon={isOnline(CurrentUserProfile?.id) && "small"}
+                        size="40px" fontSize="18px" />
+                  }
+                </Col>
+                :
+                <Col span={3}></Col>
             }
             <Col span={21} className="messages-area friend-send">
-              {((!(index > 0 && (messages[index - 1]?.senderId === message.senderId))) ||
-                (!(index > 0 && (messages[index - 1]?.user?.id === message?.user?.id))))
+              {
+                checkDevided(messages[index - 1], message, index)
                 &&
                 <p className='message-time'>{timeFormat(message.createdAt)}</p>
               }

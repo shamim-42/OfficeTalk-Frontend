@@ -1,4 +1,4 @@
-import { Affix, Avatar, Button, Col, Input, Row, Spin } from "antd";
+import { Avatar, Button, Col, Input, Row, Spin } from "antd";
 import { Fragment } from "react";
 import { BsEmojiSmile } from "react-icons/bs";
 import { FaRegPaperPlane } from "react-icons/fa";
@@ -45,6 +45,7 @@ const ChattingHomeUi = (props) => {
                     messageStatus={messageStatus}
                     filterMessages={filterMessages}
                     deleteMessage={deleteMessage}
+                    allMessage={allMessage}
                   />
                 ))}
             </div>
@@ -70,50 +71,48 @@ const ChattingHomeUi = (props) => {
             }
           </div>
 
-          <Affix offsetBottom={0}>
-            <div className="chatting-bottom">
-              {isTyping && (
-                <div className="user-typing">
-                  {
-                    currentUserProfile?.profileImage ?
-                      <CustomAvatar
-                        size={20}
-                        src={currentUserProfile?.profileImage}
-                      />
-                      :
-                      <TextAvatar name={currentUserProfile?.fullname}
-                        size="20px" fontSize="8px" />
-                  }
+          <div className="chatting-bottom">
+            {isTyping && (
+              <div className="user-typing">
+                {
+                  currentUserProfile?.profileImage ?
+                    <CustomAvatar
+                      size={20}
+                      src={currentUserProfile?.profileImage}
+                    />
+                    :
+                    <TextAvatar name={currentUserProfile?.fullname}
+                      size="20px" fontSize="8px" />
+                }
 
-                  <div className="typing">
-                    <span className="circle"></span>
-                    <span className="circle"></span>
-                    <span className="circle"></span>
-                    <span className="circle"></span>
-                    <span className="circle"></span>
-                  </div>
+                <div className="typing">
+                  <span className="circle"></span>
+                  <span className="circle"></span>
+                  <span className="circle"></span>
+                  <span className="circle"></span>
+                  <span className="circle"></span>
                 </div>
-              )}
-              <Row className="message-input-container">
-                <Col span={14}>
-                  <Input
-                    prefix={<Button shape="circle" icon={<BsEmojiSmile />} />}
-                    className="message-input"
-                    value={messagesText}
-                    placeholder="Type a message"
-                    onChange={handleChangeMessage}
-                    onBlur={handleBlur}
-                    onPressEnter={handleSubmitMessage}
-                    size="large"
-                  />
-                </Col>
-                <Col span={1} className="chat-input-attachment">
-                  {messagesText.trim() && <Button shape="circle"
-                    onClick={handleSubmitMessage} icon={<FaRegPaperPlane />} className="chat-sent-control" />}
-                </Col>
-              </Row>
-            </div>
-          </Affix>
+              </div>
+            )}
+            <Row className="message-input-container">
+              <Col span={14}>
+                <Input
+                  prefix={<Button shape="circle" icon={<BsEmojiSmile />} />}
+                  className="message-input"
+                  value={messagesText}
+                  placeholder="Type a message"
+                  onChange={handleChangeMessage}
+                  onBlur={handleBlur}
+                  onPressEnter={handleSubmitMessage}
+                  size="large"
+                />
+              </Col>
+              <Col span={1} className="chat-input-attachment">
+                {messagesText.trim() && <Button shape="circle"
+                  onClick={handleSubmitMessage} icon={<FaRegPaperPlane />} className="chat-sent-control" />}
+              </Col>
+            </Row>
+          </div>
         </div>
       </Spin>
     </Fragment>

@@ -47,7 +47,7 @@
 
       & .chatting-date {
         justify-content: center;
-        padding: 30px 20px;
+        padding: 0 20px;
         color: map.get($theme-colors, "gray-text-71");
         font-size: 14px;
         text-align: center;
@@ -94,9 +94,10 @@
 }
 
 .chatting-bottom {
-  position: relative;
+  position: sticky;
+  bottom: 0;
   width: 100%;
-  padding: 1rem 1rem;
+  padding: 1rem 0;
   z-index: 1000;
   background-color: map.get($theme-colors, "white");
   .user-typing {

@@ -4,3 +4,8 @@
   @include set-display-flex(flex-start, flex-start, 10px, column);
   padding: 14px;
 }
+
+.filter-popover {
+  @include set-display-flex(stretch, stretch, 10px, column);
+  padding: 16px;
+}

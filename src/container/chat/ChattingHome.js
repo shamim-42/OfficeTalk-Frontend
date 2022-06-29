@@ -70,7 +70,7 @@ const ChattingHome = () => {
     async function successHandler(response) {
       const res = await response.json();
       setMessageStatus(res.status);
-      // console.log(res)
+      console.log(res)
       if (res?.messages?.length > 0) {
         setAllMessage(res?.messages)
       } else {

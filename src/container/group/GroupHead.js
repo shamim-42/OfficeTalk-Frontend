@@ -5,7 +5,9 @@ const GroupHead = (props) => {
 
 
   return (
-    <GroupHeaderUI groupProfile={groupInfo} isOnline={isGroupOnline} />
+    <GroupHeaderUI
+      groupProfile={groupInfo}
+      isOnline={isGroupOnline} />
   );
 };
 

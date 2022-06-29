@@ -101,3 +101,28 @@ export function compareTwoTime(time1, time2) {
   const minutes = Math.floor(differentNumber / 60e3);
   return minutes;
 }
+
+
+
+export function checkDevided(prevMessage, message, index) {
+  const result = (
+    ((!(index > 0 && (prevMessage?.senderId === message.senderId))) ||
+      (!(index > 0 && (prevMessage?.user?.id === message?.user?.id))))
+    ||
+    (
+      (((index > 0 && (prevMessage?.senderId === message.senderId))) ||
+        ((index > 0 && (prevMessage?.user?.id === message?.user?.id))))
+      &&
+      (compareTwoTime(message?.createdAt, prevMessage?.createdAt) > 11)
+    )
+  )
+  return result;
+}
+
+export function checkMatch(prevMessage, message, index) {
+  const result =
+    ((!(index > 0 && (prevMessage?.senderId === message.senderId))) ||
+      (!(index > 0 && (prevMessage?.user?.id === message?.user?.id))))
+
+  return result;
+}
