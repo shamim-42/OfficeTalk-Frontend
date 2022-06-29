@@ -37,6 +37,19 @@
     height: 100%;
     min-height: 82vh;
 
+    & .previous-btn-container {
+      padding-top: 20px;
+      width: 100%;
+      @include set-display-flex(flex-start, center);
+
+      & .previous-btn {
+        padding: 0 8px;
+        background-color: map.get($theme-colors, "white-f1");
+        height: fit-content;
+        border-radius: 15px;
+      }
+    }
+
     & .all-messages-content {
       @include set-display-flex(flex-start, flex-end, 32px, column);
       width: 100%;

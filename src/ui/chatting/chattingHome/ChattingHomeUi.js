@@ -4,20 +4,31 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { FaRegPaperPlane } from "react-icons/fa";
 import hi from "../../../assest/image/hi.gif";
 import ChatHeader from "../../../container/chat/ChatHeader";
+import { getDateWiseMessages } from "../../../utils/utils";
 import CustomAvatar from "../../helper/CustomAvatar";
 import TextAvatar from "../../helper/TextAvatar";
 import MessageBox from "./MessageBox";
 
 const ChattingHomeUi = (props) => {
-  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleBlur, isTyping, messageStatus, userRequestFunction, deleteMessage } = props;
+  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleBlur, isTyping, messageStatus, userRequestFunction, deleteMessage, nextPage, handlePreviousMessage } = props;
+
+  console.log(allMessage);
+
+  const filteredMessages = getDateWiseMessages(allMessage);
 
   return (
     <Fragment>
       <Spin spinning={isLoading}>
         <div className="chatting-home">
           <ChatHeader currentUserProfile={currentUserProfile} />
-
           <div className="chatting-content">
+            {nextPage > 0 &&
+              <div className="previous-btn-container">
+                <Button
+                  onClick={handlePreviousMessage}
+                  className="previous-btn">see previous</Button>
+              </div>
+            }
             {allMessage.length <= 0 && (
               <div className="sayhi-card">
                 <Avatar className="sayhi-emoji" src={hi} />
@@ -35,8 +46,8 @@ const ChattingHomeUi = (props) => {
               </div>
             )}
             <div className="all-messages-content">
-              {allMessage.length > 0 &&
-                allMessage.map((filterMessages, index) => (
+              {filteredMessages.length > 0 &&
+                filteredMessages.map((filterMessages, index) => (
                   <MessageBox
                     key={index}
                     currentUserStatus={currentUserProfile}
@@ -45,7 +56,7 @@ const ChattingHomeUi = (props) => {
                     messageStatus={messageStatus}
                     filterMessages={filterMessages}
                     deleteMessage={deleteMessage}
-                    allMessage={allMessage}
+                    allMessage={filteredMessages}
                   />
                 ))}
             </div>
@@ -115,7 +126,7 @@ const ChattingHomeUi = (props) => {
           </div>
         </div>
       </Spin>
-    </Fragment>
+    </Fragment >
   );
 };
 

@@ -17,6 +17,8 @@ const ChattingHome = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [messagesText, setMessagesText] = useState('')
   const [messageStatus, setMessageStatus] = useState(null);
+  const [pageNumber, setPageNumber] = useState("1");
+  const [nextPage, setNextPage] = useState(0);
   const [timer, setTimer] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
   const [allMessage, setAllMessage] = useState([])
@@ -30,7 +32,43 @@ const ChattingHome = () => {
     return onlineUsers.indexOf(id) !== -1;
   }
 
+  const handlePreviousMessage = () => {
+    setPageNumber((prevPage) => {
+      const newPageNumber = (parseInt(prevPage) + 1).toString();
+      return newPageNumber;
+    })
+  }
+
   // ***** All function for handle messages ***** \\
+  // get current user all messages function
+  const getAllMessage = useCallback(async (id) => {
+    async function successHandler(response) {
+      const res = await response.json();
+      setMessageStatus(res.status);
+      console.log(res)
+      if (res?.messages?.length > 0) {
+        setAllMessage((prevMsg) => {
+          // console.log(prev, res.messages)
+          let oldMsg = JSON.parse(JSON.stringify(prevMsg));
+          let resMsg = JSON.parse(JSON.stringify(res.messages));
+          let newMsg = oldMsg.concat(resMsg)
+          return newMsg;
+        })
+      }
+      setNextPage(res?.pagination?.nextPage)
+      setIsLoading(false)
+    }
+
+    async function handleBadReq(response) {
+      await response.json();
+      setIsLoading(false);
+    }
+    return await getAllMessageApi(id, pageNumber, { userId: userId }, {
+      successHandler, handleBadReq,
+      urlParams: { page: 1 }
+    })
+  }, [userId, pageNumber])
+
   // handle on change message function
   const handleChangeMessage = (e) => {
     setMessagesText(e.target.value);
@@ -65,29 +103,7 @@ const ChattingHome = () => {
     return await deleteMessageApi(id, userId, chatId, { successHandler, handleBadReq })
   }
 
-  // get current user all messages function
-  const getAllMessage = useCallback(async (id) => {
-    async function successHandler(response) {
-      const res = await response.json();
-      setMessageStatus(res.status);
-      console.log(res)
-      if (res?.messages?.length > 0) {
-        setAllMessage(res?.messages)
-      } else {
-        setAllMessage([])
-      }
-      setIsLoading(false)
-    }
 
-    async function handleBadReq(response) {
-      await response.json();
-      setIsLoading(false);
-    }
-    return await getAllMessageApi(id, { userId: userId }, {
-      successHandler, handleBadReq,
-      urlParams: { page: 1 }
-    })
-  }, [userId])
 
   // Send message to current user function
   async function handleSubmitMessage(e, msg = null) {
@@ -254,7 +270,6 @@ const ChattingHome = () => {
       setIsTyping(false);
       newSocket.off(`isWriting/${userId}`);
       newSocket.off(`isNotWriting/${userId}`);
-      setAllMessage([])
     }
   }, [userId, chatId, getAllMessage, dispatch]);
 
@@ -271,6 +286,8 @@ const ChattingHome = () => {
       isOnline={isOnline}
       isTyping={isTyping}
       isLoading={isLoading}
+      nextPage={nextPage}
+      handlePreviousMessage={handlePreviousMessage}
       userRequestFunction={userRequestFunction}
       currentUserProfile={currentUserProfile} />
   );

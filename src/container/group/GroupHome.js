@@ -66,7 +66,8 @@ const GroupHome = () => {
       console.log(res)
       const groupStatus = {
         groupId: id,
-        status: "seen"
+        status: "seen",
+        unreadMessages: 0,
       }
       dispatch(updateConversationGroupStatus(groupStatus));
 

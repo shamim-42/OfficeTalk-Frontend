@@ -18,16 +18,16 @@ const MessageBox = (props) => {
       <Divider className="chatting-date">{conversationTimeFormat(filterMessages?.date, true)}</Divider>
       <div className="message-list">
         {
-          filterMessages?.messages.length > 0 && filterMessages?.messages.map((message, index) => (
+          filterMessages?.data.messages?.length > 0 && filterMessages?.data.messages?.map((message, index) => (
             <MessageCard
               CurrentUserProfile={currentUserStatus}
               userProfile={userProfile}
               deleteMessage={deleteMessage}
               message={message}
               isOnline={isOnline}
-              messages={filterMessages?.messages}
+              messages={filterMessages?.data?.messages}
               index={index}
-              key={message?.id}
+              key={index}
             />
           ))
         }

@@ -99,6 +99,7 @@ export const layoutSlice = createSlice({
       let index = newList.findIndex(item => parseInt(item.groupId) === parseInt(action.payload.groupId));
       if (index > -1) {
         newList[index].status = action.payload.status;
+        newList[index].unreadMessages = action.payload.unreadMessages;
       }
       state.conversationList = newList;
     },
