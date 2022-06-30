@@ -126,3 +126,14 @@ export function checkMatch(prevMessage, message, index) {
 
   return result;
 }
+
+export function deletePrevSeen(prevMessages, id) {
+  prevMessages.map((message, msgIndex) => {
+    const index = message.users_seen?.length > 0 && message.users_seen?.findIndex(user => user.id === id);
+    if (index > -1) {
+      const findMsg = prevMessages[msgIndex]
+      findMsg.users_seen.splice(index, 1);
+    }
+    return prevMessages;
+  })
+}

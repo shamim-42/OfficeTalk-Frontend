@@ -44,6 +44,7 @@ const SidebarHeaderUI = (props) => {
           <Col md={4}>
             <Row className="setting-preicon">
               <Popover placement="bottomLeft"
+                className="sidebar-setting"
                 content={<SettingPopover handleLogout={handleLogout} onChangeSwitch={onChangeSwitch} />}
                 trigger="click"
               >

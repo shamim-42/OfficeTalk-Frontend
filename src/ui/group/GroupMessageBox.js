@@ -24,7 +24,7 @@ const GroupMessageBox = (props) => {
               userProfile={userProfile}
               isOnline={isOnline}
               index={index}
-              key={message?.id}
+              key={index}
               messages={filterMessages?.data?.messages}
             />
           ))

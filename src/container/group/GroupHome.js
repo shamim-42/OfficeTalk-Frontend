@@ -182,7 +182,7 @@ const GroupHome = () => {
       image: res?.room?.groupImage,
       unreadMessages: 0,
       type: "group",
-      status: res.status || "sent",
+      status: res?.status,
       users_seen: []
     }
 
@@ -216,25 +216,28 @@ const GroupHome = () => {
       }
       setAllMessage((prevMessages) => {
         const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
-        copyPrevMessages.push(res);
+        const newMessage = JSON.parse(JSON.stringify(res));
+        newMessage.users_seen = [];
+        copyPrevMessages.push(newMessage);
         return copyPrevMessages;
       });
       dispatch(updateConversationGroupMessage(newMessage))
-      groupMessageSeen()
+      if (res.user.id !== userId) {
+        groupMessageSeen();
+      }
     })
 
     return () => {
       newSocket.off('newMessage/group/')
     }
-
-  }, [dispatch, groupMessageSeen]);
+  }, [dispatch, groupMessageSeen, userId]);
 
   useEffect(() => {
-    newSocket.on("groupSeen", (res) => {
+    newSocket.on("groupSeen/" + userId, (res) => {
       console.log(res)
       updateGroupBubbles(res)
     })
-  }, [updateGroupBubbles]);
+  }, [updateGroupBubbles, userId]);
 
   useEffect(() => {
     newSocket.on('isDeletedGroupMessage/', (res) => {
@@ -248,10 +251,13 @@ const GroupHome = () => {
 
   useEffect(() => {
     newSocket.emit("JoinRoom", id);
-    groupMessageSeen()
     getCurrentGroupInfo()
     getGroupMessages()
-  }, [getCurrentGroupInfo, getGroupMessages, id, groupMessageSeen]);
+  }, [getCurrentGroupInfo, getGroupMessages, id]);
+
+  useEffect(() => {
+    groupMessageSeen()
+  }, [groupMessageSeen]);
 
   return (
     <Spin spinning={loading}>
