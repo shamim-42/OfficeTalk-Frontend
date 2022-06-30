@@ -1,10 +1,10 @@
-import { Spin } from "antd";
+import { message, Spin } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getGroupInfo, getGroupMessagesApi, groupMessageSeenApi, groupMessageSendApi } from "../../api/group";
+import { getGroupInfo, getGroupMessagesApi, groupMessageDeleteApi, groupMessageSeenApi, groupMessageSendApi } from "../../api/group";
 import { selectUserProfile, setCurrentGroup } from "../../redux/features/authSlice";
-import { selectActiveUser, selectOnlineGroups, updateConversationGroupMessage, updateConversationGroupSeen, updateConversationGroupStatus } from "../../redux/features/layoutSlice";
+import { selectActiveUser, selectOnlineGroups, updateConversationGroupMessage, updateConversationGroupSeen, updateConversationGroupStatus, updateConversationMessage } from "../../redux/features/layoutSlice";
 import GroupHomeUI from "../../ui/group/GroupHomeUI";
 import { newSocket } from "../../utils/socket";
 import { udateGroupMessageList } from "../../utils/utils";
@@ -56,7 +56,46 @@ const GroupHome = () => {
     return await getGroupInfo(id, userId, { successHandler, handleBadReq })
   }, [id, userId]);
 
-  // make group message as read
+
+  /**
+   *  Handle delete group message function
+   * @param {number} msgId 
+   * @returns 
+   */
+  async function deleteGroupMessage(msgId) {
+    async function successHandler(response) {
+      const res = await response.json();
+      updateMessagesOnDelete(res, msgId);
+    }
+
+    async function handleBadReq(response) {
+      let error = await response.json();
+      message.error(error.message);
+    }
+    return await groupMessageDeleteApi(msgId, id, userId, { successHandler, handleBadReq })
+  }
+
+  //  update messages list after delete message
+  const updateMessagesOnDelete = (res, msgId) => {
+    message.success(res.message);
+    setAllMessage((prevMessages) => {
+      const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+      const updatedMessages = copyPrevMessages.filter(message => message.id !== msgId);
+      return updatedMessages;
+    });
+    const newMessage = {
+      id: id,
+      lastmessage: res.lastMessage,
+      lastMessageTime: res.lastMessageTime,
+      status: 'seen',
+      unreadMessages: 0
+    }
+    dispatch(updateConversationMessage(newMessage))
+  }
+
+  /**
+   * make group message as read
+   */
   const groupMessageSeen = useCallback(async () => {
     const userInfo = {
       userId: userId
@@ -85,7 +124,10 @@ const GroupHome = () => {
     return await groupMessageSeenApi(id, userInfo, { successHandler, handleBadReq })
   }, [id, userId, dispatch]);
 
-  // Get current group all messages
+
+  /**
+   * Get current group all messages fetch
+   */
   const getGroupMessages = useCallback(async () => {
     const payload = {
       userId: userId,
@@ -93,7 +135,7 @@ const GroupHome = () => {
     async function successHandler(response) {
       const res = await response.json();
       setAllMessage(res.messages);
-      console.log(res);
+      // console.log(res);
     }
 
     async function handleBadReq(response) {
@@ -103,38 +145,23 @@ const GroupHome = () => {
     return await getGroupMessagesApi(id, payload, { successHandler, handleBadReq })
   }, [id, userId]);
 
-  // Send message to current user function
+  /**
+   * Send message to current user function
+   * @returns 
+   */
   async function handleSubmitMessage() {
     if (messageText.trim().length <= 0 && !messageText) {
       return
     }
-    // let messageLinks = null;
-    // const isLink = checkLink(messageText)
-    // if (isLink) messageLinks = isLink;
-
     const messageData = {
       message: messageText,
       senderId: userId,
       type: "text",
-      // links: messageLinks,
     }
     async function successHandler(response) {
       const res = await response.json();
       console.log(res);
-      const newMessage = {
-        lastMessage: res?.content,
-        groupId: res?.room?.id,
-        lastMessageTime: res?.createdAt,
-        name: res?.room?.name,
-        image: res?.room?.groupImage,
-        unreadMessages: 0,
-        type: "group",
-        status: 'seen',
-        users_seen: []
-      }
-      dispatch(updateConversationGroupMessage(newMessage))
-      setMessageText('');
-      getGroupMessages();
+      updateMessagesOnSend(res);
     }
 
     async function handleBadReq(response) {
@@ -143,12 +170,37 @@ const GroupHome = () => {
     return await groupMessageSendApi(id, messageData, { successHandler, handleBadReq })
   }
 
+  // update messages list after send message
+  const updateMessagesOnSend = (res) => {
+    setMessageText('');
+    const result = res.result;
+    const newMessage = {
+      lastMessage: res?.content,
+      groupId: res?.room?.id,
+      lastMessageTime: res?.createdAt,
+      name: res?.room?.name,
+      image: res?.room?.groupImage,
+      unreadMessages: 0,
+      type: "group",
+      status: res.status || "sent",
+      users_seen: []
+    }
+
+    setAllMessage((prevMessages) => {
+      const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+      const index = copyPrevMessages.findIndex(message => message.id === result.id);
+      if (index === -1) {
+        copyPrevMessages.push(result);
+      }
+      return copyPrevMessages;
+    });
+    dispatch(updateConversationGroupMessage(newMessage))
+  }
 
   useEffect(() => {
     dispatch(setCurrentGroup(id))
     return () => {
       dispatch(setCurrentGroup(null))
-      setAllMessage([])
     }
   }, [dispatch, id]);
 
@@ -159,30 +211,40 @@ const GroupHome = () => {
         lastMessage: res.content,
         groupId: res.roomId,
         lastMessageTime: res.createdAt,
-        name: res.groupName,
-        image: res.groupImg,
-        unreadMessages: res.unread,
-        type: "group",
+        unreadMessages: 0,
         status: res.status || 'sent',
-        users_seen: []
       }
+      setAllMessage((prevMessages) => {
+        const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+        copyPrevMessages.push(res);
+        return copyPrevMessages;
+      });
       dispatch(updateConversationGroupMessage(newMessage))
       groupMessageSeen()
-      getGroupMessages();
     })
 
     return () => {
       newSocket.off('newMessage/group/')
     }
 
-  }, [id, dispatch, getGroupMessages, groupMessageSeen]);
+  }, [dispatch, groupMessageSeen]);
 
   useEffect(() => {
     newSocket.on("groupSeen", (res) => {
       console.log(res)
       updateGroupBubbles(res)
     })
-  }, [updateGroupBubbles])
+  }, [updateGroupBubbles]);
+
+  useEffect(() => {
+    newSocket.on('isDeletedGroupMessage/', (res) => {
+      setAllMessage((prevMessages) => {
+        const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+        const updatedMessages = copyPrevMessages.filter(message => message.id !== parseInt(res.messageId));
+        return updatedMessages;
+      });
+    });
+  }, []);
 
   useEffect(() => {
     newSocket.emit("JoinRoom", id);
@@ -198,6 +260,7 @@ const GroupHome = () => {
         userProfile={userProfile}
         groupInfo={groupInfo}
         allMessage={allMessage}
+        deleteGroupMessage={deleteGroupMessage}
         isOnline={isOnline}
         messageText={messageText}
         handleSubmitMessage={handleSubmitMessage}

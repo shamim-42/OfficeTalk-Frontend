@@ -80,11 +80,11 @@ const MessageCard = (props) => {
                 <Col span={3}
                   className='message-sender-img'>
                   {
-                    userProfile?.profileImage ?
+                    (userProfile.profileImageResize || userProfile.profileImage) ?
                       <CustomAvatar
                         size={40}
                         icon={isOnline(userProfile?.id) && "small"}
-                        src={userProfile?.profileImage}
+                        src={userProfile.profileImageResize || userProfile.profileImage}
                       />
                       :
                       <TextAvatar name={userProfile?.fullname}

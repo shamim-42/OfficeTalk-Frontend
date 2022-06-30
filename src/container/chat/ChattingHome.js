@@ -32,43 +32,6 @@ const ChattingHome = () => {
     return onlineUsers.indexOf(id) !== -1;
   }
 
-  const handlePreviousMessage = () => {
-    setPageNumber((prevPage) => {
-      const newPageNumber = (parseInt(prevPage) + 1).toString();
-      return newPageNumber;
-    })
-  }
-
-  // ***** All function for handle messages ***** \\
-  // get current user all messages function
-  const getAllMessage = useCallback(async (id) => {
-    async function successHandler(response) {
-      const res = await response.json();
-      setMessageStatus(res.status);
-      console.log(res)
-      if (res?.messages?.length > 0) {
-        setAllMessage((prevMsg) => {
-          // console.log(prev, res.messages)
-          let oldMsg = JSON.parse(JSON.stringify(prevMsg));
-          let resMsg = JSON.parse(JSON.stringify(res.messages));
-          let newMsg = oldMsg.concat(resMsg)
-          return newMsg;
-        })
-      }
-      setNextPage(res?.pagination?.nextPage)
-      setIsLoading(false)
-    }
-
-    async function handleBadReq(response) {
-      await response.json();
-      setIsLoading(false);
-    }
-    return await getAllMessageApi(id, pageNumber, { userId: userId }, {
-      successHandler, handleBadReq,
-      urlParams: { page: 1 }
-    })
-  }, [userId, pageNumber])
-
   // handle on change message function
   const handleChangeMessage = (e) => {
     setMessagesText(e.target.value);
@@ -78,34 +41,91 @@ const ChattingHome = () => {
     }
   }
 
-  // Handle delete message
+  const handlePreviousMessage = () => {
+    setPageNumber((prevPage) => {
+      const newPageNumber = (parseInt(prevPage) + 1).toString();
+      return newPageNumber;
+    })
+  }
+
+  /**
+   * get current user all messages function
+   */
+  const getAllMessage = useCallback(async () => {
+    async function successHandler(response) {
+      const res = await response.json();
+      updateMessagesOnLoad(res);
+    }
+
+    async function handleBadReq(response) {
+      await response.json();
+      setIsLoading(false);
+    }
+    return await getAllMessageApi(chatId, pageNumber, { userId: userId }, { successHandler, handleBadReq })
+  }, [userId, pageNumber, chatId]);
+
+  // update messages list after fetch messages
+  const updateMessagesOnLoad = (res) => {
+    setMessageStatus(res.status);
+    console.log(res)
+    if (res?.messages?.length > 0) {
+      setAllMessage((prevMsg) => {
+        let oldMsg = JSON.parse(JSON.stringify(prevMsg));
+        let resMsg = JSON.parse(JSON.stringify(res.messages));
+        let newMsg = oldMsg.concat(resMsg)
+        return newMsg;
+      })
+    }
+    setNextPage(res?.pagination?.nextPage)
+    setIsLoading(false)
+  }
+
+  /**
+   *  Handle delete message by message id function
+   * @param {number} id 
+   * @returns 
+   */
   async function deleteMessage(id) {
     async function successHandler(response) {
       const res = await response.json();
-      // console.log(res);
-      getAllMessage(chatId);
-
-      if (!res.deleteall) {
-        dispatch(updateConversationMessage({ id: chatId, lastmessage: res.lastmessage }))
-      } else {
-        dispatch(deleteSingleConversation(chatId))
-      }
-
-      newSocket.emit('isdeleted', { chatId: chatId, userId: userId });
-      message.success(res.message);
+      updateMessagesOnDelete(res, id);
     }
 
     async function handleBadReq(response) {
       let error = await response.json();
       message.error(error.message);
     }
-
     return await deleteMessageApi(id, userId, chatId, { successHandler, handleBadReq })
   }
 
+  // update messages list after delete message
+  const updateMessagesOnDelete = (res, id) => {
+    const newMessage = {
+      id: chatId,
+      lastmessage: res.lastmessage,
+      lastMessageTime: res.lastMessageTime,
+      status: res.status,
+      unreadMessages: res.unreadmessage,
+    }
+    if (!res.deleteall) {
+      dispatch(updateConversationMessage(newMessage))
+    } else {
+      dispatch(deleteSingleConversation(chatId))
+    }
+    setAllMessage((prevMessages) => {
+      const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+      const updatedMessages = copyPrevMessages.filter(message => message.id !== id);
+      return updatedMessages;
+    });
+    message.success(res.message);
+  }
 
-
-  // Send message to current user function
+  /**
+   * Send message to current user function
+   * @param {*} e 
+   * @param {string} msg 
+   * @returns 
+   */
   async function handleSubmitMessage(e, msg = null) {
     newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
     if (messagesText.trim().length <= 0 && !msg) {
@@ -123,37 +143,40 @@ const ChattingHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      console.log("tamim", res);
-      updateConversationList(res)
-      setMessagesText('')
-      getAllMessage(chatId);
+      updateMessagesOnSend(res);
     }
 
     async function handleBadReq(response) {
-      // let error = await response.json();
+      let error = await response.json();
+      console.log(error)
       setIsLoading(false);
     }
     return await sendMessageApi(chatId, messageData, { successHandler, handleBadReq })
   }
 
-  // add or update message on conversations List
-  const updateConversationList = (data) => {
-    console.log(data);
-    const res = data.result;
-    let status = data.status;
-
+  // update messages list and conversation after send new message
+  const updateMessagesOnSend = (res) => {
+    const result = res.result;
+    const status = res.status;
     const newMessage = {
-      id: data.conversationId,
-      users_id: parseInt(res.receiverId),
+      id: res.conversationId,
+      users_id: parseInt(result.receiverId),
       image: currentUserProfile.profileImage,
       name: currentUserProfile.fullname,
-      lastMessage: res?.content,
-      sentBy: res.senderId,
-      lastMessageTime: res?.createdAt,
+      lastMessage: result?.content,
+      sentBy: result.senderId,
+      lastMessageTime: result?.createdAt,
       unreadMessages: 0,
       status: status,
       type: "single",
     }
+
+    setMessagesText('')
+    setAllMessage((prevMessages) => {
+      const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+      copyPrevMessages.push(res.result);
+      return copyPrevMessages;
+    });
     dispatch(setUpdateConversation(newMessage))
   }
 
@@ -163,8 +186,7 @@ const ChattingHome = () => {
       senderId: chatId,
     }
     async function successHandler(response) {
-      const res = await response.json();
-      console.log(res)
+      // const res = await response.json();
       dispatch(setUpdateUnreadCount(chatId))
     }
 
@@ -174,8 +196,9 @@ const ChattingHome = () => {
   }, [dispatch, chatId, userProfile.id])
 
 
-  // ***** All function about current user *****\
-  // get current user profile function
+  /**
+   * get current user profile function
+   */
   const getCurrentUserProfile = useCallback(async () => {
     async function successHandler(response) {
       const res = await response.json();
@@ -211,14 +234,18 @@ const ChattingHome = () => {
 
 
   // ***** All Socket Function below ***** //
-  const getNewMessage = useCallback((chatId) => {
+  const getNewMessage = useCallback(() => {
     newSocket.on('newMessage/user/' + userId, (msg) => {
       if (parseInt(msg.senderId) === parseInt(chatId)) {
         makeReadMessage();
       }
-      getAllMessage(chatId)
+      setAllMessage((prevMessages) => {
+        const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+        copyPrevMessages.push(msg);
+        return copyPrevMessages;
+      });
     })
-  }, [userId, getAllMessage, makeReadMessage])
+  }, [userId, makeReadMessage, chatId])
 
   // handle on blur event function
   const handleBlur = () => {
@@ -227,29 +254,40 @@ const ChattingHome = () => {
     }, 2000));
   }
 
-
-  // ***** All useEffect Function below ***** //
+  /**
+   * All useEffect Function below
+   */
   useEffect(() => {
-    getCurrentUserProfile()
-  }, [getCurrentUserProfile])
+    newSocket.on(`isdeleted/${userId}`, (res) => {
+      setAllMessage((prevMessages) => {
+        const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+        const updatedMessages = copyPrevMessages.filter(message => message.id !== parseInt(res.messageId));
+        return updatedMessages;
+      });
+    });
+  }, [userId]);
 
   useEffect(() => {
-    getNewMessage(chatId)
+    getNewMessage()
     return () => newSocket.off('newMessage/user/' + userId);
-  }, [chatId, getNewMessage, userId])
+  }, [getNewMessage, userId]);
 
   useEffect(() => {
     dispatch(setCurrentUser(chatId))
-    getAllMessage(chatId)
+    getCurrentUserProfile()
 
     return () => {
       dispatch(setCurrentUser(null))
     }
-  }, [getAllMessage, chatId, dispatch])
+  }, [getCurrentUserProfile, chatId, dispatch]);
 
   useEffect(() => {
     makeReadMessage()
-  }, [makeReadMessage])
+  }, [makeReadMessage]);
+
+  useEffect(() => {
+    getAllMessage()
+  }, [getAllMessage]);
 
   useEffect(() => {
     newSocket.on(`isWriting/${userId}`, (res) => {
@@ -262,16 +300,12 @@ const ChattingHome = () => {
       setIsTyping(false);
     });
 
-    newSocket.on(`isdeleted/${userId}`, (res) => {
-      getAllMessage(chatId)
-    });
-
     return () => {
       setIsTyping(false);
       newSocket.off(`isWriting/${userId}`);
       newSocket.off(`isNotWriting/${userId}`);
     }
-  }, [userId, chatId, getAllMessage, dispatch]);
+  }, [userId, chatId]);
 
   return (
     <ChattingHomeUi

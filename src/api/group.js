@@ -26,4 +26,10 @@ export const groupMessageSeenApi = async function (groupId, payload, options = {
 };
 
 
+export const groupMessageDeleteApi = async function (msgId, groupId, userId, options = {}) {
+  const url = `3000/group/deletemessageGroup/${msgId}/${groupId}/${userId}`;
+  return connector.delete(url, options);
+};
+
+
 

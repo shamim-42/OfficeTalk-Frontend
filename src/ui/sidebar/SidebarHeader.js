@@ -25,11 +25,11 @@ const SidebarHeaderUI = (props) => {
         <Row>
           <Col md={20}>
             <div className="sidebar-user">
-              {userProfile?.profileImage ?
+              {(userProfile.profileImageResize || userProfile.profileImage) ?
                 <div onClick={showProfileOpenModal}>
                   <CustomAvatar
                     size={44}
-                    src={userProfile.profileImage} />
+                    src={userProfile.profileImageResize || userProfile.profileImage} />
                 </div>
                 :
                 <div onClick={showProfileOpenModal}>

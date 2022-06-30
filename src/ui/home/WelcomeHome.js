@@ -9,9 +9,9 @@ const WelcomeHome = () => {
 
   return (
     <div className="home-content">
-      {userProfile?.profileImage ?
+      {(userProfile.profileImageResize || userProfile.profileImage) ?
         <CustomAvatar size={190}
-          src={userProfile.profileImage} />
+          src={userProfile.profileImageResize || userProfile.profileImage} />
         :
         <TextAvatar name={userProfile.fullname} size="190px" fontSize="96px" />
       }

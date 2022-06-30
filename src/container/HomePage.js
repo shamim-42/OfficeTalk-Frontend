@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { checkJWTToken } from '../api/auth';
 import { getConversationsApi } from '../api/chat';
 import { resetUserData, selectUserProfile, selectUserToken } from '../redux/features/authSlice';
-import { setActiveUser, setConversationList, setUpdateConversation, updateConversationGroupMessage, updateConversationStatus, updateOnlineGroupList } from '../redux/features/layoutSlice';
+import { deleteSingleConversation, setActiveUser, setConversationList, setUpdateConversation, updateConversationGroupMessage, updateConversationMessage, updateConversationStatus, updateOnlineGroupList } from '../redux/features/layoutSlice';
 import HomeUi from '../ui/home/HomeUi';
 import { newSocket } from '../utils/socket';
 
@@ -100,7 +100,7 @@ const HomePage = () => {
     })
 
     newSocket.on('newMessagesidebar/group/' + userId, (res) => {
-      // console.log(res);
+      console.log(res);
       const newMessage = {
         lastMessage: res?.content,
         groupId: res?.roomId,
@@ -137,7 +137,37 @@ const HomePage = () => {
       dispatch(updateConversationStatus(data))
       console.log(res);
     })
-  }, [userId, dispatch])
+  }, [userId, dispatch]);
+
+  useEffect(() => {
+    newSocket.on('isdeletedSidebar/' + userId, (res) => {
+      console.log(res)
+      const newMessage = {
+        id: res.userId,
+        lastmessage: res.lastmessage,
+        lastMessageTime: res.lastMessageTime,
+        status: res.status,
+        unreadMessages: res.unreadmessage,
+      }
+      if (!res.deleteall) {
+        dispatch(updateConversationMessage(newMessage));
+      } else {
+        dispatch(deleteSingleConversation(res.userId))
+      }
+    })
+
+    newSocket.on('isDeletedGroupMessage/' + userId, (res) => {
+      const newMessage = {
+        id: res.groupId,
+        lastmessage: res.lastMessage,
+        lastMessageTime: res.lastMessageTime,
+        status: res?.lastMessageStatus,
+        unreadMessages: res.unreadMessages,
+      }
+      console.log(res);
+      dispatch(updateConversationMessage(newMessage));
+    })
+  }, [userId, dispatch]);
 
   useEffect(() => {
     fetchConversationList();

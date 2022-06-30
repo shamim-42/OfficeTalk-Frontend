@@ -9,7 +9,7 @@ const MessageBox = (props) => {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
-      alignToTop: false
+      alignToTop: true
     });
   }, [allMessage]);
 

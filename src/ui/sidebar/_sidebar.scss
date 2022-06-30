@@ -94,8 +94,9 @@
   }
 
   & .sidebar-card-container {
-    height: 95%;
+    height: 100%;
     overflow: auto;
+    padding-right: 5px;
 
     &::-webkit-scrollbar {
       width: 3px;

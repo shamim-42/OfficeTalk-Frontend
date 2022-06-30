@@ -12,10 +12,10 @@ const UserProfileView = ({ closeProfileModal, userProfile }) => {
         X
       </Button>
       <div className="user-profile-info">
-        {userProfile.profileImage ? <CustomAvatar
+        {(userProfile.profileImageResize || userProfile.profileImage) ? <CustomAvatar
           size={88}
           className="circle-img message-status-img"
-          src={userProfile.profileImage}
+          src={userProfile.profileImageResize || userProfile.profileImage}
         />
           :
           <TextAvatar
