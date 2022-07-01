@@ -8,7 +8,7 @@ import { selectUserProfile, setCurrentUser } from '../../redux/features/authSlic
 import { deleteSingleConversation, selectActiveUser, setUpdateConversation, setUpdateUnreadCount, updateConversationMessage, updateFriendList } from '../../redux/features/layoutSlice';
 import ChattingHomeUi from '../../ui/chatting/chattingHome/ChattingHomeUi';
 import { newSocket } from '../../utils/socket';
-import { checkLink } from '../../utils/utils';
+import { checkLink, updateMessageListOnReact } from '../../utils/utils';
 
 
 const ChattingHome = () => {
@@ -290,6 +290,16 @@ const ChattingHome = () => {
   useEffect(() => {
     getAllMessage()
   }, [getAllMessage]);
+
+  useEffect(() => {
+    newSocket.on(`isReactedSingle/${userId}`, (res) => {
+      setAllMessage((prevMessages) => {
+        const newMessages = updateMessageListOnReact(prevMessages, res);
+        return newMessages;
+
+      });
+    });
+  }, [userId]);
 
   useEffect(() => {
     newSocket.on(`isWriting/${userId}`, (res) => {

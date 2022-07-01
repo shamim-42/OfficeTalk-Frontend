@@ -2,6 +2,7 @@ import { message as Alert } from 'antd';
 import { useState } from 'react';
 import { singleReactionApi } from '../../api/chat';
 import MessageOption from "../../ui/chatting/chattingHome/MessageOption";
+import { updateMessageListOnReact } from '../../utils/utils';
 
 const ChatMessageOption = (props) => {
   const [reactVisible, setReactVisible] = useState(false);
@@ -24,7 +25,12 @@ const ChatMessageOption = (props) => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      updateMessageListOnReact(res, msgId);
+      setReactVisible(false);
+      setAllMessage((prevMessages) => {
+        const newMessages = updateMessageListOnReact(prevMessages, res);
+        return newMessages;
+
+      });
     }
 
     async function handleBadReq(response) {
@@ -34,23 +40,37 @@ const ChatMessageOption = (props) => {
     return await singleReactionApi(userId, reactData, { successHandler, handleBadReq })
   }
 
-  const updateMessageListOnReact = (res, msgId) => {
-    setReactVisible(false);
-    console.log(res)
-    setAllMessage((prevMessages) => {
-      const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
-      const message = copyPrevMessages.find(message => message.id === msgId);
-      message.SingleEmojiTotal[0].total_angry = res.result.total_angry;
-      message.SingleEmojiTotal[0].total_emoji = res.result.total_emoji;
-      message.SingleEmojiTotal[0].total_like = res.result.total_like;
-      message.SingleEmojiTotal[0].total_love = res.result.total_love;
-      message.SingleEmojiTotal[0].total_sad = res.result.total_sad;
-      message.SingleEmojiTotal[0].total_smile = res.result.total_smile;
-      message.SingleEmojiTotal[0].total_surprize = res.result.total_surprize;
+  // const updateMessageListOnReact = (res) => {
+  //   const result = res.result;
+  //   const msgId = res.messageId;
+  //   console.log(res)
+  //   setAllMessage((prevMessages) => {
+  //     const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+  //     const message = copyPrevMessages.find(message => message.id === msgId);
+  //     if (message.EmojiTotal.length > 0) {
+  //       message.EmojiTotal[0].total_angry = result.total_angry;
+  //       message.EmojiTotal[0].total_emoji = result.total_emoji;
+  //       message.EmojiTotal[0].total_like = result.total_like;
+  //       message.EmojiTotal[0].total_love = result.total_love;
+  //       message.EmojiTotal[0].total_sad = result.total_sad;
+  //       message.EmojiTotal[0].total_smile = result.total_smile;
+  //       message.EmojiTotal[0].total_surprize = result.total_surprize;
+  //     } else {
+  //       const newReact = {
+  //         total_angry: result.total_angry,
+  //         total_emoji: result.total_emoji,
+  //         total_like: result.total_like,
+  //         total_love: result.total_love,
+  //         total_sad: result.total_sad,
+  //         total_smile: result.total_smile,
+  //         total_surprize: result.total_surprize,
+  //       }
+  //       message.EmojiTotal.push(newReact);
+  //     }
 
-      return copyPrevMessages;
-    });
-  }
+  //     return copyPrevMessages;
+  //   });
+  // }
 
 
   // Function for copy message text
@@ -64,6 +84,8 @@ const ChatMessageOption = (props) => {
     Alert.success('Message copied successfully!');
     setOptionVisible(false);
   };
+
+
 
   return (
     <MessageOption

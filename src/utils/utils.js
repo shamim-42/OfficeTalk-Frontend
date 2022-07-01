@@ -137,3 +137,33 @@ export function deletePrevSeen(prevMessages, id) {
     return prevMessages;
   })
 }
+
+
+export function updateMessageListOnReact(messages, res) {
+  const copyPrevMessages = JSON.parse(JSON.stringify(messages));
+  const result = res.result;
+  const msgId = res.messageId;
+  const message = copyPrevMessages.find(message => message.id === msgId);
+  if (message.EmojiTotal.length > 0) {
+    message.EmojiTotal[0].total_angry = result.total_angry;
+    message.EmojiTotal[0].total_emoji = result.total_emoji;
+    message.EmojiTotal[0].total_like = result.total_like;
+    message.EmojiTotal[0].total_love = result.total_love;
+    message.EmojiTotal[0].total_sad = result.total_sad;
+    message.EmojiTotal[0].total_smile = result.total_smile;
+    message.EmojiTotal[0].total_surprize = result.total_surprize;
+  } else {
+    const newReact = {
+      total_angry: result.total_angry,
+      total_emoji: result.total_emoji,
+      total_like: result.total_like,
+      total_love: result.total_love,
+      total_sad: result.total_sad,
+      total_smile: result.total_smile,
+      total_surprize: result.total_surprize,
+    }
+    message.EmojiTotal.push(newReact);
+  }
+
+  return copyPrevMessages;
+}

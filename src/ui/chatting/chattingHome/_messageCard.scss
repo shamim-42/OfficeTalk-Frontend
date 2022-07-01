@@ -162,7 +162,18 @@
 }
 
 .reaction-view-popover {
+  max-height: 60%;
+  overflow-y: auto;
   padding: 8px 12px;
+  @include set-display-flex(space-between, flex-start, 8px, column);
+
+  & .user-list-item {
+    @include set-display-flex(flex-start, space-between, 16px);
+
+    & .user-info {
+      @include set-display-flex(flex-start, flex-start, 8px);
+    }
+  }
 }
 
 .Container.link-preview {
