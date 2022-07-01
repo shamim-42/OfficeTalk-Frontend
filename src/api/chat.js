@@ -31,3 +31,8 @@ export const deleteMessageApi = async function (messageID, senderId, receiverId,
   return await connector.delete(url, options);
 };
 
+
+export const singleReactionApi = async function (userId, payload, options = {}) {
+  const url = `3000/like-emoji/${userId}/voteSingle`;
+  return await connector.post(url, payload, options);
+};

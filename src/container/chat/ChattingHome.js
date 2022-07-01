@@ -120,6 +120,8 @@ const ChattingHome = () => {
     message.success(res.message);
   }
 
+
+
   /**
    * Send message to current user function
    * @param {*} e 
@@ -314,6 +316,7 @@ const ChattingHome = () => {
       handleChangeMessage={handleChangeMessage}
       handleBlur={handleBlur}
       allMessage={allMessage}
+      setAllMessage={setAllMessage}
       userProfile={userProfile}
       deleteMessage={deleteMessage}
       messageStatus={messageStatus}

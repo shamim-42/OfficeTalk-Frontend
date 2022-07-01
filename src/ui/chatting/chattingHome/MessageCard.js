@@ -11,7 +11,7 @@ import TextMessageCard from './TextMessageCard';
 
 
 const MessageCard = (props) => {
-  const { CurrentUserProfile, userProfile, message, isOnline, deleteMessage, index, messages } = props;
+  const { CurrentUserProfile, userProfile, message, isOnline, deleteMessage, index, messages, setAllMessage } = props;
 
 
 
@@ -35,6 +35,9 @@ const MessageCard = (props) => {
                     <>
                       <ChatMessageOption
                         deleteMessage={deleteMessage}
+                        CurrentUserProfile={CurrentUserProfile}
+                        userProfile={userProfile}
+                        setAllMessage={setAllMessage}
                         message={message}
                         isDelete={true}
                         align="right" />
@@ -49,6 +52,9 @@ const MessageCard = (props) => {
                     <>
                       <ChatMessageOption
                         deleteMessage={deleteMessage}
+                        CurrentUserProfile={CurrentUserProfile}
+                        userProfile={userProfile}
+                        setAllMessage={setAllMessage}
                         isDelete={true}
                         message={message}
                         align="right" />
@@ -64,6 +70,9 @@ const MessageCard = (props) => {
                   <div className='message-body message-right'>
                     <ChatMessageOption
                       deleteMessage={deleteMessage}
+                      CurrentUserProfile={CurrentUserProfile}
+                      userProfile={userProfile}
+                      setAllMessage={setAllMessage}
                       isDelete={true}
                       message={message}
                       align="right" />
@@ -143,6 +152,9 @@ const MessageCard = (props) => {
                     message={message} />
                 }
                 <ChatMessageOption
+                  setAllMessage={setAllMessage}
+                  CurrentUserProfile={CurrentUserProfile}
+                  userProfile={userProfile}
                   isDelete={false}
                   message={message} align="left" />
               </div>
@@ -153,6 +165,9 @@ const MessageCard = (props) => {
                     userProfile={userProfile}
                     message={message} />
                   <ChatMessageOption
+                    CurrentUserProfile={CurrentUserProfile}
+                    userProfile={userProfile}
+                    setAllMessage={setAllMessage}
                     isDelete={false}
                     message={message} align="left" />
                 </div>

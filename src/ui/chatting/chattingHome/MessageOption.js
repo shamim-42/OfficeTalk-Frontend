@@ -8,11 +8,13 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { TiArrowForwardOutline } from "react-icons/ti";
 
 const MessageOption = (props) => {
-  const { align, deleteMessage, message, copyToClipboard, isDelete } = props;
+  const { align, deleteMessage, message, copyToClipboard, isDelete, makeReaction, reactVisible, setReactVisible, optionVisible, setOptionVisible } = props;
 
   return (
     <div className="message-options">
-      <Popover placement={align === "left" ? "bottomLeft" : "bottomRight"}
+      <Popover
+        visible={optionVisible}
+        placement={align === "left" ? "bottomLeft" : "bottomRight"}
         className="message-option"
         content={<MessageOptions
           deleteMessage={deleteMessage}
@@ -20,15 +22,15 @@ const MessageOption = (props) => {
           isDelete={isDelete}
           message={message} />}
         trigger="click">
-        <Button type="text">
+        <Button onClick={() => setOptionVisible((prev) => !prev)} type="text">
           <HiDotsVertical />
         </Button>
       </Popover>
 
-      <Popover placement={align === "left" ? "right" : "left"}
-        content={<MessageReact />}
+      <Popover visible={reactVisible} placement={align === "left" ? "right" : "left"}
+        content={<MessageReact makeReaction={makeReaction} message={message} />}
         trigger="click">
-        <Button type="text">
+        <Button onClick={() => setReactVisible((pre) => !pre)} type="text">
           <FaRegGrinAlt />
         </Button>
       </Popover>
@@ -76,15 +78,15 @@ const MessageOptions = ({ deleteMessage, message, copyToClipboard, isDelete }) =
 };
 
 
-const MessageReact = () => {
+const MessageReact = ({ makeReaction, message }) => {
   return (
     <div className="message-react">
-      <span className="icon">👍</span>
-      <span className="icon">❤️</span>
-      <span className="icon">😁</span>
-      <span className="icon">😮</span>
-      <span className="icon">😢</span>
-      <span className="icon">😠</span>
+      <button className="icon" onClick={() => makeReaction(message.id, 1)}>👍</button>
+      <button className="icon" onClick={() => makeReaction(message.id, 2)}>❤️</button>
+      <button className="icon" onClick={() => makeReaction(message.id, 3)}>😁</button>
+      <button className="icon" onClick={() => makeReaction(message.id, 4)}>😮</button>
+      <button className="icon" onClick={() => makeReaction(message.id, 5)}>😢</button>
+      <button className="icon" onClick={() => makeReaction(message.id, 6)}>😠</button>
     </div>
   );
 };

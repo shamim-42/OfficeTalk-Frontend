@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import connector from './connector';
@@ -62,13 +62,13 @@ function App() {
       }
     }
 
-    
+
   }, [accessToken]);
   return (
     <Routes>
-      <Route path="/*" element={<PrivateRoute />} />
       <Route path="/login" element={<Login />} exact />
       <Route path="/signup" element={<Registration />} exact />
+      <Route path="/*" element={<PrivateRoute />} />
     </Routes>
   );
 }

@@ -10,7 +10,7 @@ import TextAvatar from "../../helper/TextAvatar";
 import MessageBox from "./MessageBox";
 
 const ChattingHomeUi = (props) => {
-  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleBlur, isTyping, messageStatus, userRequestFunction, deleteMessage, nextPage, handlePreviousMessage } = props;
+  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleBlur, isTyping, messageStatus, userRequestFunction, deleteMessage, nextPage, handlePreviousMessage , setAllMessage} = props;
 
   console.log(allMessage);
 
@@ -53,6 +53,7 @@ const ChattingHomeUi = (props) => {
                     currentUserStatus={currentUserProfile}
                     isOnline={isOnline}
                     userProfile={userProfile}
+                    setAllMessage={setAllMessage}
                     messageStatus={messageStatus}
                     filterMessages={filterMessages}
                     deleteMessage={deleteMessage}

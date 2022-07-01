@@ -150,6 +150,8 @@
 
   & .icon {
     font-size: 32px;
+    border: none;
+    background-color: transparent;
     transition: transform 0.5s;
     transform: scale(1);
 

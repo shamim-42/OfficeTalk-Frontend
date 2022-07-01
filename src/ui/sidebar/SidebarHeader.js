@@ -161,7 +161,7 @@ const SidebarHeaderUI = (props) => {
       <div className="online-users">
         <Avatar.Group className="online-user-group">
           {
-            users.map((user, index) => (
+            users.slice(0, 8).map((user, index) => (
               <Link to={`chat/${user.id}`} key={user.id || index}>
                 {
                   user.profileImage ?
@@ -176,7 +176,13 @@ const SidebarHeaderUI = (props) => {
                       size="40px" fontSize="18px" />
                 }
               </Link>
+
             ))
+          }
+          {users.length > 8 &&
+            <button className="all-user-button">
+              All
+            </button>
           }
         </Avatar.Group>
       </div>
