@@ -77,19 +77,22 @@ export function getTwoCharacters(text) {
 export function udateGroupMessageList(allMessages, res) {
 
   const allData = JSON.parse(JSON.stringify(allMessages));
+  const prevMessage = allData?.find(data => data.id === res.prevMsgId);
   const lastMessage = allData?.find(data => data.id === res.lasMsgId);
+
   if (!res.prevMsgId) {
-    lastMessage?.users_seen?.push(res.user);
+    lastMessage?.readMessage?.push(res.readMessage);
     return allData;
   }
-  const prevMessage = allData?.find(data => data.id === res.prevMsgId);
-  const userInPrev = prevMessage?.users_seen?.findIndex(user => user.id === res.user.id);
+  const userInPrev = prevMessage?.readMessage?.findIndex(user => user.id === res.readMessage.id);
+  console.log(prevMessage.readMessage);
   if (userInPrev > -1) {
-    prevMessage?.users_seen?.splice(userInPrev, 1);
+    prevMessage?.readMessage?.splice(userInPrev, 1);
   }
-  const userInLast = lastMessage?.users_seen?.findIndex(user => user.id === res.user.id);
+
+  const userInLast = lastMessage?.readMessage?.findIndex(user => user.id === res.user.id);
   if (userInLast === -1) {
-    lastMessage?.users_seen?.push(res.user);
+    lastMessage?.readMessage?.push(res.readMessage);
   }
   return allData;
 }
@@ -144,7 +147,7 @@ export function updateMessageListOnReact(messages, res) {
   const result = res.result;
   const msgId = res.messageId;
   const message = copyPrevMessages.find(message => message.id === msgId);
-  if (message.EmojiTotal.length > 0) {
+  if (message?.EmojiTotal?.length > 0) {
     message.EmojiTotal[0].total_angry = result.total_angry;
     message.EmojiTotal[0].total_emoji = result.total_emoji;
     message.EmojiTotal[0].total_like = result.total_like;

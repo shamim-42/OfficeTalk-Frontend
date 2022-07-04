@@ -22,13 +22,6 @@ const GroupHome = () => {
   const isGroupOnline = onlineGroups.includes(parseInt(id));
   const dispatch = useDispatch();
 
-  const updateGroupBubbles = useCallback((res) => {
-    setAllMessage((prevMessage) => {
-      const updatedData = udateGroupMessageList(prevMessage, res);
-      return updatedData
-    })
-  }, []);
-
   // Update message text function on change
   const handleChangeMessage = (e) => {
     setMessageText(e.target.value);
@@ -130,6 +123,7 @@ const GroupHome = () => {
 
   // update messages list after send message
   const updateMessagesOnSend = (res) => {
+    console.log(res);
     setMessageText('');
     const result = res.result;
     const newMessage = {
@@ -146,9 +140,13 @@ const GroupHome = () => {
 
     setAllMessage((prevMessages) => {
       const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+      const newMessage = JSON.parse(JSON.stringify(result));
+      newMessage.EmojiTotal = [];
+      newMessage.Emoji = [];
+      newMessage.readMessage = [];
       const index = copyPrevMessages.findIndex(message => message.id === result.id);
       if (index === -1) {
-        copyPrevMessages.push(result);
+        copyPrevMessages.push(newMessage);
       }
       return copyPrevMessages;
     });
@@ -175,8 +173,9 @@ const GroupHome = () => {
       setAllMessage((prevMessages) => {
         const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
         const newMessage = JSON.parse(JSON.stringify(res));
-        // newMessage.users_seen = [];
         newMessage.EmojiTotal = [];
+        newMessage.Emoji = [];
+        newMessage.readMessage = [res?.readMessage];
         copyPrevMessages.push(newMessage);
         return copyPrevMessages;
       });
@@ -192,11 +191,14 @@ const GroupHome = () => {
   }, [dispatch, groupMessageSeen, userId]);
 
   useEffect(() => {
-    newSocket.on("groupSeen/" + userId, (res) => {
+    newSocket.on("groupSeen/", (res) => {
       console.log(res)
-      updateGroupBubbles(res)
+      setAllMessage((prevMessage) => {
+        const updatedData = udateGroupMessageList(prevMessage, res);
+        return updatedData
+      })
     })
-  }, [updateGroupBubbles, userId]);
+  }, []);
 
   useEffect(() => {
     newSocket.on('isDeletedGroupMessage/', (res) => {
