@@ -1,18 +1,17 @@
 import { Button, Col, Popover, Row } from 'antd';
 import { FaPlusCircle } from "react-icons/fa";
-import ChatMessageOption from '../../../container/chat/ChatMessageOption';
 import { timeFormat } from '../../../utils/timeFormat';
 import { checkDevided } from '../../../utils/utils';
 import CustomAvatar from '../../helper/CustomAvatar';
 import TextAvatar from '../../helper/TextAvatar';
 import ImageMessageCard from './ImageMessageCard';
+import MessageOption from './MessageOption';
 import MessageSeenBubbles from './MessageSeenBubbles';
 import TextMessageCard from './TextMessageCard';
 
 
 const MessageCard = (props) => {
-  const { CurrentUserProfile, userProfile, message, isOnline, deleteMessage, index, messages, setAllMessage } = props;
-
+  const { CurrentUserProfile, userProfile, deleteMessage, message, isOnline, messages, index, reactVisible, setReactVisible, optionVisible, setOptionVisible, makeReaction, copyToClipboard } = props;
 
 
   if (message?.user?.id === userProfile.id || message?.senderId === userProfile.id) {
@@ -33,13 +32,16 @@ const MessageCard = (props) => {
 
                   {message.type === 'image' &&
                     <>
-                      <ChatMessageOption
-                        deleteMessage={deleteMessage}
-                        CurrentUserProfile={CurrentUserProfile}
-                        userProfile={userProfile}
-                        setAllMessage={setAllMessage}
-                        message={message}
+                      <MessageOption
                         isDelete={true}
+                        deleteMessage={deleteMessage}
+                        copyToClipboard={copyToClipboard}
+                        reactVisible={reactVisible}
+                        setReactVisible={setReactVisible}
+                        optionVisible={optionVisible}
+                        setOptionVisible={setOptionVisible}
+                        message={message}
+                        makeReaction={makeReaction}
                         align="right" />
                       <ImageMessageCard
                         sender={true}
@@ -50,13 +52,16 @@ const MessageCard = (props) => {
                 <div className='message-body message-right'>
                   {message.type === 'text' &&
                     <>
-                      <ChatMessageOption
-                        deleteMessage={deleteMessage}
-                        CurrentUserProfile={CurrentUserProfile}
-                        userProfile={userProfile}
-                        setAllMessage={setAllMessage}
+                      <MessageOption
                         isDelete={true}
+                        deleteMessage={deleteMessage}
+                        copyToClipboard={copyToClipboard}
+                        reactVisible={reactVisible}
+                        setReactVisible={setReactVisible}
+                        optionVisible={optionVisible}
+                        setOptionVisible={setOptionVisible}
                         message={message}
+                        makeReaction={makeReaction}
                         align="right" />
                       <TextMessageCard
                         CurrentUserProfile={CurrentUserProfile}
@@ -68,13 +73,16 @@ const MessageCard = (props) => {
 
                 {(message.content && message.type !== 'text') &&
                   <div className='message-body message-right'>
-                    <ChatMessageOption
-                      deleteMessage={deleteMessage}
-                      CurrentUserProfile={CurrentUserProfile}
-                      userProfile={userProfile}
-                      setAllMessage={setAllMessage}
+                    <MessageOption
                       isDelete={true}
+                      deleteMessage={deleteMessage}
+                      copyToClipboard={copyToClipboard}
+                      reactVisible={reactVisible}
+                      setReactVisible={setReactVisible}
+                      optionVisible={optionVisible}
+                      setOptionVisible={setOptionVisible}
                       message={message}
+                      makeReaction={makeReaction}
                       align="right" />
                     <TextMessageCard
                       CurrentUserProfile={CurrentUserProfile}
@@ -151,12 +159,16 @@ const MessageCard = (props) => {
                     userProfile={userProfile}
                     message={message} />
                 }
-                <ChatMessageOption
-                  setAllMessage={setAllMessage}
-                  CurrentUserProfile={CurrentUserProfile}
-                  userProfile={userProfile}
+                <MessageOption
                   isDelete={false}
-                  message={message} align="left" />
+                  copyToClipboard={copyToClipboard}
+                  reactVisible={reactVisible}
+                  setReactVisible={setReactVisible}
+                  optionVisible={optionVisible}
+                  setOptionVisible={setOptionVisible}
+                  message={message}
+                  makeReaction={makeReaction}
+                  align="left" />
               </div>
               {(message.content && message.type !== 'text') &&
                 <div className='message-body message-left'>
@@ -164,12 +176,16 @@ const MessageCard = (props) => {
                     CurrentUserProfile={CurrentUserProfile}
                     userProfile={userProfile}
                     message={message} />
-                  <ChatMessageOption
-                    CurrentUserProfile={CurrentUserProfile}
-                    userProfile={userProfile}
-                    setAllMessage={setAllMessage}
+                  <MessageOption
                     isDelete={false}
-                    message={message} align="left" />
+                    copyToClipboard={copyToClipboard}
+                    reactVisible={reactVisible}
+                    setReactVisible={setReactVisible}
+                    optionVisible={optionVisible}
+                    setOptionVisible={setOptionVisible}
+                    message={message}
+                    makeReaction={makeReaction}
+                    align="left" />
                 </div>
               }
             </Col>
@@ -189,11 +205,11 @@ const UserSeenBubbles = (props) => {
     <Row className="message-card-bubble" justify="start">
       <Col span={22} className="bubble-images">
         {
-          (message?.users_seen?.length > 5) &&
+          (message?.readMessage?.length > 5) &&
           <Popover placement='leftBottom'
             content={<MessageSeenBubbles
               userProfile={userProfile}
-              users={message.users_seen} />}
+              users={message.readMessage} />}
             trigger="click">
             <Button type="text" className="message-card-bubble-btn">
               <FaPlusCircle />
@@ -201,17 +217,17 @@ const UserSeenBubbles = (props) => {
           </Popover>
         }
         {
-          (message?.users_seen?.length > 0) && message.users_seen.slice(0, 5).map((user) => {
-            if (user.id === userProfile.id) return false;
+          (message?.readMessage?.length > 0) && message.readMessage.slice(0, 5).map((user) => {
+            if (user.userId === userProfile.id) return false;
             return (
-              user.profileImage ?
+              user.user.profileImage ?
                 <CustomAvatar
-                  key={user.id}
+                  key={user.userId}
                   size={16}
-                  src={user.profileImage}
+                  src={user.user.profileImageResize}
                 />
                 :
-                <TextAvatar name={user?.name}
+                <TextAvatar name={user?.user.fullname}
                   key={user.id}
                   size="16px" fontSize="7px" />
             )

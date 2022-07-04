@@ -1,10 +1,10 @@
-import { message, Spin } from "antd";
+import { Spin } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getGroupInfo, getGroupMessagesApi, groupMessageDeleteApi, groupMessageSeenApi, groupMessageSendApi } from "../../api/group";
+import { getGroupInfo, getGroupMessagesApi, groupMessageSeenApi, groupMessageSendApi } from "../../api/group";
 import { selectUserProfile, setCurrentGroup } from "../../redux/features/authSlice";
-import { selectActiveUser, selectOnlineGroups, updateConversationGroupMessage, updateConversationGroupSeen, updateConversationGroupStatus, updateConversationMessage } from "../../redux/features/layoutSlice";
+import { selectOnlineGroups, updateConversationGroupMessage, updateConversationGroupSeen, updateConversationGroupStatus } from "../../redux/features/layoutSlice";
 import GroupHomeUI from "../../ui/group/GroupHomeUI";
 import { newSocket } from "../../utils/socket";
 import { udateGroupMessageList } from "../../utils/utils";
@@ -18,7 +18,6 @@ const GroupHome = () => {
   const [messageText, setMessageText] = useState("");
   const userProfile = useSelector(selectUserProfile);
   const userId = userProfile.id;
-  const onlineUsers = useSelector(selectActiveUser);
   const onlineGroups = useSelector(selectOnlineGroups);
   const isGroupOnline = onlineGroups.includes(parseInt(id));
   const dispatch = useDispatch();
@@ -33,11 +32,6 @@ const GroupHome = () => {
   // Update message text function on change
   const handleChangeMessage = (e) => {
     setMessageText(e.target.value);
-  }
-
-  // check user online status function
-  function isOnline(id) {
-    return onlineUsers.indexOf(id) !== -1;
   }
 
   // get current group information
@@ -56,42 +50,6 @@ const GroupHome = () => {
     return await getGroupInfo(id, userId, { successHandler, handleBadReq })
   }, [id, userId]);
 
-
-  /**
-   *  Handle delete group message function
-   * @param {number} msgId 
-   * @returns 
-   */
-  async function deleteGroupMessage(msgId) {
-    async function successHandler(response) {
-      const res = await response.json();
-      updateMessagesOnDelete(res, msgId);
-    }
-
-    async function handleBadReq(response) {
-      let error = await response.json();
-      message.error(error.message);
-    }
-    return await groupMessageDeleteApi(msgId, id, userId, { successHandler, handleBadReq })
-  }
-
-  //  update messages list after delete message
-  const updateMessagesOnDelete = (res, msgId) => {
-    message.success(res.message);
-    setAllMessage((prevMessages) => {
-      const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
-      const updatedMessages = copyPrevMessages.filter(message => message.id !== msgId);
-      return updatedMessages;
-    });
-    const newMessage = {
-      id: id,
-      lastmessage: res.lastMessage,
-      lastMessageTime: res.lastMessageTime,
-      status: 'seen',
-      unreadMessages: 0
-    }
-    dispatch(updateConversationMessage(newMessage))
-  }
 
   /**
    * make group message as read
@@ -217,7 +175,8 @@ const GroupHome = () => {
       setAllMessage((prevMessages) => {
         const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
         const newMessage = JSON.parse(JSON.stringify(res));
-        newMessage.users_seen = [];
+        // newMessage.users_seen = [];
+        newMessage.EmojiTotal = [];
         copyPrevMessages.push(newMessage);
         return copyPrevMessages;
       });
@@ -266,11 +225,11 @@ const GroupHome = () => {
         userProfile={userProfile}
         groupInfo={groupInfo}
         allMessage={allMessage}
-        deleteGroupMessage={deleteGroupMessage}
-        isOnline={isOnline}
         messageText={messageText}
         handleSubmitMessage={handleSubmitMessage}
+        setAllMessage={setAllMessage}
         isGroupOnline={isGroupOnline}
+        groupId={id}
       />
     </Spin>
   );

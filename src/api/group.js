@@ -31,5 +31,9 @@ export const groupMessageDeleteApi = async function (msgId, groupId, userId, opt
   return connector.delete(url, options);
 };
 
+export const groupReactionApi = async function (userId, payload, options = {}) {
+  const url = `3000/like-emoji/${userId}/voteGroup`;
+  return await connector.post(url, payload, options);
+};
 
 

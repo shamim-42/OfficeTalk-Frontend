@@ -29,7 +29,7 @@ export const authSlice = createSlice({
       state.user = null;
       state.userProfile = null;
       if (typeof window !== "undefined") {
-        localStorage.setItem("authToken", JSON.stringify({}));
+        localStorage.setItem("authToken", JSON.stringify(null));
         localStorage.setItem("userProfile", JSON.stringify({}));
       }
     },

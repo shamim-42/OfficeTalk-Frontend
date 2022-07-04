@@ -1,11 +1,10 @@
-import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../../api/auth';
-import { acceptUserApi, deleteMessageApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../../api/chat';
+import { acceptUserApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../../api/chat';
 import { selectUserProfile, setCurrentUser } from '../../redux/features/authSlice';
-import { deleteSingleConversation, selectActiveUser, setUpdateConversation, setUpdateUnreadCount, updateConversationMessage, updateFriendList } from '../../redux/features/layoutSlice';
+import { setUpdateConversation, setUpdateUnreadCount, updateFriendList } from '../../redux/features/layoutSlice';
 import ChattingHomeUi from '../../ui/chatting/chattingHome/ChattingHomeUi';
 import { newSocket } from '../../utils/socket';
 import { checkLink, updateMessageListOnReact } from '../../utils/utils';
@@ -23,14 +22,8 @@ const ChattingHome = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [allMessage, setAllMessage] = useState([])
   const userProfile = useSelector(selectUserProfile);
-  const onlineUsers = useSelector(selectActiveUser);
   const dispatch = useDispatch();
   const userId = userProfile.id;
-
-  // check user online status function
-  function isOnline(id) {
-    return onlineUsers.indexOf(id) !== -1;
-  }
 
   // handle on change message function
   const handleChangeMessage = (e) => {
@@ -81,48 +74,6 @@ const ChattingHome = () => {
   }
 
   /**
-   *  Handle delete message by message id function
-   * @param {number} id 
-   * @returns 
-   */
-  async function deleteMessage(id) {
-    async function successHandler(response) {
-      const res = await response.json();
-      updateMessagesOnDelete(res, id);
-    }
-
-    async function handleBadReq(response) {
-      let error = await response.json();
-      message.error(error.message);
-    }
-    return await deleteMessageApi(id, userId, chatId, { successHandler, handleBadReq })
-  }
-
-  // update messages list after delete message
-  const updateMessagesOnDelete = (res, id) => {
-    const newMessage = {
-      id: chatId,
-      lastmessage: res.lastmessage,
-      lastMessageTime: res.lastMessageTime,
-      status: res.status,
-      unreadMessages: res.unreadmessage,
-    }
-    if (!res.deleteall) {
-      dispatch(updateConversationMessage(newMessage))
-    } else {
-      dispatch(deleteSingleConversation(chatId))
-    }
-    setAllMessage((prevMessages) => {
-      const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
-      const updatedMessages = copyPrevMessages.filter(message => message.id !== id);
-      return updatedMessages;
-    });
-    message.success(res.message);
-  }
-
-
-
-  /**
    * Send message to current user function
    * @param {*} e 
    * @param {string} msg 
@@ -158,6 +109,7 @@ const ChattingHome = () => {
 
   // update messages list and conversation after send new message
   const updateMessagesOnSend = (res) => {
+    console.log(res);
     const result = res.result;
     const status = res.status;
     const newMessage = {
@@ -176,7 +128,10 @@ const ChattingHome = () => {
     setMessagesText('')
     setAllMessage((prevMessages) => {
       const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
-      copyPrevMessages.push(res.result);
+      const newMessage = JSON.parse(JSON.stringify(res.result));
+      newMessage.EmojiTotal = [];
+      newMessage.Emoji = [];
+      copyPrevMessages.push(newMessage);
       return copyPrevMessages;
     });
     dispatch(setUpdateConversation(newMessage))
@@ -240,12 +195,15 @@ const ChattingHome = () => {
     newSocket.on('newMessage/user/' + userId, (msg) => {
       if (parseInt(msg.senderId) === parseInt(chatId)) {
         makeReadMessage();
+        setAllMessage((prevMessages) => {
+          const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+          const newMessage = JSON.parse(JSON.stringify(msg));
+          newMessage.EmojiTotal = [];
+          newMessage.Emoji = [];
+          copyPrevMessages.push(newMessage);
+          return copyPrevMessages;
+        });
       }
-      setAllMessage((prevMessages) => {
-        const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
-        copyPrevMessages.push(msg);
-        return copyPrevMessages;
-      });
     })
   }, [userId, makeReadMessage, chatId])
 
@@ -327,10 +285,7 @@ const ChattingHome = () => {
       handleBlur={handleBlur}
       allMessage={allMessage}
       setAllMessage={setAllMessage}
-      userProfile={userProfile}
-      deleteMessage={deleteMessage}
       messageStatus={messageStatus}
-      isOnline={isOnline}
       isTyping={isTyping}
       isLoading={isLoading}
       nextPage={nextPage}

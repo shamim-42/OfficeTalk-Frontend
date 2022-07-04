@@ -1,10 +1,10 @@
 import { Divider } from 'antd';
 import { useEffect, useRef } from 'react';
+import GroupCardContainer from '../../container/group/GroupCardContainer';
 import { conversationTimeFormat } from '../../utils/timeFormat';
-import MessageCard from '../chatting/chattingHome/MessageCard';
 
 const GroupMessageBox = (props) => {
-  const { filterMessages, userProfile, isOnline, allMessage, deleteGroupMessage } = props;
+  const { filterMessages, userProfile,  allMessage, setAllMessage, groupId } = props;
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -17,12 +17,12 @@ const GroupMessageBox = (props) => {
       <div className="message-list">
         {
           filterMessages?.data.messages?.length > 0 && filterMessages?.data.messages?.map((message, index) => (
-            <MessageCard
+            <GroupCardContainer
               CurrentUserProfile={message.user}
-              deleteMessage={deleteGroupMessage}
-              message={message}
+              singleMessage={message}
               userProfile={userProfile}
-              isOnline={isOnline}
+              groupId={groupId}
+              setAllMessage={setAllMessage}
               index={index}
               key={index}
               messages={filterMessages?.data?.messages}

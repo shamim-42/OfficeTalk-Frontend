@@ -1,10 +1,10 @@
 import { Divider } from 'antd';
 import { useEffect, useRef } from 'react';
+import ChatCardContainer from '../../../container/chat/ChatCardContainer';
 import { conversationTimeFormat } from '../../../utils/timeFormat';
-import MessageCard from './MessageCard';
 
 const MessageBox = (props) => {
-  const { filterMessages, currentUserStatus, userProfile, isOnline, deleteMessage, allMessage, setAllMessage } = props;
+  const { filterMessages, currentUserProfile, isOnline, allMessage, setAllMessage } = props;
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -19,12 +19,10 @@ const MessageBox = (props) => {
       <div className="message-list">
         {
           filterMessages?.data.messages?.length > 0 && filterMessages?.data.messages?.map((message, index) => (
-            <MessageCard
-              CurrentUserProfile={currentUserStatus}
-              userProfile={userProfile}
-              deleteMessage={deleteMessage}
+            <ChatCardContainer
+              currentUserProfile={currentUserProfile}
               setAllMessage={setAllMessage}
-              message={message}
+              singleMessage={message}
               isOnline={isOnline}
               messages={filterMessages?.data?.messages}
               index={index}

@@ -10,9 +10,9 @@ import TextAvatar from "../../helper/TextAvatar";
 import MessageBox from "./MessageBox";
 
 const ChattingHomeUi = (props) => {
-  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, userProfile, isOnline, isLoading, messagesText, handleBlur, isTyping, messageStatus, userRequestFunction, deleteMessage, nextPage, handlePreviousMessage , setAllMessage} = props;
+  const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, isLoading, messagesText, handleBlur, isTyping, messageStatus, userRequestFunction, nextPage, handlePreviousMessage, setAllMessage } = props;
 
-  console.log(allMessage);
+  // console.log(allMessage);
 
   const filteredMessages = getDateWiseMessages(allMessage);
 
@@ -50,14 +50,11 @@ const ChattingHomeUi = (props) => {
                 filteredMessages.map((filterMessages, index) => (
                   <MessageBox
                     key={index}
-                    currentUserStatus={currentUserProfile}
-                    isOnline={isOnline}
-                    userProfile={userProfile}
+                    currentUserProfile={currentUserProfile}
                     setAllMessage={setAllMessage}
                     messageStatus={messageStatus}
                     filterMessages={filterMessages}
-                    deleteMessage={deleteMessage}
-                    allMessage={filteredMessages}
+                    filteredMessages={filteredMessages}
                   />
                 ))}
             </div>

@@ -7,7 +7,7 @@ import GroupMessageBox from "./GroupMessageBox";
 
 
 const GroupHomeUI = (props) => {
-  const { groupInfo, allMessage, userProfile, isOnline, handleChangeMessage, messageText, handleSubmitMessage, isGroupOnline, deleteGroupMessage } = props;
+  const { groupInfo, allMessage, userProfile,  handleChangeMessage, messageText, handleSubmitMessage, isGroupOnline, setAllMessage, groupId } = props;
 
   const filteredMessages = getDateWiseMessages(allMessage);
   console.log(allMessage)
@@ -26,13 +26,11 @@ const GroupHomeUI = (props) => {
             filteredMessages.map((filterMessages, index) => (
               <GroupMessageBox
                 key={index}
-                // currentUserStatus={currentUserProfile}
-                isOnline={isOnline}
+                groupId={groupId}
                 userProfile={userProfile}
-                // messageStatus={messageStatus}
+                setAllMessage={setAllMessage}
                 filterMessages={filterMessages}
                 allMessage={allMessage}
-                deleteGroupMessage={deleteGroupMessage}
               />
             ))}
         </div>
