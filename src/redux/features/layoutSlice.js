@@ -6,9 +6,7 @@ export const layoutSlice = createSlice({
     error: null,
     alertList: [],
     allUsers: [],
-    friendList: typeof window !== "undefined" && localStorage.getItem("friendList")
-      ? JSON.parse(localStorage.getItem("friendList"))
-      : [],
+    friendList: [],
     activeUser: [],
     conversationList: [],
     onlineGroups: [],
@@ -28,8 +26,6 @@ export const layoutSlice = createSlice({
 
     updateFriendList: (state, action) => {
       state.friendList = action.payload;
-      localStorage.setItem("friendList", JSON.stringify(action.payload));
-      console.log(state.friendList);
     },
 
     setActiveUser: (state, action) => {
@@ -64,13 +60,15 @@ export const layoutSlice = createSlice({
       state.conversationList = newList;
     },
 
-
     updateConversationStatus: (state, action) => {
       let newList = [...state.conversationList];
-      let index = newList.findIndex((item) => parseInt(item.id) === action.payload.conversationId);
+      let index = newList.findIndex((item) => (item.id).toString() === (action.payload.conversationId).toString());
       if (index !== -1) {
         newList[index].status = action.payload.status;
         newList[index].unreadMessages = 0;
+        if (action.payload.users_seen) {
+          newList[index].users_seen = action.payload.users_seen;
+        }
       }
       state.conversationList = newList;
     },

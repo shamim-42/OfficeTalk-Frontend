@@ -61,6 +61,9 @@ const ReactViewPopover = ({ message }) => {
     <div className="reaction-view-popover">
       {
         message?.Emoji?.length > 0 && message.Emoji.map((emj, index) => {
+          if (emj.vote < 1) {
+            return true;
+          }
           return (
             <div className="user-list-item"
               key={index}>

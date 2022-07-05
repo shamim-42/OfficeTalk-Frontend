@@ -1,7 +1,7 @@
-import { Button, Col, Popover, Row } from 'antd';
+import { Avatar, Button, Col, Popover, Row, Tooltip } from 'antd';
 import { FaPlusCircle } from "react-icons/fa";
 import { timeFormat } from '../../../utils/timeFormat';
-import { checkDevided } from '../../../utils/utils';
+import { checkDevided, getTwoCharacters } from '../../../utils/utils';
 import CustomAvatar from '../../helper/CustomAvatar';
 import TextAvatar from '../../helper/TextAvatar';
 import ImageMessageCard from './ImageMessageCard';
@@ -12,7 +12,6 @@ import TextMessageCard from './TextMessageCard';
 
 const MessageCard = (props) => {
   const { CurrentUserProfile, userProfile, deleteMessage, message, isOnline, messages, index, reactVisible, setReactVisible, optionVisible, setOptionVisible, makeReaction, copyToClipboard } = props;
-
 
   if (message?.user?.id === userProfile.id || message?.senderId === userProfile.id) {
     return (
@@ -147,7 +146,7 @@ const MessageCard = (props) => {
               {
                 checkDevided(messages[index - 1], message, index)
                 &&
-                <p className='message-time'>{timeFormat(message.createdAt)}</p>
+                <p className='message-time'>{(CurrentUserProfile?.fullname).split(" ")[0]}, {timeFormat(message.createdAt)}</p>
               }
               <div className='message-body message-left'>
                 {message.type === 'image' &&
@@ -221,15 +220,20 @@ const UserSeenBubbles = (props) => {
             if (user.userId === userProfile.id) return false;
             return (
               user.user.profileImage ?
-                <CustomAvatar
-                  key={user.userId}
-                  size={16}
-                  src={user.user.profileImageResize}
-                />
+                <Tooltip key={user.userId}
+                  placement="top" title={user?.user.fullname}>
+                  <Avatar
+                    size={16}
+                    src={user.user.profileImageResize}
+                  />
+                </Tooltip>
                 :
-                <TextAvatar name={user?.user.fullname}
-                  key={user.id}
-                  size="16px" fontSize="7px" />
+                <Tooltip key={user.userId}
+                  placement="top" title={user?.user.fullname}>
+                  <p className="profile-text-avatar" >
+                    {getTwoCharacters(user?.user.fullname)}
+                  </p>
+                </Tooltip>
             )
           })
         }

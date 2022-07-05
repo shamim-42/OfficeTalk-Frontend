@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { checkJWTToken } from '../api/auth';
+import { checkJWTToken, friendListApi } from '../api/auth';
 import { getConversationsApi } from '../api/chat';
 import { resetUserData, selectUserProfile, selectUserToken } from '../redux/features/authSlice';
-import { deleteSingleConversation, setActiveUser, setConversationList, setUpdateConversation, updateConversationGroupMessage, updateConversationMessage, updateConversationStatus, updateOnlineGroupList } from '../redux/features/layoutSlice';
+import { deleteSingleConversation, setActiveUser, setConversationList, setUpdateConversation, updateConversationGroupMessage, updateConversationMessage, updateConversationStatus, updateFriendList, updateOnlineGroupList } from '../redux/features/layoutSlice';
 import HomeUi from '../ui/home/HomeUi';
 import { newSocket } from '../utils/socket';
 
@@ -65,24 +65,26 @@ const HomePage = () => {
     return await getConversationsApi(userId, { successHandler, handleBadReq })
   }, [dispatch, userId])
 
-  // add or update message on conversations List
-  const updateConversationList = useCallback((res) => {
-
-    const newMessage = {
-      users_id: res.senderId,
-      image: res.senderImage,
-      name: res.senderName,
-      lastMessage: res?.content,
-      lastMessageTime: res?.createdAt,
-      unreadMessages: res.unread,
-      status: 'seen',
-      type: "single"
+  // get all conversations list
+  const fetchFriendList = useCallback(async () => {
+    async function successHandler(response) {
+      const res = await response.json();
+      dispatch(updateFriendList(res));
+      console.log(res)
     }
-    dispatch(setUpdateConversation(newMessage))
-  }, [dispatch])
 
-  // Run socket connection with this function
-  const runSocketFunction = useCallback(() => {
+    async function handleBadReq(response) {
+      let error = await response.json();
+      console.log(error.message);
+    }
+
+    return await friendListApi(userId, { successHandler, handleBadReq })
+  }, [userId, dispatch])
+
+
+  useEffect(() => {
+    newSocket.connect();
+
     newSocket.on('users/online', (users) => {
       const allOnlineUsers = users.filter(user => user !== userId)
       setOnlineUsers(allOnlineUsers)
@@ -95,12 +97,22 @@ const HomePage = () => {
     })
 
     newSocket.on('newMessagesidebar/user/' + userId, (msg) => {
-      console.log(msg)
-      updateConversationList(msg)
+      // console.log(msg)
+      const newMessage = {
+        users_id: msg.senderId,
+        image: msg.senderImage,
+        name: msg.senderName,
+        lastMessage: msg?.content,
+        lastMessageTime: msg?.createdAt,
+        unreadMessages: msg.unread,
+        status: 'seen',
+        type: "single"
+      }
+      dispatch(setUpdateConversation(newMessage))
     })
 
     newSocket.on('newMessagesidebar/group/' + userId, (res) => {
-      console.log(res);
+      // console.log(res);
       const newMessage = {
         lastMessage: res?.content,
         groupId: res?.roomId,
@@ -113,20 +125,21 @@ const HomePage = () => {
         users_seen: []
       }
       dispatch(updateConversationGroupMessage(newMessage))
-      // console.log(res)
     })
 
-    newSocket.on(`isdeleted/${userId}`, (res) => {
-      fetchConversationList();
-    });
-
-  }, [dispatch, updateConversationList, userId, fetchConversationList]);
-
-  // All useEffect function below
-  useEffect(() => {
     newSocket.on('message-seen-status' + userId, (res) => {
-      console.log(res);
+      // console.log(res);
       dispatch(updateConversationStatus(res))
+    })
+
+    newSocket.on('group/seen' + userId, (res) => {
+      // console.log(res);
+      const data = {
+        conversationId: res.conversationId,
+        users_seen: res.list,
+        status: res.status
+      }
+      dispatch(updateConversationStatus(data))
     })
 
     newSocket.on('delevered/' + userId, (res) => {
@@ -134,14 +147,23 @@ const HomePage = () => {
         conversationId: res.conversationId,
         status: res.status
       }
-      dispatch(updateConversationStatus(data))
-      console.log(res);
+      // console.log(res);
+      if (res.conversationId) {
+        dispatch(updateConversationStatus(data))
+      }
     })
-  }, [userId, dispatch]);
 
-  useEffect(() => {
+    newSocket.on('group/delevered' + userId, (res) => {
+      const data = {
+        conversationId: res.conversationId,
+        status: res.status
+      }
+      dispatch(updateConversationStatus(data))
+      // console.log(res);
+    })
+
     newSocket.on('isdeletedSidebar/' + userId, (res) => {
-      console.log(res)
+      // console.log(res)
       const newMessage = {
         id: res.userId,
         lastmessage: res.lastmessage,
@@ -164,18 +186,23 @@ const HomePage = () => {
         status: res?.lastMessageStatus,
         unreadMessages: res.unreadMessages,
       }
-      console.log(res);
+      // console.log(res);
       dispatch(updateConversationMessage(newMessage));
     })
-  }, [userId, dispatch]);
 
+    return () => {
+      newSocket.close();
+      newSocket.off('users/online');
+      newSocket.off('groups/online');
+    };
+  }, [dispatch, userId])
+
+  // All useEffect function below
   useEffect(() => {
     fetchConversationList();
-    runSocketFunction();
     checkJWTTokenValidity();
-    newSocket.connect();
-    return () => newSocket.close();
-  }, [fetchConversationList, runSocketFunction, checkJWTTokenValidity])
+    fetchFriendList();
+  }, [fetchConversationList, checkJWTTokenValidity, fetchFriendList])
 
   return (
     <HomeUi

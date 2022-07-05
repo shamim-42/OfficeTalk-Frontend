@@ -152,7 +152,7 @@ const SidebarHeaderUI = (props) => {
         <Modal
           visible={openProfile}
           className="profile-modal"
-          closable={true}
+          closable={false}
           footer={null}
         >
           <UserProfileView userProfile={userProfile} closeProfileModal={closeProfileModal} />

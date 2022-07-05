@@ -85,7 +85,7 @@ export function udateGroupMessageList(allMessages, res) {
     return allData;
   }
   const userInPrev = prevMessage?.readMessage?.findIndex(user => user.id === res.readMessage.id);
-  console.log(prevMessage.readMessage);
+
   if (userInPrev > -1) {
     prevMessage?.readMessage?.splice(userInPrev, 1);
   }
@@ -147,6 +147,16 @@ export function updateMessageListOnReact(messages, res) {
   const result = res.result;
   const msgId = res.messageId;
   const message = copyPrevMessages.find(message => message.id === msgId);
+  const reactUser = message?.Emoji?.findIndex(item => item.user.id === res.user.id);
+  if (reactUser === -1) {
+    const newUser = {
+      vote: res.vote,
+      user: res.user,
+    }
+    message?.Emoji.push(newUser);
+  } else {
+    message.Emoji[reactUser].vote = res.vote;
+  }
   if (message?.EmojiTotal?.length > 0) {
     message.EmojiTotal[0].total_angry = result.total_angry;
     message.EmojiTotal[0].total_emoji = result.total_emoji;

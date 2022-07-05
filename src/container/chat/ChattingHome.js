@@ -134,7 +134,8 @@ const ChattingHome = () => {
       copyPrevMessages.push(newMessage);
       return copyPrevMessages;
     });
-    dispatch(setUpdateConversation(newMessage))
+    console.log("first")
+    dispatch(setUpdateConversation(newMessage));
   }
 
   // make message as read message 
@@ -225,41 +226,16 @@ const ChattingHome = () => {
         return updatedMessages;
       });
     });
-  }, [userId]);
 
-  useEffect(() => {
-    getNewMessage()
-    return () => newSocket.off('newMessage/user/' + userId);
-  }, [getNewMessage, userId]);
-
-  useEffect(() => {
-    dispatch(setCurrentUser(chatId))
-    getCurrentUserProfile()
-
-    return () => {
-      dispatch(setCurrentUser(null))
-    }
-  }, [getCurrentUserProfile, chatId, dispatch]);
-
-  useEffect(() => {
-    makeReadMessage()
-  }, [makeReadMessage]);
-
-  useEffect(() => {
-    getAllMessage()
-  }, [getAllMessage]);
-
-  useEffect(() => {
     newSocket.on(`isReactedSingle/${userId}`, (res) => {
+      console.log(res)
       setAllMessage((prevMessages) => {
         const newMessages = updateMessageListOnReact(prevMessages, res);
         return newMessages;
 
       });
     });
-  }, [userId]);
 
-  useEffect(() => {
     newSocket.on(`isWriting/${userId}`, (res) => {
       if (parseInt(res.userId) === parseInt(chatId)) {
         setIsTyping(true);
@@ -276,6 +252,25 @@ const ChattingHome = () => {
       newSocket.off(`isNotWriting/${userId}`);
     }
   }, [userId, chatId]);
+
+  useEffect(() => {
+    getNewMessage()
+    return () => newSocket.off('newMessage/user/' + userId);
+  }, [getNewMessage, userId]);
+
+  useEffect(() => {
+    dispatch(setCurrentUser(chatId))
+    getCurrentUserProfile()
+    getAllMessage()
+    return () => {
+      dispatch(setCurrentUser(null))
+    }
+  }, [getCurrentUserProfile, chatId, dispatch, getAllMessage]);
+
+  useEffect(() => {
+    makeReadMessage()
+  }, [makeReadMessage]);
+
 
   return (
     <ChattingHomeUi

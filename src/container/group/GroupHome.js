@@ -7,7 +7,7 @@ import { selectUserProfile, setCurrentGroup } from "../../redux/features/authSli
 import { selectOnlineGroups, updateConversationGroupMessage, updateConversationGroupSeen, updateConversationGroupStatus } from "../../redux/features/layoutSlice";
 import GroupHomeUI from "../../ui/group/GroupHomeUI";
 import { newSocket } from "../../utils/socket";
-import { udateGroupMessageList } from "../../utils/utils";
+import { udateGroupMessageList, updateMessageListOnReact } from "../../utils/utils";
 // import { checkLink } from "../../utils/utils";
 
 const GroupHome = () => {
@@ -127,11 +127,11 @@ const GroupHome = () => {
     setMessageText('');
     const result = res.result;
     const newMessage = {
-      lastMessage: res?.content,
-      groupId: res?.room?.id,
-      lastMessageTime: res?.createdAt,
-      name: res?.room?.name,
-      image: res?.room?.groupImage,
+      lastMessage: result?.content,
+      groupId: result?.room?.id,
+      lastMessageTime: result?.createdAt,
+      name: result?.room?.name,
+      image: result?.room?.groupImage,
       unreadMessages: 0,
       type: "group",
       status: res?.status,
@@ -168,20 +168,32 @@ const GroupHome = () => {
         groupId: res.roomId,
         lastMessageTime: res.createdAt,
         unreadMessages: 0,
-        status: res.status || 'sent',
+        status: res.status,
       }
       setAllMessage((prevMessages) => {
         const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
         const newMessage = JSON.parse(JSON.stringify(res));
+        if (res.prevMsgId) {
+          let prevIndex = -1;
+          const prevMessage = copyPrevMessages.find(message => message.id === res.prevMsgId);
+          if (prevMessage?.readMessage?.length > 0) {
+            prevIndex = prevMessage?.readMessage.findIndex(user => user.userId === res.user.id);
+          }
+          if (prevIndex > -1) {
+            prevMessage?.readMessage?.splice(prevIndex, 1);
+          }
+        }
         newMessage.EmojiTotal = [];
         newMessage.Emoji = [];
         newMessage.readMessage = [res?.readMessage];
         copyPrevMessages.push(newMessage);
         return copyPrevMessages;
       });
-      dispatch(updateConversationGroupMessage(newMessage))
       if (res.user.id !== userId) {
+        dispatch(updateConversationGroupMessage(newMessage))
         groupMessageSeen();
+      } else {
+
       }
     })
 
@@ -192,11 +204,19 @@ const GroupHome = () => {
 
   useEffect(() => {
     newSocket.on("groupSeen/", (res) => {
-      console.log(res)
+      // console.log(res)
       setAllMessage((prevMessage) => {
         const updatedData = udateGroupMessageList(prevMessage, res);
         return updatedData
       })
+    })
+
+    newSocket.on("isReactedGroup/", (res) => {
+      setAllMessage((prevMessages) => {
+        const newMessages = updateMessageListOnReact(prevMessages, res);
+        return newMessages;
+
+      });
     })
   }, []);
 
