@@ -12,11 +12,23 @@
     right: 1%;
   }
 
+  @include media("<=tablet") {
+    top: 10%;
+    left: 10%;
+    right: 12%;
+  }
+
   & .ant-modal-content {
     border-radius: 30px;
     padding: 12px 64px;
     width: fit-content;
     min-height: 75vh;
+
+    @include media("<=tablet") {
+      border-radius: 12px;
+      padding: 12px;
+      height: 60vh;
+    }
 
     & .ant-modal-body {
       padding: 0;
@@ -25,6 +37,10 @@
     & .create-group-title {
       font-size: 36px;
       color: map.get($theme-colors, "primary-text-47");
+
+      @include media("<=tablet") {
+        font-size: 24px;
+      }
     }
 
     & .upload-group-photo {

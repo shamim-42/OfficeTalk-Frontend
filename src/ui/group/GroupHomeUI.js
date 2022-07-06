@@ -7,7 +7,7 @@ import GroupMessageBox from "./GroupMessageBox";
 
 
 const GroupHomeUI = (props) => {
-  const { groupInfo, allMessage, userProfile,  handleChangeMessage, messageText, handleSubmitMessage, isGroupOnline, setAllMessage, groupId } = props;
+  const { groupInfo, allMessage, userProfile, handleChangeMessage, messageText, handleSubmitMessage, isGroupOnline, setAllMessage, groupId, handlePreviousMessage, nextPage } = props;
 
   const filteredMessages = getDateWiseMessages(allMessage);
   console.log(allMessage)
@@ -21,6 +21,13 @@ const GroupHomeUI = (props) => {
       </Affix>
 
       <div className="group-chat-content">
+        {nextPage > 0 &&
+          <div className="previous-btn-container">
+            <Button
+              onClick={handlePreviousMessage}
+              className="previous-btn">see previous</Button>
+          </div>
+        }
         <div className="all-messages-content">
           {filteredMessages?.length > 0 &&
             filteredMessages.map((filterMessages, index) => (

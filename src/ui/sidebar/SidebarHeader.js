@@ -9,6 +9,7 @@ import { IoChevronDownOutline, IoOptions } from "react-icons/io5";
 import { MdCall } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import CreateGroup from '../../container/group/CreateGroup';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
 import CustomAvatar from '../helper/CustomAvatar';
 import TextAvatar from '../helper/TextAvatar';
 import UserProfileView from '../modal/UserProfileView';
@@ -19,11 +20,14 @@ import SettingPopover from './SettingPopover';
 const SidebarHeaderUI = (props) => {
   const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible, showProfileOpenModal, users, isOnline, openProfile, closeProfileModal } = props;
 
+  const { width: windowWidth } = useWindowDimensions();
+
+
   return (
     <>
       <div className="sidebar-header">
         <Row>
-          <Col md={20}>
+          <Col span={20}>
             <div className="sidebar-user">
               {(userProfile.profileImageResize || userProfile.profileImage) ?
                 <div onClick={showProfileOpenModal}>
@@ -41,7 +45,7 @@ const SidebarHeaderUI = (props) => {
               </Link>
             </div>
           </Col>
-          <Col md={4}>
+          <Col span={4}>
             <Row className="setting-preicon">
               <Popover placement="bottomLeft"
                 className="sidebar-setting"
@@ -56,7 +60,7 @@ const SidebarHeaderUI = (props) => {
           </Col>
         </Row>
         <Row className="sidebar-icon-container">
-          <Col md={14} className="sidebar-header-icons">
+          <Col span={windowWidth > 480 ? 14 : 18} className="sidebar-header-icons">
             <Dropdown
               placement="bottom"
               overlay={<Menu>
@@ -92,7 +96,7 @@ const SidebarHeaderUI = (props) => {
           </Col>
         </Row>
         <Row>
-          <Col md={22}>
+          <Col span={22}>
             <Form
               name="search_form"
               onFinish={handleChangeSearch}
@@ -108,7 +112,7 @@ const SidebarHeaderUI = (props) => {
             </Form>
           </Col>
 
-          <Col md={2}>
+          <Col span={2}>
             <Popover placement="bottomLeft" content={<FilterPopover />} trigger="click">
               <Button className="filter-button" type="text">
                 <IoOptions style={{ fontSize: '16px' }} />
@@ -161,13 +165,14 @@ const SidebarHeaderUI = (props) => {
       <div className="online-users">
         <Avatar.Group className="online-user-group">
           {
-            users.slice(0, 8).map((user, index) => (
-              <Link to={`chat/${user.id}`} key={user.id || index}>
+            users.map((user, index) => (
+              isOnline(user.id) &&
+              <Link to={user.id === userProfile.id ? "/" : `chat/${user.id}`} key={user.id || index}>
                 {
-                  user.profileImage ?
+                  user.profileImageResize ?
                     <CustomAvatar
                       size={40}
-                      src={user.profileImage}
+                      src={user.profileImageResize}
                       icon={isOnline(user.id) && "small"}
                     />
                     :
@@ -179,11 +184,11 @@ const SidebarHeaderUI = (props) => {
 
             ))
           }
-          {users.length > 8 &&
+          {/* {users.length > 8 &&
             <button className="all-user-button">
               All
             </button>
-          }
+          } */}
         </Avatar.Group>
       </div>
 

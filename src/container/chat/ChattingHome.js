@@ -180,7 +180,7 @@ const ChattingHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      // console.log(res)
+      console.log(res);
       setMessageStatus(res.status)
       dispatch(updateFriendList(res.list))
     }

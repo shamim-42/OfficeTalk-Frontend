@@ -96,13 +96,16 @@ const SidebarHead = () => {
   }
 
   useEffect(() => {
-    newSocket.on('users/online', (users) => {
-      const allOnlineUsers = users.filter(user => user !== userId)
+    newSocket.on('users/online', (allOnlineUsers) => {
+      // const allOnlineUsers = users.filter(user => user !== userId)
       setOnlineUsers(allOnlineUsers)
       dispatch(setActiveUser(allOnlineUsers));
     })
+  }, [dispatch, userId]);
+
+  useEffect(() => {
     fetchUserList()
-  }, [fetchUserList, dispatch, userId])
+  }, [fetchUserList])
 
   return (
     <SidebarHeaderUI

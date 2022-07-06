@@ -8,11 +8,11 @@ import CustomAvatar from '../helper/CustomAvatar';
 import TextAvatar from '../helper/TextAvatar';
 
 
+
 const SidebarCard = ({ user, isOnline, userid, isGroupOnline }) => {
   const currentUser = useSelector(selectCurrentUser)
   const currentGroup = useSelector(selectCurrentGroup)
   const unreadMessage = user?.unreadMessages;
-
   const cardLink = user.type === "single" ? `chat/${user?.users_id}`
     : `group/${user?.groupId}`;
 

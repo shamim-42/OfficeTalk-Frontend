@@ -35,4 +35,25 @@
       font-size: 20px;
     }
   }
+
+  @include media("<=tablet") {
+    width: 100vw;
+    padding: 12px 8px;
+
+    & .header-icons {
+      gap: 4px;
+    }
+
+    & .user-info {
+      @include set-display-flex(start, start, 6px);
+
+      & .user-name {
+        font-size: 15px;
+      }
+
+      & .user-status {
+        font-size: 12px;
+      }
+    }
+  }
 }

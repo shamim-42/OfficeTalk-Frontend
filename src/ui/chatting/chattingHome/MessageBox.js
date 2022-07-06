@@ -4,14 +4,12 @@ import ChatCardContainer from '../../../container/chat/ChatCardContainer';
 import { conversationTimeFormat } from '../../../utils/timeFormat';
 
 const MessageBox = (props) => {
-  const { filterMessages, currentUserProfile, isOnline, allMessage, setAllMessage } = props;
+  const { filterMessages, currentUserProfile, isOnline, setAllMessage } = props;
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      alignToTop: true
-    });
-  }, [allMessage]);
+    messagesEndRef.current?.scrollIntoView();
+  }, [filterMessages]);
 
   return (
     <>

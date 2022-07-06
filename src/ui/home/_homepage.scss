@@ -15,6 +15,14 @@
   margin-left: 462px;
   overflow: initial;
   height: 100vh;
+
+  @include media("<=tablet") {
+    width: 100vw;
+    margin-left: 100vw;
+    height: 100vh;
+    display: none;
+    overflow-y: scroll;
+  }
 }
 
 // Welcome home content css

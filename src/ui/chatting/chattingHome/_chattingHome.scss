@@ -104,11 +104,20 @@
       }
     }
   }
+
+  @include media("<=tablet") {
+    width: 100vw;
+
+    & .chatting-content {
+      height: 60vh;
+    }
+  }
 }
 
 .chatting-bottom {
   position: sticky;
   bottom: 0;
+  right: 0;
   width: 100%;
   padding: 1rem 0;
   z-index: 1000;
@@ -168,6 +177,10 @@
         background: none;
       }
     }
+  }
+
+  @include media("<=tablet") {
+    padding: 0.5rem 0;
   }
 }
 

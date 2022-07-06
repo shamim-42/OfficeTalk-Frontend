@@ -10,8 +10,8 @@ export const getGroupInfo = async function (groupId, userId, options = {}) {
   return connector.get(url, options);
 };
 
-export const getGroupMessagesApi = async function (groupId, payload, options = {}) {
-  const url = `3000/group/${groupId}/groupmessages?page=1`;
+export const getGroupMessagesApi = async function (groupId, pageNumber, payload, options = {}) {
+  const url = `3000/group/${groupId}/groupmessages?page=${pageNumber}`;
   return connector.post(url, payload, options);
 };
 

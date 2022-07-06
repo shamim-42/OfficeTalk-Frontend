@@ -3,6 +3,19 @@
 .group-chat-content {
   min-height: 82vh;
   padding-bottom: 14px;
+
+  & .previous-btn-container {
+    width: 100%;
+    @include set-display-flex(flex-start, center);
+    padding-top: 10px;
+
+    & .previous-btn {
+      padding: 0 8px;
+      background-color: map.get($theme-colors, "white-f1");
+      height: fit-content;
+      border-radius: 15px;
+    }
+  }
 }
 .ant-drawer.group-profile {
   & > .ant-drawer-mask {

@@ -97,7 +97,7 @@ const HomePage = () => {
     })
 
     newSocket.on('newMessagesidebar/user/' + userId, (msg) => {
-      // console.log(msg)
+      console.log(msg)
       const newMessage = {
         users_id: msg.senderId,
         image: msg.senderImage,

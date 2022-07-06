@@ -16,11 +16,11 @@ const ChattingHeader = (props) => {
       <div className="chatting-header">
         <div className="user-info">
           {
-            (currentUserProfile?.profileImage || currentUserProfile?.groupImage) ?
+            (currentUserProfile?.profileImageResize || currentUserProfile?.groupImage) ?
               <CustomAvatar
                 size={40}
                 icon={isOnline && "small"}
-                src={currentUserProfile?.profileImage || currentUserProfile?.groupImage}
+                src={currentUserProfile?.profileImageResize || currentUserProfile?.groupImage}
               />
               :
               <TextAvatar name={currentUserProfile?.fullname || currentUserProfile.name || ""}

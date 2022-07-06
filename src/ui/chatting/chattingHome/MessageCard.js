@@ -127,11 +127,11 @@ const MessageCard = (props) => {
                 ?
                 <Col span={3} className='message-sender-img'>
                   {
-                    CurrentUserProfile?.profileImage ?
+                    CurrentUserProfile?.profileImageResize ?
                       <CustomAvatar
                         size={40}
                         icon={isOnline(CurrentUserProfile?.id) && "small"}
-                        src={CurrentUserProfile?.profileImage}
+                        src={CurrentUserProfile?.profileImageResize}
                       />
                       :
                       <TextAvatar name={CurrentUserProfile?.fullname}
@@ -146,7 +146,7 @@ const MessageCard = (props) => {
               {
                 checkDevided(messages[index - 1], message, index)
                 &&
-                <p className='message-time'>{(CurrentUserProfile?.fullname).split(" ")[0]}, {timeFormat(message.createdAt)}</p>
+                <p className='message-time'>{(CurrentUserProfile?.fullname)?.split(" ")[0]}, {timeFormat(message.createdAt)}</p>
               }
               <div className='message-body message-left'>
                 {message.type === 'image' &&

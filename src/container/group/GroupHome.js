@@ -16,11 +16,22 @@ const GroupHome = () => {
   const [loading, setLoading] = useState(false);
   const [allMessage, setAllMessage] = useState([]);
   const [messageText, setMessageText] = useState("");
+  const [pageNumber, setPageNumber] = useState("1");
+  const [nextPage, setNextPage] = useState(0);
   const userProfile = useSelector(selectUserProfile);
   const userId = userProfile.id;
   const onlineGroups = useSelector(selectOnlineGroups);
   const isGroupOnline = onlineGroups.includes(parseInt(id));
   const dispatch = useDispatch();
+
+
+  const handlePreviousMessage = () => {
+    setPageNumber((prevPage) => {
+      const newPageNumber = (parseInt(prevPage) + 1).toString();
+      return newPageNumber;
+    })
+  }
+
 
   // Update message text function on change
   const handleChangeMessage = (e) => {
@@ -53,7 +64,7 @@ const GroupHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res)
+      // console.log(res)
       const groupStatus = {
         groupId: id,
         status: "seen",
@@ -85,7 +96,7 @@ const GroupHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      setAllMessage(res.messages);
+      updateMessagesOnLoad(res);
       // console.log(res);
     }
 
@@ -93,8 +104,22 @@ const GroupHome = () => {
       let error = await response.json();
       console.log(error)
     }
-    return await getGroupMessagesApi(id, payload, { successHandler, handleBadReq })
-  }, [id, userId]);
+    return await getGroupMessagesApi(id, pageNumber, payload, { successHandler, handleBadReq })
+  }, [id, userId, pageNumber]);
+
+  // update messages list after fetch messages
+  const updateMessagesOnLoad = (res) => {
+    console.log(res)
+    if (res?.messages?.length > 0) {
+      setAllMessage((prevMsg) => {
+        let oldMsg = JSON.parse(JSON.stringify(prevMsg));
+        let resMsg = JSON.parse(JSON.stringify(res.messages));
+        let newMsg = [...resMsg, ...oldMsg];
+        return newMsg;
+      })
+    }
+    setNextPage(res?.pagination?.nextPage)
+  }
 
   /**
    * Send message to current user function
@@ -111,7 +136,7 @@ const GroupHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res);
+      // console.log(res);
       updateMessagesOnSend(res);
     }
 
@@ -123,7 +148,7 @@ const GroupHome = () => {
 
   // update messages list after send message
   const updateMessagesOnSend = (res) => {
-    console.log(res);
+    // console.log(res);
     setMessageText('');
     const result = res.result;
     const newMessage = {
@@ -153,6 +178,81 @@ const GroupHome = () => {
     dispatch(updateConversationGroupMessage(newMessage))
   }
 
+  /**
+   * update message list on received new message
+   */
+  const updateAllMessagesOnReceive = useCallback((res) => {
+    if (parseInt(res.roomId) !== parseInt(id)) {
+      return;
+    }
+    const newMessage = {
+      lastMessage: res.content,
+      groupId: res.roomId,
+      lastMessageTime: res.createdAt,
+      unreadMessages: 0,
+      status: res.status,
+    }
+    setAllMessage((prevMessages) => {
+      const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+      const newMessage = JSON.parse(JSON.stringify(res));
+      if (res.prevMsgId) {
+        let prevIndex = -1;
+        const prevMessage = copyPrevMessages.find(message => message.id === res.prevMsgId);
+        if (prevMessage?.readMessage?.length > 0) {
+          prevIndex = prevMessage?.readMessage.findIndex(user => user.userId === res.user.id);
+        }
+        if (prevIndex > -1) {
+          prevMessage?.readMessage?.splice(prevIndex, 1);
+        }
+      }
+      newMessage.EmojiTotal = [];
+      newMessage.Emoji = [];
+      newMessage.readMessage = [res?.readMessage];
+      copyPrevMessages.push(newMessage);
+      return copyPrevMessages;
+    });
+    if (res.user.id !== userId) {
+      dispatch(updateConversationGroupMessage(newMessage))
+      groupMessageSeen();
+    } else {
+
+    }
+  }, [dispatch, userId, groupMessageSeen, id]);
+
+  /**
+   * update seen user bubble list
+   */
+  const updateUserSeenList = useCallback((res) => {
+    setAllMessage((prevMessage) => {
+      const updatedData = udateGroupMessageList(prevMessage, res);
+      return updatedData
+    })
+  }, [])
+
+  /**
+   * update user reaction on message
+   */
+  const updateUserReactList = useCallback((res) => {
+    setAllMessage((prevMessages) => {
+      const newMessages = updateMessageListOnReact(prevMessages, res);
+      return newMessages;
+    });
+  }, [])
+
+  /**
+   * update all message list on delete message
+   */
+  const updateMessageListOnDelete = useCallback((res) => {
+    setAllMessage((prevMessages) => {
+      const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+      const updatedMessages = copyPrevMessages.filter(message => message.id !== parseInt(res.messageId));
+      return updatedMessages;
+    });
+  }, [])
+
+  /**
+   * All useEffect Function below
+   */
   useEffect(() => {
     dispatch(setCurrentGroup(id))
     return () => {
@@ -162,73 +262,30 @@ const GroupHome = () => {
 
   useEffect(() => {
     newSocket.on('newMessage/group/', (res) => {
-      console.log(res);
-      const newMessage = {
-        lastMessage: res.content,
-        groupId: res.roomId,
-        lastMessageTime: res.createdAt,
-        unreadMessages: 0,
-        status: res.status,
-      }
-      setAllMessage((prevMessages) => {
-        const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
-        const newMessage = JSON.parse(JSON.stringify(res));
-        if (res.prevMsgId) {
-          let prevIndex = -1;
-          const prevMessage = copyPrevMessages.find(message => message.id === res.prevMsgId);
-          if (prevMessage?.readMessage?.length > 0) {
-            prevIndex = prevMessage?.readMessage.findIndex(user => user.userId === res.user.id);
-          }
-          if (prevIndex > -1) {
-            prevMessage?.readMessage?.splice(prevIndex, 1);
-          }
-        }
-        newMessage.EmojiTotal = [];
-        newMessage.Emoji = [];
-        newMessage.readMessage = [res?.readMessage];
-        copyPrevMessages.push(newMessage);
-        return copyPrevMessages;
-      });
-      if (res.user.id !== userId) {
-        dispatch(updateConversationGroupMessage(newMessage))
-        groupMessageSeen();
-      } else {
-
-      }
+      // console.log(res);
+      updateAllMessagesOnReceive(res);
     })
 
     return () => {
       newSocket.off('newMessage/group/')
     }
-  }, [dispatch, groupMessageSeen, userId]);
+  }, [updateAllMessagesOnReceive]);
 
   useEffect(() => {
     newSocket.on("groupSeen/", (res) => {
       // console.log(res)
-      setAllMessage((prevMessage) => {
-        const updatedData = udateGroupMessageList(prevMessage, res);
-        return updatedData
-      })
+      updateUserSeenList(res);
     })
 
     newSocket.on("isReactedGroup/", (res) => {
-      setAllMessage((prevMessages) => {
-        const newMessages = updateMessageListOnReact(prevMessages, res);
-        return newMessages;
-
-      });
+      updateUserReactList(res)
     })
-  }, []);
 
-  useEffect(() => {
     newSocket.on('isDeletedGroupMessage/', (res) => {
-      setAllMessage((prevMessages) => {
-        const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
-        const updatedMessages = copyPrevMessages.filter(message => message.id !== parseInt(res.messageId));
-        return updatedMessages;
-      });
+      updateMessageListOnDelete(res);
     });
-  }, []);
+  }, [updateUserReactList, updateUserSeenList, updateMessageListOnDelete]);
+
 
   useEffect(() => {
     newSocket.emit("JoinRoom", id);
@@ -237,7 +294,7 @@ const GroupHome = () => {
   }, [getCurrentGroupInfo, getGroupMessages, id]);
 
   useEffect(() => {
-    groupMessageSeen()
+    groupMessageSeen();
   }, [groupMessageSeen]);
 
   return (
@@ -249,8 +306,10 @@ const GroupHome = () => {
         allMessage={allMessage}
         messageText={messageText}
         handleSubmitMessage={handleSubmitMessage}
+        handlePreviousMessage={handlePreviousMessage}
         setAllMessage={setAllMessage}
         isGroupOnline={isGroupOnline}
+        nextPage={nextPage}
         groupId={id}
       />
     </Spin>

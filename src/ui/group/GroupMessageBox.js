@@ -4,7 +4,7 @@ import GroupCardContainer from '../../container/group/GroupCardContainer';
 import { conversationTimeFormat } from '../../utils/timeFormat';
 
 const GroupMessageBox = (props) => {
-  const { filterMessages, userProfile,  allMessage, setAllMessage, groupId } = props;
+  const { filterMessages, userProfile, allMessage, setAllMessage, groupId } = props;
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
