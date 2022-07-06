@@ -5,12 +5,12 @@ import connector from './connector';
 import Login from './container/auth/Login';
 import Registration from './container/auth/Registration';
 import Layout from './layout/Layout';
-import { selectUserProfile, selectUserToken } from './redux/features/authSlice';
+import { selectUserToken } from './redux/features/authSlice';
 
 
 const PrivateRoute = ({ children }) => {
-  const userProfile = useSelector(selectUserProfile)
-  return userProfile ? <Layout>{children}</Layout> : <Navigate replace to="/login" />;
+  const accessToken = useSelector(selectUserToken);
+  return accessToken ? <Layout>{children}</Layout> : <Navigate replace to="/login" />;
 };
 
 function App() {

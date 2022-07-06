@@ -107,6 +107,11 @@
       word-wrap: break-word;
     }
   }
+
+  @include media("<=tablet") {
+    width: 100vw;
+    padding: 0 10px;
+  }
 }
 .message-card-bubble {
   width: 100%;

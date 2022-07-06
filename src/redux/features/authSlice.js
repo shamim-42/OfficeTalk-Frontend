@@ -20,9 +20,7 @@ export const authSlice = createSlice({
 
     setUser: (state, action) => {
       state.user = action.payload;
-      if (typeof window !== "undefined") {
-        localStorage.setItem("authToken", JSON.stringify(state.user));
-      }
+      localStorage.setItem("authToken", JSON.stringify(action.payload));
     },
 
     resetUserData: (state) => {

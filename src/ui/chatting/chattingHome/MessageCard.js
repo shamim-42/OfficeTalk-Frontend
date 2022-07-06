@@ -1,5 +1,6 @@
 import { Avatar, Button, Col, Popover, Row, Tooltip } from 'antd';
 import { FaPlusCircle } from "react-icons/fa";
+import useWindowDimensions from '../../../hooks/useWindowDimensions';
 import { timeFormat } from '../../../utils/timeFormat';
 import { checkDevided, getTwoCharacters } from '../../../utils/utils';
 import CustomAvatar from '../../helper/CustomAvatar';
@@ -13,11 +14,14 @@ import TextMessageCard from './TextMessageCard';
 const MessageCard = (props) => {
   const { CurrentUserProfile, userProfile, deleteMessage, message, isOnline, messages, index, reactVisible, setReactVisible, optionVisible, setOptionVisible, makeReaction, copyToClipboard } = props;
 
+  const { width: windowWidth } = useWindowDimensions();
+
+
   if (message?.user?.id === userProfile.id || message?.senderId === userProfile.id) {
     return (
       <>
         <Row className="message-card" justify="end">
-          <Col span={14}>
+          <Col span={windowWidth > 768 ? 14 : 22}>
             <Row>
               <Col span={21} className="messages-area">
                 {
@@ -120,7 +124,7 @@ const MessageCard = (props) => {
   return (
     <>
       <Row className="message-card" justify="start">
-        <Col span={14}>
+        <Col span={windowWidth > 768 ? 14 : 22}>
           <Row>
             {
               checkDevided(messages[index - 1], message, index)

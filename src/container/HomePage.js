@@ -17,7 +17,7 @@ const HomePage = () => {
   const userProfile = useSelector(selectUserProfile);
   const userId = userProfile.id;
   const token = useSelector(selectUserToken);
-
+  // const { newSocket } = useSocket()
 
   function isOnline(userid) {
     return onlineUsers.indexOf(parseInt(userid)) !== -1;

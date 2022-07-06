@@ -17,10 +17,11 @@
   height: 100vh;
 
   @include media("<=tablet") {
-    width: 100vw;
+    width: 99vw;
     margin-left: 100vw;
-    height: 100vh;
-    display: none;
+    height: 93vh;
+    overflow-x: hidden;
+    // display: none;
     overflow-y: scroll;
   }
 }

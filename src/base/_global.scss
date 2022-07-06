@@ -349,6 +349,11 @@ h4 {
   &:focus {
     color: map.get($theme-colors, "orange-text-ff");
   }
+
+  @include media("<=tablet") {
+    top: -15px;
+    right: -32px;
+  }
 }
 
 // .ant-popover {
