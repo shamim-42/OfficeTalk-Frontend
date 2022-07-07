@@ -29,6 +29,15 @@ const UserProfileView = ({ closeProfileModal, userProfile }) => {
         </p>
       </div>
       <Divider />
+      <div className="logout-modal-btn">
+        <Button
+          className="btn-theme-primary-fluid"
+          type="primary"
+          htmlType="submit"
+        >
+          Log Out
+        </Button>
+      </div>
     </div>
   );
 };

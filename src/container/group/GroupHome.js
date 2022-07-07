@@ -295,6 +295,10 @@ const GroupHome = () => {
 
   useEffect(() => {
     groupMessageSeen();
+
+    return () => {
+      setAllMessage([]);
+    }
   }, [groupMessageSeen]);
 
   return (

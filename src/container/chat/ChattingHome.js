@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -60,7 +61,7 @@ const ChattingHome = () => {
   // update messages list after fetch messages
   const updateMessagesOnLoad = (res) => {
     setMessageStatus(res.status);
-    console.log(res)
+    // console.log(res)
     if (res?.messages?.length > 0) {
       setAllMessage((prevMsg) => {
         let oldMsg = JSON.parse(JSON.stringify(prevMsg));
@@ -101,7 +102,8 @@ const ChattingHome = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
-      console.log(error)
+      message.error(error.message);
+      // console.log(error)
       setIsLoading(false);
     }
     return await sendMessageApi(chatId, messageData, { successHandler, handleBadReq })
@@ -109,7 +111,7 @@ const ChattingHome = () => {
 
   // update messages list and conversation after send new message
   const updateMessagesOnSend = (res) => {
-    console.log(res);
+    // console.log(res);
     const result = res.result;
     const status = res.status;
     const newMessage = {
@@ -134,7 +136,7 @@ const ChattingHome = () => {
       copyPrevMessages.push(newMessage);
       return copyPrevMessages;
     });
-    console.log("first")
+    // console.log("first")
     dispatch(setUpdateConversation(newMessage));
   }
 
@@ -180,7 +182,7 @@ const ChattingHome = () => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res);
+      // console.log(res);
       setMessageStatus(res.status)
       dispatch(updateFriendList(res.list))
     }
@@ -228,7 +230,7 @@ const ChattingHome = () => {
     });
 
     newSocket.on(`isReactedSingle/${userId}`, (res) => {
-      console.log(res)
+      // console.log(res)
       setAllMessage((prevMessages) => {
         const newMessages = updateMessageListOnReact(prevMessages, res);
         return newMessages;
@@ -264,6 +266,7 @@ const ChattingHome = () => {
     getAllMessage()
     return () => {
       dispatch(setCurrentUser(null))
+      setAllMessage([]);
     }
   }, [getCurrentUserProfile, chatId, dispatch, getAllMessage]);
 

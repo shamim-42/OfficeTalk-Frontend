@@ -33,6 +33,14 @@
       & .ant-divider {
         border-color: map.get($theme-colors, "gray-text-9b");
       }
+
+      & .logout-modal-btn {
+        @include set-display-flex(center, center);
+
+        & Button {
+          width: 50%;
+        }
+      }
     }
   }
 }

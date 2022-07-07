@@ -6,6 +6,7 @@ import Login from './container/auth/Login';
 import Registration from './container/auth/Registration';
 import Layout from './layout/Layout';
 import { selectUserToken } from './redux/features/authSlice';
+import { newSocket } from './utils/socket';
 
 
 const PrivateRoute = ({ children }) => {
@@ -51,6 +52,8 @@ function App() {
 
 
   useEffect(() => {
+    newSocket.connect();
+
     if (accessToken) {
       connector.headers = {
         Authorization: `bearer ${accessToken}`,
