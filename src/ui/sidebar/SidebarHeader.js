@@ -22,7 +22,6 @@ const SidebarHeaderUI = (props) => {
 
   const { width: windowWidth } = useWindowDimensions();
 
-
   return (
     <>
       <div className="sidebar-header">
@@ -176,7 +175,7 @@ const SidebarHeaderUI = (props) => {
                       icon={isOnline(user.id) && "small"}
                     />
                     :
-                    <TextAvatar name={userProfile.fullname}
+                    <TextAvatar name={user.fullname}
                       icon={isOnline(user.id) && "small"}
                       size="40px" fontSize="18px" />
                 }
