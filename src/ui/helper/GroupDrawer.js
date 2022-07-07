@@ -1,3 +1,4 @@
+import { Divider } from "antd";
 import CustomAvatar from "./CustomAvatar";
 import TextAvatar from "./TextAvatar";
 
@@ -18,7 +19,7 @@ const GroupDrawer = ({ groupProfile }) => {
         }
       </div>
       <p className="group-profile-name">{groupProfile.name}</p>
-
+      <Divider className="divider" />
     </div>
   );
 };

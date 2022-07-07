@@ -10,8 +10,6 @@ const FriendProfileModal = (props) => {
         className="modal-cross-button">
         X
       </Button>
-
-
     </div>
   );
 };

@@ -6,7 +6,19 @@ import Login from './container/auth/Login';
 import Registration from './container/auth/Registration';
 import Layout from './layout/Layout';
 import { selectUserToken } from './redux/features/authSlice';
-import { newSocket } from './utils/socket';
+// import { newSocket } from './utils/socket';
+import socketio from "socket.io-client";
+const accessToken = JSON.parse(localStorage.getItem("authToken"));
+
+// console.log(process.env);
+
+export const newSocket = socketio(`${process.env.REACT_APP_BASE_URL}:3000`, {
+  transports: ['websocket'],
+  query: {
+    token: accessToken
+  }
+})
+
 
 
 const PrivateRoute = ({ children }) => {

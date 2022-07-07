@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -43,6 +44,7 @@ const HomePage = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
+      message.error(error.message);
       // console.log(error.message);
     }
 
@@ -59,6 +61,7 @@ const HomePage = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
+      message.error(error.message);
       // console.log(error.message);
     }
 
@@ -75,6 +78,7 @@ const HomePage = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
+      message.error(error.message);
       // console.log(error.message);
     }
 
