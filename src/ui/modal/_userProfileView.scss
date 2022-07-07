@@ -4,8 +4,8 @@
   & .ant-modal-content {
     border-radius: 30px;
     padding: 24px;
-    // width: fit-content;
-    min-height: 70vh;
+    width: 420px;
+    height: fit-content;
 
     & .ant-modal-body {
       padding: 0;
@@ -31,11 +31,44 @@
       }
 
       & .ant-divider {
+        margin: 12px 0;
         border-color: map.get($theme-colors, "gray-text-9b");
+      }
+
+      & .profile-modal-options {
+        padding: 12px 24px;
+        @include set-display-flex(flex-start, flex-start, 16px, column);
+
+        & .profile-option {
+          @include set-display-flex(center, flex-start, 8px);
+          font-size: 18px;
+          font-weight: 600;
+        }
+
+        & .profile-notification-option {
+          width: 100%;
+          @include set-display-flex(center, space-between);
+        }
+        Button.profile-option {
+          padding: 0;
+          border: none;
+          background: transparent;
+          box-shadow: none;
+
+          &:hover,
+          &:focus {
+            padding: 0;
+            border: none;
+            background-color: transparent;
+            color: map.get($theme-colors, "black");
+            box-shadow: none;
+          }
+        }
       }
 
       & .logout-modal-btn {
         @include set-display-flex(center, center);
+        margin: 32px auto;
 
         & Button {
           width: 50%;

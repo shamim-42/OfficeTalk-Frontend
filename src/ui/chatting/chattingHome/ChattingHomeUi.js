@@ -2,7 +2,6 @@ import { Avatar, Button, Col, Input, Row, Spin } from "antd";
 import { Fragment } from "react";
 import { BsEmojiSmile } from "react-icons/bs";
 import { FaRegPaperPlane } from "react-icons/fa";
-import hi from "../../../assest/image/hi.gif";
 import ChatHeader from "../../../container/chat/ChatHeader";
 import { getDateWiseMessages } from "../../../utils/utils";
 import CustomAvatar from "../../helper/CustomAvatar";
@@ -31,7 +30,7 @@ const ChattingHomeUi = (props) => {
             }
             {(allMessage.length <= 0) && (
               <div className="sayhi-card">
-                <Avatar className="sayhi-emoji" src={hi} />
+                <Avatar className="sayhi-emoji" src="https://s3-bucket-ot-teton.s3.amazonaws.com/images/d6e592b7-ba77-4efa-860b-72df4f0f30f4.gif" />
                 <p className="sayhi-message">
                   {`Say hi to ${currentUserProfile.fullname}.`}
                 </p>

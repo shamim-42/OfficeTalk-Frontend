@@ -110,7 +110,7 @@ const GroupHome = () => {
 
   // update messages list after fetch messages
   const updateMessagesOnLoad = (res) => {
-    console.log(res)
+    // console.log(res)
     if (res?.messages?.length > 0) {
       setAllMessage((prevMsg) => {
         let oldMsg = JSON.parse(JSON.stringify(prevMsg));

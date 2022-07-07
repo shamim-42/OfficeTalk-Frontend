@@ -8,7 +8,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { TiArrowForwardOutline } from "react-icons/ti";
 
 const MessageOption = (props) => {
-  const { align, deleteMessage, message, copyToClipboard, isDelete, makeReaction, reactVisible, setReactVisible, optionVisible, setOptionVisible } = props;
+  const { align, deleteMessage, message, copyToClipboard, isDelete, makeReaction, reactVisible, setReactVisible, optionVisible, setOptionVisible, userProfile } = props;
 
   return (
     <div className="message-options">
@@ -27,13 +27,15 @@ const MessageOption = (props) => {
         </Button>
       </Popover>
 
-      <Popover visible={reactVisible} placement={align === "left" ? "right" : "left"}
-        content={<MessageReact makeReaction={makeReaction} message={message} />}
-        trigger="click">
-        <Button onClick={() => setReactVisible((pre) => !pre)} type="text">
-          <FaRegGrinAlt />
-        </Button>
-      </Popover>
+      {userProfile.id !== message.senderId &&
+        <Popover visible={reactVisible} placement={align === "left" ? "right" : "left"}
+          content={<MessageReact makeReaction={makeReaction} message={message} />}
+          trigger="click">
+          <Button onClick={() => setReactVisible((pre) => !pre)} type="text">
+            <FaRegGrinAlt />
+          </Button>
+        </Popover>
+      }
     </div>
   );
 };
