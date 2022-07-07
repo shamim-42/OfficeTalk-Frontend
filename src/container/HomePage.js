@@ -43,7 +43,7 @@ const HomePage = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
-      console.log(error.message);
+      // console.log(error.message);
     }
 
     return await checkJWTToken(payload, { successHandler, handleBadReq })
@@ -53,13 +53,13 @@ const HomePage = () => {
   const fetchConversationList = useCallback(async () => {
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res)
+      // console.log(res)
       dispatch(setConversationList(res))
     }
 
     async function handleBadReq(response) {
       let error = await response.json();
-      console.log(error.message);
+      // console.log(error.message);
     }
 
     return await getConversationsApi(userId, { successHandler, handleBadReq })
@@ -70,12 +70,12 @@ const HomePage = () => {
     async function successHandler(response) {
       const res = await response.json();
       dispatch(updateFriendList(res));
-      console.log(res)
+      // console.log(res)
     }
 
     async function handleBadReq(response) {
       let error = await response.json();
-      console.log(error.message);
+      // console.log(error.message);
     }
 
     return await friendListApi(userId, { successHandler, handleBadReq })
@@ -97,7 +97,7 @@ const HomePage = () => {
     })
 
     newSocket.on('newMessagesidebar/user/' + userId, (msg) => {
-      console.log(msg)
+      // console.log(msg)
       const newMessage = {
         users_id: msg.senderId,
         image: msg.senderImage,

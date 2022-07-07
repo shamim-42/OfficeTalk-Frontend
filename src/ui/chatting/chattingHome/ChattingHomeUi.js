@@ -29,7 +29,7 @@ const ChattingHomeUi = (props) => {
                   className="previous-btn">see previous</Button>
               </div>
             }
-            {(allMessage.length <= 0 && !isLoading) && (
+            {(allMessage.length <= 0) && (
               <div className="sayhi-card">
                 <Avatar className="sayhi-emoji" src={hi} />
                 <p className="sayhi-message">

@@ -91,13 +91,14 @@ const GroupHome = () => {
    * Get current group all messages fetch
    */
   const getGroupMessages = useCallback(async () => {
+    console.log("first")
     const payload = {
       userId: userId,
     }
     async function successHandler(response) {
       const res = await response.json();
       updateMessagesOnLoad(res);
-      // console.log(res);
+      console.log(res);
     }
 
     async function handleBadReq(response) {
@@ -262,7 +263,7 @@ const GroupHome = () => {
 
   useEffect(() => {
     newSocket.on('newMessage/group/', (res) => {
-      // console.log(res);
+      console.log(res);
       updateAllMessagesOnReceive(res);
     })
 
@@ -298,6 +299,7 @@ const GroupHome = () => {
 
     return () => {
       setAllMessage([]);
+      setPageNumber("1");
     }
   }, [groupMessageSeen]);
 

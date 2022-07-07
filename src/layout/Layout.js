@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import config from "../config/config.json";
 import connector from '../connector/index';
 import EditProfile from "../container/auth/EditProfile";
 import ProfileView from "../container/auth/ProfileView";
@@ -8,7 +7,7 @@ import GroupHome from "../container/group/GroupHome";
 import HomePage from "../container/HomePage";
 import StyleGuide from "../container/StyleGuide";
 import WelcomeHome from "../ui/home/WelcomeHome";
-connector.baseUrl = config.baseUrl;
+connector.baseUrl = process.env.REACT_APP_BASE_URL;
 
 function Layout() {
     return (

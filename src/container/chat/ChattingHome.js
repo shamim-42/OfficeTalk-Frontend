@@ -261,18 +261,21 @@ const ChattingHome = () => {
   }, [getNewMessage, userId]);
 
   useEffect(() => {
-    dispatch(setCurrentUser(chatId))
     getCurrentUserProfile()
     getAllMessage()
-    return () => {
-      dispatch(setCurrentUser(null))
-      setAllMessage([]);
-    }
-  }, [getCurrentUserProfile, chatId, dispatch, getAllMessage]);
+
+  }, [getCurrentUserProfile, getAllMessage]);
 
   useEffect(() => {
     makeReadMessage()
-  }, [makeReadMessage]);
+    dispatch(setCurrentUser(chatId))
+
+    return () => {
+      setAllMessage([]);
+      dispatch(setCurrentUser(null))
+      setPageNumber("1");
+    }
+  }, [makeReadMessage, chatId, dispatch]);
 
 
   return (
