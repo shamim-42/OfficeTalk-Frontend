@@ -62,12 +62,13 @@ export const layoutSlice = createSlice({
 
     updateConversationStatus: (state, action) => {
       let newList = JSON.parse(JSON.stringify([...state.conversationList]));
-      let index = newList?.findIndex((item) => (item?.id).toString() === (action.payload.conversationId).toString());
+      const newStatus = (action.payload);
+      let index = newList?.findIndex((item) => (item?.id).toString() === (newStatus?.conversationId)?.toString());
       if (index !== -1) {
-        newList[index].status = action.payload.status;
+        newList[index].status = newStatus?.status;
         newList[index].unreadMessages = 0;
         if (action.payload.users_seen) {
-          newList[index].users_seen = action.payload.users_seen;
+          newList[index].users_seen = newStatus?.users_seen;
         }
       }
       state.conversationList = newList;

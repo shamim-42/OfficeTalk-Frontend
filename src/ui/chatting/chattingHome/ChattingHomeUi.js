@@ -12,7 +12,6 @@ const ChattingHomeUi = (props) => {
   const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, isLoading, messagesText, handleBlur, isTyping, messageStatus, userRequestFunction, nextPage, handlePreviousMessage, setAllMessage } = props;
 
   // console.log(allMessage);
-
   const filteredMessages = getDateWiseMessages(allMessage);
 
   return (
@@ -28,7 +27,7 @@ const ChattingHomeUi = (props) => {
                   className="previous-btn">see previous</Button>
               </div>
             }
-            {(allMessage.length <= 0) && (
+            {((allMessage.length === 0) && !messageStatus) && (
               <div className="sayhi-card">
                 <Avatar className="sayhi-emoji" src="https://s3-bucket-ot-teton.s3.amazonaws.com/images/d6e592b7-ba77-4efa-860b-72df4f0f30f4.gif" />
                 <p className="sayhi-message">

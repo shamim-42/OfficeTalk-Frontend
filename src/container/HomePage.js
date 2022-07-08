@@ -1,4 +1,4 @@
-import { Howl } from 'howler';
+import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -20,11 +20,13 @@ const HomePage = () => {
   const token = useSelector(selectUserToken);
   // const { newSocket } = useSocket()
 
-  const sound = (new Howl({
-    src: ['https://mp3-ringtone.com/uploads/files/iphone_circles.mp3'],
-    volume: 0.1,
-    // autoplay: true,
-  }))
+  const playSound = useCallback(() => {
+    const sound = new Audio("../assest/iphone_notification.mp3");
+    sound.muted = true;
+    sound.play();
+  }, [])
+
+
 
   function isOnline(userid) {
     return onlineUsers.indexOf(parseInt(userid)) !== -1;
@@ -50,6 +52,7 @@ const HomePage = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
+      message.error(error.message);
       // console.log(error.message);
     }
 
@@ -66,6 +69,7 @@ const HomePage = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
+      message.error(error.message);
       // console.log(error.message);
     }
 
@@ -82,6 +86,7 @@ const HomePage = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
+      message.error(error.message);
       // console.log(error.message);
     }
 
@@ -116,7 +121,7 @@ const HomePage = () => {
         status: 'seen',
         type: "single"
       }
-      sound.play();
+      playSound()
       dispatch(setUpdateConversation(newMessage))
     })
 
@@ -153,10 +158,10 @@ const HomePage = () => {
 
     newSocket.on('delevered/' + userId, (res) => {
       const data = {
-        conversationId: res.conversationId,
+        conversationId: (res.conversationId).toString(),
         status: res.status
       }
-      // console.log(res);
+      console.log(res);
       if (res.conversationId) {
         dispatch(updateConversationStatus(data))
       }
@@ -204,7 +209,7 @@ const HomePage = () => {
       newSocket.off('users/online');
       newSocket.off('groups/online');
     };
-  }, [dispatch, userId])
+  }, [dispatch, userId, playSound])
 
   // All useEffect function below
   useEffect(() => {

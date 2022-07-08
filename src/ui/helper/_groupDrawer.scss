@@ -1,0 +1,22 @@
+@use "sass:map";
+
+.group-profile-info {
+  width: 100%;
+
+  & .group-profile-avatar {
+    display: flex;
+    justify-content: center;
+  }
+
+  & .group-profile-name {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 40px;
+    text-transform: capitalize;
+  }
+
+  & .divider {
+    border-color: map.get($theme-colors, "black");
+    margin: 1rem 0;
+  }
+}

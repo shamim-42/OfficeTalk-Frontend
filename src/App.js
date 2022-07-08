@@ -6,7 +6,20 @@ import Login from './container/auth/Login';
 import Registration from './container/auth/Registration';
 import Layout from './layout/Layout';
 import { selectUserToken } from './redux/features/authSlice';
-import { newSocket } from './utils/socket';
+// import { newSocket } from './utils/socket';
+import { message } from 'antd';
+import socketio from "socket.io-client";
+const accessToken = JSON.parse(localStorage.getItem("authToken"));
+
+// console.log(process.env);
+
+export const newSocket = socketio(`${process.env.REACT_APP_BASE_URL}:3000`, {
+  transports: ['websocket'],
+  query: {
+    token: accessToken
+  }
+})
+
 
 
 const PrivateRoute = ({ children }) => {
@@ -18,19 +31,23 @@ function App() {
   const accessToken = useSelector(selectUserToken);
   connector.handle404 = async (response) => {
     const err = await response.json();
+    message.error(err.message);
     console.log(err);
   }
   connector.handle401 = async (response) => {
     const err = await response.json();
+    message.error(err.message);
     console.log(err);
   }
   connector.handle403 = async (response) => {
     const err = await response.json();
+    message.error(err.message);
     console.log(err);
   }
   connector.handle500 = async (response) => {
-    const err = await response.json();
-    console.log(err);
+    const error = await response.json();
+    message.error("Something went wrong, please try again later.");
+    console.log(error);
   }
   connector.handleBadReq = async (response) => {
     let errorResponse = await response.json();
@@ -43,16 +60,15 @@ function App() {
   connector.onRequestStartDelay = 500;
   connector.onRequestEnd = async function () {
     console.log("onRequestEnd")
-
   }
 
   connector.onNetworkError = async function () {
+    message.error("network error")
     console.log("network error")
   }
 
 
   useEffect(() => {
-    newSocket.connect();
 
     if (accessToken) {
       connector.headers = {

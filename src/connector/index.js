@@ -310,7 +310,7 @@ class Connector {
   }
 
   static joinUrl(baseUrl, relativeUrl) {
-    console.log(baseUrl);
+    // console.log(baseUrl);
     return concatAndResolveUrl(baseUrl, relativeUrl);
   }
 }

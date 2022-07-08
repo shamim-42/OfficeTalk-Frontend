@@ -10,7 +10,7 @@ const GroupHomeUI = (props) => {
   const { groupInfo, allMessage, userProfile, handleChangeMessage, messageText, handleSubmitMessage, isGroupOnline, setAllMessage, groupId, handlePreviousMessage, nextPage } = props;
 
   const filteredMessages = getDateWiseMessages(allMessage);
-  console.log(allMessage)
+  // console.log(allMessage)
 
   return (
     <div>
