@@ -1,3 +1,4 @@
+import { Howl } from 'howler';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +19,12 @@ const HomePage = () => {
   const userId = userProfile.id;
   const token = useSelector(selectUserToken);
   // const { newSocket } = useSocket()
+
+  const sound = (new Howl({
+    src: ['https://mp3-ringtone.com/uploads/files/iphone_circles.mp3'],
+    volume: 0.1,
+    // autoplay: true,
+  }))
 
   function isOnline(userid) {
     return onlineUsers.indexOf(parseInt(userid)) !== -1;
@@ -97,6 +104,7 @@ const HomePage = () => {
     })
 
     newSocket.on('newMessagesidebar/user/' + userId, (msg) => {
+      // Play the sound.
       // console.log(msg)
       const newMessage = {
         users_id: msg.senderId,
@@ -108,6 +116,7 @@ const HomePage = () => {
         status: 'seen',
         type: "single"
       }
+      sound.play();
       dispatch(setUpdateConversation(newMessage))
     })
 
