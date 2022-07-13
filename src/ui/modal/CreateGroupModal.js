@@ -6,6 +6,8 @@ import TextAvatar from '../helper/TextAvatar';
 const CreateGroupModal = (props) => {
   const { handleChatGroupCancel, handleChangeUserSearch, handleCreateGroup, selectedUser, addUserOnClick, userList, selectFile, handleChangefile, handleChangeGroupName, loading, requiredMsg, handleNameValidation } = props;
 
+  console.log(userList);
+
   return (
     <div>
       <Button
