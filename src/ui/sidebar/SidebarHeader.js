@@ -18,7 +18,7 @@ import SettingPopover from './SettingPopover';
 
 
 const SidebarHeaderUI = (props) => {
-  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible, showProfileOpenModal, users, isOnline, openProfile, closeProfileModal } = props;
+  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible, showProfileOpenModal, friendList, isOnline, openProfile, closeProfileModal } = props;
 
   const { width: windowWidth } = useWindowDimensions();
 
@@ -32,6 +32,7 @@ const SidebarHeaderUI = (props) => {
                 <div onClick={showProfileOpenModal}>
                   <CustomAvatar
                     size={44}
+                    icon="small"
                     src={userProfile.profileImageResize || userProfile.profileImage} />
                 </div>
                 :
@@ -158,15 +159,15 @@ const SidebarHeaderUI = (props) => {
           closable={false}
           footer={null}
         >
-          <UserProfileView userProfile={userProfile} closeProfileModal={closeProfileModal} />
+          <UserProfileView handleLogout={handleLogout} userProfile={userProfile} closeProfileModal={closeProfileModal} />
         </Modal>
       </div >
       <div className="online-users">
         <Avatar.Group className="online-user-group">
           {
-            users.map((user, index) => (
+            friendList.map((user, index) => (
               isOnline(user.id) &&
-              <Link to={user.id === userProfile.id ? "/" : `chat/${user.id}`} key={user.id || index}>
+              <Link to={`chat/${user.id}`} key={user.id || index}>
                 {
                   user.profileImageResize ?
                     <CustomAvatar
@@ -180,7 +181,6 @@ const SidebarHeaderUI = (props) => {
                       size="40px" fontSize="18px" />
                 }
               </Link>
-
             ))
           }
           {/* {users.length > 8 &&

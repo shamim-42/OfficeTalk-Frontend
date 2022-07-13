@@ -35,7 +35,7 @@ const EditProfile = () => {
 
     async function successHandler(response) {
       const data = await response.json();
-      console.log(data)
+      // console.log(data)
       newProfile.profileImage = data?.sm.Location;
       dispatch(setUserProfile(newProfile))
       setPhotoChange(false);
@@ -44,7 +44,7 @@ const EditProfile = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
-      console.log(error);
+      // console.log(error);
       setLoader(false);
     }
 
@@ -75,7 +75,7 @@ const EditProfile = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
-      console.log(error);
+      // console.log(error);
     }
 
     return await editprofileApi(userId, newProfile, { successHandler, handleBadReq })

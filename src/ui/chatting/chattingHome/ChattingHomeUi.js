@@ -2,7 +2,6 @@ import { Avatar, Button, Col, Input, Row, Spin } from "antd";
 import { Fragment } from "react";
 import { BsEmojiSmile } from "react-icons/bs";
 import { FaRegPaperPlane } from "react-icons/fa";
-import hi from "../../../assest/image/hi.gif";
 import ChatHeader from "../../../container/chat/ChatHeader";
 import { getDateWiseMessages } from "../../../utils/utils";
 import CustomAvatar from "../../helper/CustomAvatar";
@@ -11,8 +10,6 @@ import MessageBox from "./MessageBox";
 
 const ChattingHomeUi = (props) => {
   const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, isLoading, messagesText, handleBlur, isTyping, messageStatus, userRequestFunction, nextPage, handlePreviousMessage, setAllMessage } = props;
-
-  // console.log(allMessage);
 
   const filteredMessages = getDateWiseMessages(allMessage);
 
@@ -29,9 +26,9 @@ const ChattingHomeUi = (props) => {
                   className="previous-btn">see previous</Button>
               </div>
             }
-            {(allMessage.length <= 0) && (
+            {((allMessage.length === 0) && !messageStatus) && (
               <div className="sayhi-card">
-                <Avatar className="sayhi-emoji" src={hi} />
+                <Avatar className="sayhi-emoji" src="https://s3-bucket-ot-teton.s3.amazonaws.com/images/d6e592b7-ba77-4efa-860b-72df4f0f30f4.gif" />
                 <p className="sayhi-message">
                   {`Say hi to ${currentUserProfile.fullname}.`}
                 </p>
@@ -84,10 +81,10 @@ const ChattingHomeUi = (props) => {
             {isTyping && (
               <div className="user-typing">
                 {
-                  currentUserProfile?.profileImage ?
+                  currentUserProfile?.profileImageResize ?
                     <CustomAvatar
                       size={20}
-                      src={currentUserProfile?.profileImage}
+                      src={currentUserProfile?.profileImageResize}
                     />
                     :
                     <TextAvatar name={currentUserProfile?.fullname}

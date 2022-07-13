@@ -13,7 +13,6 @@ function Layout() {
     return (
         <Routes>
             <Route path="/gude" element={<StyleGuide />} />
-
             <Route path="/" element={<HomePage />}>
                 <Route index element={<WelcomeHome />} />
                 <Route path="/chat/:chatId" element={<ChattingHome />} />
@@ -21,8 +20,6 @@ function Layout() {
                 <Route path="/profile" element={<ProfileView />} exact />
                 <Route path="/editprofile" element={<EditProfile />} exact />
             </Route>
-            {/* <Route path="/login" element={<Login />} exact />
-            <Route path="/signup" element={<Registration />} exact /> */}
         </Routes>
     )
 }

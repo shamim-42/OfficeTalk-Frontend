@@ -26,10 +26,8 @@ export const authSlice = createSlice({
     resetUserData: (state) => {
       state.user = null;
       state.userProfile = null;
-      if (typeof window !== "undefined") {
-        localStorage.setItem("authToken", JSON.stringify(null));
-        localStorage.setItem("userProfile", JSON.stringify({}));
-      }
+      localStorage.setItem("authToken", JSON.stringify(null));
+      localStorage.setItem("userProfile", JSON.stringify({}));
     },
 
     setCurrentUser: (state, action) => {

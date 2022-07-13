@@ -51,8 +51,10 @@ export const layoutSlice = createSlice({
       let newList = [...state.conversationList];
       let updatedConversation = { ...action.payload };
       let index = newList.findIndex(item => parseInt(item.users_id) === parseInt(action.payload.users_id));
+
+      updatedConversation.image = newList[index]?.image;
       if (index === -1) {
-        newList.unshift(updatedConversation)
+        newList.unshift(updatedConversation);
       } else {
         newList.splice(index, 1);
         newList.unshift(updatedConversation)
@@ -61,13 +63,14 @@ export const layoutSlice = createSlice({
     },
 
     updateConversationStatus: (state, action) => {
-      let newList = [...state.conversationList];
-      let index = newList.findIndex((item) => (item.id).toString() === (action.payload.conversationId).toString());
+      let newList = JSON.parse(JSON.stringify([...state.conversationList]));
+      const newStatus = (action.payload);
+      let index = newList?.findIndex((item) => (item?.id).toString() === (newStatus?.conversationId)?.toString());
       if (index !== -1) {
-        newList[index].status = action.payload.status;
+        newList[index].status = newStatus?.status;
         newList[index].unreadMessages = 0;
         if (action.payload.users_seen) {
-          newList[index].users_seen = action.payload.users_seen;
+          newList[index].users_seen = newStatus?.users_seen;
         }
       }
       state.conversationList = newList;

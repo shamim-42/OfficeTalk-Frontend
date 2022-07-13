@@ -45,6 +45,7 @@ const MessageCard = (props) => {
                         setOptionVisible={setOptionVisible}
                         message={message}
                         makeReaction={makeReaction}
+                        userProfile={userProfile}
                         align="right" />
                       <ImageMessageCard
                         sender={true}
@@ -65,6 +66,7 @@ const MessageCard = (props) => {
                         setOptionVisible={setOptionVisible}
                         message={message}
                         makeReaction={makeReaction}
+                        userProfile={userProfile}
                         align="right" />
                       <TextMessageCard
                         CurrentUserProfile={CurrentUserProfile}
@@ -84,6 +86,7 @@ const MessageCard = (props) => {
                       setReactVisible={setReactVisible}
                       optionVisible={optionVisible}
                       setOptionVisible={setOptionVisible}
+                      userProfile={userProfile}
                       message={message}
                       makeReaction={makeReaction}
                       align="right" />
@@ -167,6 +170,7 @@ const MessageCard = (props) => {
                   copyToClipboard={copyToClipboard}
                   reactVisible={reactVisible}
                   setReactVisible={setReactVisible}
+                  userProfile={userProfile}
                   optionVisible={optionVisible}
                   setOptionVisible={setOptionVisible}
                   message={message}
@@ -182,6 +186,7 @@ const MessageCard = (props) => {
                   <MessageOption
                     isDelete={false}
                     copyToClipboard={copyToClipboard}
+                    userProfile={userProfile}
                     reactVisible={reactVisible}
                     setReactVisible={setReactVisible}
                     optionVisible={optionVisible}

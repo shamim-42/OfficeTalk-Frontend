@@ -63,7 +63,7 @@ const CreateGroup = (props) => {
 
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res);
+      // console.log(res);
       const newGroup = {
         image: res.roomimg,
         groupId: res.roominfo.id,
@@ -82,7 +82,7 @@ const CreateGroup = (props) => {
     async function handleBadReq(response) {
       let error = await response.json();
       setLoading(false);
-      console.log(error);
+      // console.log(error);
     }
 
     return await creategroupApi(formData, {
