@@ -27,14 +27,17 @@ const MessageOption = (props) => {
         </Button>
       </Popover>
 
-      {userProfile.id !== message.senderId &&
-        <Popover visible={reactVisible} placement={align === "left" ? "right" : "left"}
-          content={<MessageReact makeReaction={makeReaction} message={message} />}
-          trigger="click">
-          <Button onClick={() => setReactVisible((pre) => !pre)} type="text">
-            <FaRegGrinAlt />
-          </Button>
-        </Popover>
+      {
+        ((userProfile.id === message?.senderId) || (userProfile.id === message?.user?.id)) ?
+          ""
+          :
+          <Popover visible={reactVisible} placement={align === "left" ? "right" : "left"}
+            content={<MessageReact makeReaction={makeReaction} message={message} />}
+            trigger="click">
+            <Button onClick={() => setReactVisible((pre) => !pre)} type="text">
+              <FaRegGrinAlt />
+            </Button>
+          </Popover>
       }
     </div>
   );

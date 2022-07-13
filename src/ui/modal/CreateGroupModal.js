@@ -6,8 +6,6 @@ import TextAvatar from '../helper/TextAvatar';
 const CreateGroupModal = (props) => {
   const { handleChatGroupCancel, handleChangeUserSearch, handleCreateGroup, selectedUser, addUserOnClick, userList, selectFile, handleChangefile, handleChangeGroupName, loading, requiredMsg, handleNameValidation } = props;
 
-  console.log(userList);
-
   return (
     <div>
       <Button
@@ -54,9 +52,9 @@ const CreateGroupModal = (props) => {
                     onClick={() => addUserOnClick(user.id)}
                     key={user.id}>
                     <div className="user-info">
-                      {user?.profileImage
+                      {user?.profileImageResize
                         ? <Avatar
-                          src={user.profileImage}
+                          src={user.profileImageResize}
                           style={{
                             width: 36,
                             height: 36,
