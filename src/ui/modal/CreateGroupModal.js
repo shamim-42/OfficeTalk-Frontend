@@ -52,9 +52,9 @@ const CreateGroupModal = (props) => {
                     onClick={() => addUserOnClick(user.id)}
                     key={user.id}>
                     <div className="user-info">
-                      {user?.profileImage
+                      {user?.profileImageResize
                         ? <Avatar
-                          src={user.profileImage}
+                          src={user.profileImageResize}
                           style={{
                             width: 36,
                             height: 36,
