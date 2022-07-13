@@ -6,7 +6,7 @@ const { TextArea } = Input;
 function ChatInputBox(props) {
   const { messagesValue, onSubmit, onChange, onBlur } = props;
   function openEmojiBox(ev) {
-    console.log(ev);
+    // console.log(ev);
   }
   return (
     <Fragment>

@@ -224,6 +224,7 @@
 .sidebar-card-user-name {
   font-size: 20px;
   font-weight: 600;
+  @include set-line-clamp(1);
 }
 
 .ant-dropdown-menu {

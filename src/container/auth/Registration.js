@@ -34,7 +34,7 @@ const Registration = () => {
     // Bad Request Handler function
     async function handleBadReq(response) {
       let err = await response.json();
-      console.log("Register Error", err);
+      // console.log("Register Error", err);
       setLoading(false);
     }
 

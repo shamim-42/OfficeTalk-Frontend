@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../../api/auth';
 import { acceptUserApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../../api/chat';
+import useSocket from '../../hooks/useSocket';
 import { selectUserProfile, setCurrentUser } from '../../redux/features/authSlice';
 import { setUpdateConversation, setUpdateUnreadCount, updateFriendList } from '../../redux/features/layoutSlice';
 import ChattingHomeUi from '../../ui/chatting/chattingHome/ChattingHomeUi';
-import { newSocket } from '../../utils/socket';
 import { checkLink, updateMessageListOnReact } from '../../utils/utils';
 
 
@@ -15,6 +15,7 @@ const ChattingHome = () => {
   let { chatId } = useParams();
   const [currentUserProfile, setCurrentUserProfile] = useState({})
   const [isLoading, setIsLoading] = useState(true);
+  const { socket: newSocket } = useSocket();
   const [messagesText, setMessagesText] = useState('')
   const [messageStatus, setMessageStatus] = useState(null);
   const [pageNumber, setPageNumber] = useState("1");
@@ -195,20 +196,22 @@ const ChattingHome = () => {
 
   // ***** All Socket Function below ***** //
   const getNewMessage = useCallback(() => {
-    newSocket.on('newMessage/user/' + userId, (msg) => {
-      if (parseInt(msg.senderId) === parseInt(chatId)) {
-        makeReadMessage();
-        setAllMessage((prevMessages) => {
-          const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
-          const newMessage = JSON.parse(JSON.stringify(msg));
-          newMessage.EmojiTotal = [];
-          newMessage.Emoji = [];
-          copyPrevMessages.push(newMessage);
-          return copyPrevMessages;
-        });
-      }
-    })
-  }, [userId, makeReadMessage, chatId])
+    if (newSocket) {
+      newSocket.on('newMessage/user/' + userId, (msg) => {
+        if (parseInt(msg.senderId) === parseInt(chatId)) {
+          makeReadMessage();
+          setAllMessage((prevMessages) => {
+            const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+            const newMessage = JSON.parse(JSON.stringify(msg));
+            newMessage.EmojiTotal = [];
+            newMessage.Emoji = [];
+            copyPrevMessages.push(newMessage);
+            return copyPrevMessages;
+          });
+        }
+      })
+    }
+  }, [userId, makeReadMessage, chatId, newSocket])
 
   // handle on blur event function
   const handleBlur = () => {
@@ -221,44 +224,52 @@ const ChattingHome = () => {
    * All useEffect Function below
    */
   useEffect(() => {
-    newSocket.on(`isdeleted/${userId}`, (res) => {
-      setAllMessage((prevMessages) => {
-        const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
-        const updatedMessages = copyPrevMessages.filter(message => message.id !== parseInt(res.messageId));
-        return updatedMessages;
+    if (newSocket) {
+      newSocket.on(`isdeleted/${userId}`, (res) => {
+        setAllMessage((prevMessages) => {
+          const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
+          const updatedMessages = copyPrevMessages.filter(message => message.id !== parseInt(res.messageId));
+          return updatedMessages;
+        });
       });
-    });
 
-    newSocket.on(`isReactedSingle/${userId}`, (res) => {
-      // console.log(res)
-      setAllMessage((prevMessages) => {
-        const newMessages = updateMessageListOnReact(prevMessages, res);
-        return newMessages;
+      newSocket.on(`isReactedSingle/${userId}`, (res) => {
+        // console.log(res)
+        setAllMessage((prevMessages) => {
+          const newMessages = updateMessageListOnReact(prevMessages, res);
+          return newMessages;
 
+        });
       });
-    });
 
-    newSocket.on(`isWriting/${userId}`, (res) => {
-      if (parseInt(res.userId) === parseInt(chatId)) {
-        setIsTyping(true);
-      }
-    });
+      newSocket.on(`isWriting/${userId}`, (res) => {
+        if (parseInt(res.userId) === parseInt(chatId)) {
+          setIsTyping(true);
+        }
+      });
 
-    newSocket.on(`isNotWriting/${userId}`, (res) => {
-      setIsTyping(false);
-    });
+      newSocket.on(`isNotWriting/${userId}`, (res) => {
+        setIsTyping(false);
+      });
+    }
 
     return () => {
       setIsTyping(false);
-      newSocket.off(`isWriting/${userId}`);
-      newSocket.off(`isNotWriting/${userId}`);
+      if (newSocket) {
+        newSocket.off(`isWriting/${userId}`);
+        newSocket.off(`isNotWriting/${userId}`);
+      }
     }
-  }, [userId, chatId]);
+  }, [userId, chatId, newSocket]);
 
   useEffect(() => {
     getNewMessage()
-    return () => newSocket.off('newMessage/user/' + userId);
-  }, [getNewMessage, userId]);
+    return () => {
+      if (newSocket) {
+        newSocket.off('newMessage/user/' + userId);
+      }
+    }
+  }, [getNewMessage, userId, newSocket]);
 
   useEffect(() => {
     getCurrentUserProfile()

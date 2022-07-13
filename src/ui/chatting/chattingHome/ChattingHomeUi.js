@@ -11,7 +11,6 @@ import MessageBox from "./MessageBox";
 const ChattingHomeUi = (props) => {
   const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, isLoading, messagesText, handleBlur, isTyping, messageStatus, userRequestFunction, nextPage, handlePreviousMessage, setAllMessage } = props;
 
-  // console.log(allMessage);
   const filteredMessages = getDateWiseMessages(allMessage);
 
   return (
@@ -82,10 +81,10 @@ const ChattingHomeUi = (props) => {
             {isTyping && (
               <div className="user-typing">
                 {
-                  currentUserProfile?.profileImage ?
+                  currentUserProfile?.profileImageResize ?
                     <CustomAvatar
                       size={20}
-                      src={currentUserProfile?.profileImage}
+                      src={currentUserProfile?.profileImageResize}
                     />
                     :
                     <TextAvatar name={currentUserProfile?.fullname}

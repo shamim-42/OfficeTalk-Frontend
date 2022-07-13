@@ -3,10 +3,10 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getGroupInfo, getGroupMessagesApi, groupMessageSeenApi, groupMessageSendApi } from "../../api/group";
+import useSocket from "../../hooks/useSocket";
 import { selectUserProfile, setCurrentGroup } from "../../redux/features/authSlice";
 import { selectOnlineGroups, updateConversationGroupMessage, updateConversationGroupSeen, updateConversationGroupStatus } from "../../redux/features/layoutSlice";
 import GroupHomeUI from "../../ui/group/GroupHomeUI";
-import { newSocket } from "../../utils/socket";
 import { udateGroupMessageList, updateMessageListOnReact } from "../../utils/utils";
 // import { checkLink } from "../../utils/utils";
 
@@ -19,6 +19,7 @@ const GroupHome = () => {
   const [pageNumber, setPageNumber] = useState("1");
   const [nextPage, setNextPage] = useState(0);
   const userProfile = useSelector(selectUserProfile);
+  const { socket: newSocket } = useSocket();
   const userId = userProfile.id;
   const onlineGroups = useSelector(selectOnlineGroups);
   const isGroupOnline = onlineGroups.includes(parseInt(id));
@@ -102,7 +103,7 @@ const GroupHome = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
-      console.log(error)
+      // console.log(error)
     }
     return await getGroupMessagesApi(id, pageNumber, payload, { successHandler, handleBadReq })
   }, [id, userId, pageNumber]);
@@ -261,37 +262,45 @@ const GroupHome = () => {
   }, [dispatch, id]);
 
   useEffect(() => {
-    newSocket.on('newMessage/group/', (res) => {
-      console.log(res);
-      updateAllMessagesOnReceive(res);
-    })
+    if (newSocket) {
+      newSocket.on('newMessage/group/', (res) => {
+        // console.log(res);
+        updateAllMessagesOnReceive(res);
+      })
+    }
 
     return () => {
-      newSocket.off('newMessage/group/')
+      if (newSocket) {
+        newSocket.off('newMessage/group/')
+      }
     }
-  }, [updateAllMessagesOnReceive]);
+  }, [updateAllMessagesOnReceive, newSocket]);
 
   useEffect(() => {
-    newSocket.on("groupSeen/", (res) => {
-      // console.log(res)
-      updateUserSeenList(res);
-    })
+    if (newSocket) {
+      newSocket.on("groupSeen/", (res) => {
+        // console.log(res)
+        updateUserSeenList(res);
+      })
 
-    newSocket.on("isReactedGroup/", (res) => {
-      updateUserReactList(res)
-    })
+      newSocket.on("isReactedGroup/", (res) => {
+        updateUserReactList(res)
+      })
 
-    newSocket.on('isDeletedGroupMessage/', (res) => {
-      updateMessageListOnDelete(res);
-    });
-  }, [updateUserReactList, updateUserSeenList, updateMessageListOnDelete]);
+      newSocket.on('isDeletedGroupMessage/', (res) => {
+        updateMessageListOnDelete(res);
+      });
+    }
+  }, [updateUserReactList, updateUserSeenList, updateMessageListOnDelete, newSocket]);
 
 
   useEffect(() => {
-    newSocket.emit("JoinRoom", id);
+    if (newSocket) {
+      newSocket.emit("JoinRoom", id);
+    }
     getCurrentGroupInfo()
     getGroupMessages()
-  }, [getCurrentGroupInfo, getGroupMessages, id]);
+  }, [getCurrentGroupInfo, getGroupMessages, id, newSocket]);
 
   useEffect(() => {
     groupMessageSeen();

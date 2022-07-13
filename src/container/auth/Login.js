@@ -38,19 +38,19 @@ const Login = () => {
   };
 
   const onFinishModal = (values) => {
-    console.log(values);
+    // console.log(values);
     setModalNumber(2)
   };
 
   const onFinishPassword = (values) => {
-    console.log(values);
+    // console.log(values);
     setModalNumber(1)
     handleCancel()
   };
 
   // function for handle otp
   const onFinishOtp = (values) => {
-    console.log(values);
+    // console.log(values);
     setModalNumber(3)
   };
 
@@ -79,7 +79,7 @@ const Login = () => {
       let err = await response.json();
       const message = err.message;
       setErrorMessage(message);
-      console.log("Login Error", err.message);
+      // console.log("Login Error", err.message);
       setLoading(false);
       showErrorModal()
     }

@@ -37,7 +37,7 @@ const ChatCardContainer = (props) => {
     }
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res)
+      // console.log(res)
       setReactVisible(false);
       setAllMessage((prevMessages) => {
         const newMessages = updateMessageListOnReact(prevMessages, res);
@@ -48,7 +48,7 @@ const ChatCardContainer = (props) => {
 
     async function handleBadReq(response) {
       let error = await response.json();
-      console.log(error)
+      // console.log(error)
     }
     return await singleReactionApi(userId, reactData, { successHandler, handleBadReq })
   }

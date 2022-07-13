@@ -2,23 +2,23 @@ import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { allUserListApi, userLogoutApi } from '../api/auth';
+import { allUserListApi, friendListApi, userLogoutApi } from '../api/auth';
+import useSocket from '../hooks/useSocket';
 import { resetUserData, selectUserProfile } from '../redux/features/authSlice';
-import { setActiveUser, setAllUsers } from '../redux/features/layoutSlice';
+import { setActiveUser, setAllUsers, updateFriendList } from '../redux/features/layoutSlice';
 import SidebarHeaderUI from '../ui/sidebar/SidebarHeader';
-import { newSocket } from '../utils/socket';
 
 const SidebarHead = () => {
   const [isJoinMeetingModalVisible, setIsJoinMeetingModalVisible] = useState(false);
   const [isChatGroupModalVisible, setIsChatGroupModalVisible] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([])
-  const [users, setUsers] = useState([])
   const dispatch = useDispatch();
+  const { socket: newSocket } = useSocket();
   const navigate = useNavigate();
   const userProfile = useSelector(selectUserProfile);
   const userId = userProfile.id;
-
+  const [friendList, setFriendList] = useState([]);
 
   function isOnline(userid) {
     return onlineUsers.indexOf(parseInt(userid)) !== -1;
@@ -63,17 +63,34 @@ const SidebarHead = () => {
   const fetchUserList = useCallback(async () => {
     async function successHandler(response) {
       const res = await response.json();
-      setUsers(res)
       dispatch(setAllUsers(res))
     }
 
     async function handleBadReq(response) {
       let error = await response.json();
-      console.log(error.message);
+      // console.log(error.message);
     }
 
     return await allUserListApi({ successHandler, handleBadReq })
   }, [dispatch]);
+
+  // get all conversations list
+  const fetchFriendList = useCallback(async () => {
+    async function successHandler(response) {
+      const res = await response.json();
+      setFriendList(res);
+      dispatch(updateFriendList(res));
+      // console.log(res)
+    }
+
+    async function handleBadReq(response) {
+      let error = await response.json();
+      message.error(error.message);
+      // console.log(error.message);
+    }
+
+    return await friendListApi(userId, { successHandler, handleBadReq })
+  }, [userId, dispatch])
 
   // handle User sign out and redirect back to login page
   async function handleLogout() {
@@ -89,24 +106,27 @@ const SidebarHead = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
-      console.log(error.message);
+      // console.log(error.message);
       message.error(error.message);
     }
     return await userLogoutApi(userId, { successHandler, handleBadReq })
   }
 
   useEffect(() => {
-    newSocket.connect();
-    newSocket.on('users/online', (allOnlineUsers) => {
-      // const allOnlineUsers = users.filter(user => user !== userId)
-      setOnlineUsers(allOnlineUsers)
-      dispatch(setActiveUser(allOnlineUsers));
-    })
-  }, [dispatch, userId]);
+    if (newSocket) {
+      newSocket.connect();
+      newSocket.on('users/online', (allOnlineUsers) => {
+        // const allOnlineUsers = users.filter(user => user !== userId)
+        setOnlineUsers(allOnlineUsers)
+        dispatch(setActiveUser(allOnlineUsers));
+      })
+    }
+  }, [dispatch, newSocket]);
 
   useEffect(() => {
-    fetchUserList()
-  }, [fetchUserList])
+    fetchUserList();
+    fetchFriendList();
+  }, [fetchUserList, fetchFriendList])
 
   return (
     <SidebarHeaderUI
@@ -124,7 +144,7 @@ const SidebarHead = () => {
       showProfileOpenModal={showProfileOpenModal}
       openProfile={openProfile}
       closeProfileModal={closeProfileModal}
-      users={users}
+      friendList={friendList}
       isOnline={isOnline}
     />
   );
