@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { allUserListApi, friendListApi, userLogoutApi } from '../api/auth';
+import { userSearchApi } from '../api/chat';
 import useSocket from '../hooks/useSocket';
 import { resetUserData, selectUserProfile } from '../redux/features/authSlice';
 import { setActiveUser, setAllUsers, updateFriendList } from '../redux/features/layoutSlice';
@@ -12,7 +13,8 @@ const SidebarHead = () => {
   const [isJoinMeetingModalVisible, setIsJoinMeetingModalVisible] = useState(false);
   const [isChatGroupModalVisible, setIsChatGroupModalVisible] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
-  const [onlineUsers, setOnlineUsers] = useState([])
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [foundUsers, setFoundUsers] = useState([]);
   const dispatch = useDispatch();
   const { socket: newSocket } = useSocket();
   const navigate = useNavigate();
@@ -24,9 +26,30 @@ const SidebarHead = () => {
     return onlineUsers.indexOf(parseInt(userid)) !== -1;
   }
 
-  // update search input value
-  function handleChangeSearch(value) {
-    console.log(value);
+  const handleBlur = () => {
+    const timer = setTimeout(() => {
+      setFoundUsers([]);
+    }, 200);
+    return () => clearTimeout(timer);
+  }
+
+
+  // search user by username
+  const handleChangeSearch = async (e) => {
+    const value = e.target.value;
+
+    async function successHandler(response) {
+      const res = await response.json();
+      setFoundUsers(res);
+      // console.log(res);
+    }
+
+    async function handleBadReq(response) {
+      let error = await response.json();
+      console.log(error.message);
+    }
+
+    return await userSearchApi(value, { successHandler, handleBadReq })
   }
 
   // change dark mode switch value
@@ -68,7 +91,7 @@ const SidebarHead = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
-      // console.log(error.message);
+      console.log(error.message);
     }
 
     return await allUserListApi({ successHandler, handleBadReq })
@@ -146,6 +169,8 @@ const SidebarHead = () => {
       closeProfileModal={closeProfileModal}
       friendList={friendList}
       isOnline={isOnline}
+      foundUsers={foundUsers}
+      handleBlur={handleBlur}
     />
   );
 };

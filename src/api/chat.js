@@ -36,3 +36,8 @@ export const singleReactionApi = async function (userId, payload, options = {}) 
   const url = `3000/like-emoji/${userId}/voteSingle`;
   return await connector.post(url, payload, options);
 };
+
+export const userSearchApi = async function (query, options = {}) {
+  const url = `4000/users/search?s=${query}`;
+  return await connector.get(url, options);
+};

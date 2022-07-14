@@ -14,11 +14,12 @@ import CustomAvatar from '../helper/CustomAvatar';
 import TextAvatar from '../helper/TextAvatar';
 import UserProfileView from '../modal/UserProfileView';
 import FilterPopover from './FilterPopover';
+import SearcUsersPopover from './SearcUsersPopover';
 import SettingPopover from './SettingPopover';
 
 
 const SidebarHeaderUI = (props) => {
-  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible, showProfileOpenModal, friendList, isOnline, openProfile, closeProfileModal } = props;
+  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible, showProfileOpenModal, friendList, isOnline, openProfile, closeProfileModal, foundUsers, handleBlur } = props;
 
   const { width: windowWidth } = useWindowDimensions();
 
@@ -97,19 +98,28 @@ const SidebarHeaderUI = (props) => {
         </Row>
         <Row>
           <Col span={22}>
-            <Form
-              name="search_form"
-              onFinish={handleChangeSearch}
-              wrapperCol={{
-                span: 22,
-              }}
-            >
-              <Form.Item
-                name="search"
+            <Popover
+              visible={foundUsers.length > 0}
+              placement="bottom"
+              content={<SearcUsersPopover users={foundUsers} />}
+              trigger="contextMenu">
+              <Form
+                name="search_form"
+                wrapperCol={{
+                  span: 22,
+                }}
               >
-                <Input prefix={<BiSearch className="site-form-item-icon" />} placeholder="people , groups , message" />
-              </Form.Item>
-            </Form>
+                <Form.Item
+                  name="search"
+                >
+                  <Input
+                    prefix={<BiSearch className="site-form-item-icon" />}
+                    onChange={handleChangeSearch}
+                    onBlur={handleBlur}
+                    placeholder="people , groups , message" />
+                </Form.Item>
+              </Form>
+            </Popover>
           </Col>
 
           <Col span={2}>
