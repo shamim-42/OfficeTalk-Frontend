@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { message, notification } from 'antd';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ import HomeUi from '../ui/home/HomeUi';
 const HomePage = () => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [onlineGroups, setOnlineGroups] = useState([]);
-  const {socket: newSocket } = useSocket();
+  const { socket: newSocket } = useSocket();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userProfile = useSelector(selectUserProfile);
@@ -86,6 +86,9 @@ const HomePage = () => {
       })
 
       newSocket.on('newMessagesidebar/user/' + userId, (msg) => {
+        notification.info({
+          message: 'You have got a new message!',
+        });
         // Play the sound.
         // console.log(msg)
         const newMessage = {
@@ -183,10 +186,10 @@ const HomePage = () => {
     }
 
     return () => {
-      if(newSocket){
-      newSocket.close();
-      newSocket.off('users/online');
-      newSocket.off('groups/online');
+      if (newSocket) {
+        newSocket.close();
+        newSocket.off('users/online');
+        newSocket.off('groups/online');
       }
     };
   }, [dispatch, newSocket, userProfile])

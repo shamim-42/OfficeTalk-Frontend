@@ -1,5 +1,5 @@
 import { Avatar, Button, Col, Input, Row, Spin } from "antd";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { BsEmojiSmile } from "react-icons/bs";
 import { FaRegPaperPlane } from "react-icons/fa";
 import ChatHeader from "../../../container/chat/ChatHeader";
@@ -10,6 +10,12 @@ import MessageBox from "./MessageBox";
 
 const ChattingHomeUi = (props) => {
   const { currentUserProfile, handleChangeMessage, handleSubmitMessage, allMessage, isLoading, messagesText, handleBlur, isTyping, messageStatus, userRequestFunction, nextPage, handlePreviousMessage, setAllMessage } = props;
+
+  const [isMore, setIsMore] = useState(false);
+  function seeMore() {
+    handlePreviousMessage()
+    setIsMore(true)
+  }
 
   const filteredMessages = getDateWiseMessages(allMessage);
 
@@ -22,7 +28,7 @@ const ChattingHomeUi = (props) => {
             {nextPage > 0 &&
               <div className="previous-btn-container">
                 <Button
-                  onClick={handlePreviousMessage}
+                  onClick={seeMore}
                   className="previous-btn">see previous</Button>
               </div>
             }
@@ -47,6 +53,7 @@ const ChattingHomeUi = (props) => {
                 filteredMessages.map((filterMessages, index) => (
                   <MessageBox
                     key={index}
+                    isMore={isMore}
                     currentUserProfile={currentUserProfile}
                     setAllMessage={setAllMessage}
                     messageStatus={messageStatus}
