@@ -56,6 +56,7 @@ const Login = () => {
 
   // on login submit function
   const onSubmitHandler = async (values) => {
+    if(!values) return;
     setLoading(true);
     const loginData = {
       email: values.email,

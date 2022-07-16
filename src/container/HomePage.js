@@ -72,7 +72,7 @@ const HomePage = () => {
   useEffect(() => {
     if (userProfile && newSocket) {
       const userId = userProfile.id;
-      newSocket.connect();
+      // newSocket.connect();
 
       newSocket.on('users/online', (users) => {
         const allOnlineUsers = users.filter(user => user !== userId)

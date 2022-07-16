@@ -10,7 +10,7 @@ const GroupHomeUI = (props) => {
   const { groupInfo, allMessage, userProfile, handleChangeMessage, messageText, handleSubmitMessage, isGroupOnline, setAllMessage, groupId, handlePreviousMessage, nextPage } = props;
 
   const filteredMessages = getDateWiseMessages(allMessage);
-  // console.log(allMessage)
+  console.log(allMessage)
 
   return (
     <div>
@@ -24,7 +24,7 @@ const GroupHomeUI = (props) => {
         {nextPage > 0 &&
           <div className="previous-btn-container">
             <Button
-              onClick={handlePreviousMessage}
+              onClick={() => handlePreviousMessage}
               className="previous-btn">see previous</Button>
           </div>
         }

@@ -137,7 +137,6 @@ const SidebarHead = () => {
 
   useEffect(() => {
     if (newSocket) {
-      newSocket.connect();
       newSocket.on('users/online', (allOnlineUsers) => {
         // const allOnlineUsers = users.filter(user => user !== userId)
         setOnlineUsers(allOnlineUsers)

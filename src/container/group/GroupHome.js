@@ -92,6 +92,7 @@ const GroupHome = () => {
    * Get current group all messages fetch
    */
   const getGroupMessages = useCallback(async () => {
+    const userId = userProfile.id;
     const payload = {
       userId: userId,
     }
@@ -106,11 +107,11 @@ const GroupHome = () => {
       // console.log(error)
     }
     return await getGroupMessagesApi(id, pageNumber, payload, { successHandler, handleBadReq })
-  }, [id, userId, pageNumber]);
+  }, [id, userProfile, pageNumber]);
 
   // update messages list after fetch messages
   const updateMessagesOnLoad = (res) => {
-    // console.log(res)
+    console.log(res)
     if (res?.messages?.length > 0) {
       setAllMessage((prevMsg) => {
         let oldMsg = JSON.parse(JSON.stringify(prevMsg));
@@ -278,6 +279,8 @@ const GroupHome = () => {
 
   useEffect(() => {
     if (newSocket) {
+      newSocket.emit("JoinRoom", id);
+
       newSocket.on("groupSeen/", (res) => {
         // console.log(res)
         updateUserSeenList(res);
@@ -291,16 +294,12 @@ const GroupHome = () => {
         updateMessageListOnDelete(res);
       });
     }
-  }, [updateUserReactList, updateUserSeenList, updateMessageListOnDelete, newSocket]);
-
+  }, [updateUserReactList, updateUserSeenList, updateMessageListOnDelete, newSocket, id]);
 
   useEffect(() => {
-    if (newSocket) {
-      newSocket.emit("JoinRoom", id);
-    }
     getCurrentGroupInfo()
     getGroupMessages()
-  }, [getCurrentGroupInfo, getGroupMessages, id, newSocket]);
+  }, [getCurrentGroupInfo, getGroupMessages])
 
   useEffect(() => {
     groupMessageSeen();
