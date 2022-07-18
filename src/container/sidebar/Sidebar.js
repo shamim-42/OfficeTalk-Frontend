@@ -2,16 +2,14 @@ import { message } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getConversationsApi } from '../../api/chat';
-import useSocket from '../../hooks/useSocket';
 import { selectUserProfile } from '../../redux/features/authSlice';
 import { deleteSingleConversation, setActiveUser, setConversationList, updateConversationMessage, updateConversationStatus, updateOnlineGroupList } from '../../redux/features/layoutSlice';
 import SidebarUI from '../../ui/sidebar/Sidebar';
 
-const Sidebar = (props) => {
+const Sidebar = ({newSocket}) => {
   const userProfile = useSelector(selectUserProfile);
   const [onlineGroups, setOnlineGroups] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const { socket: newSocket } = useSocket();
   const dispatch = useDispatch();
 
   function isOnline(userid) {
@@ -134,6 +132,7 @@ const Sidebar = (props) => {
       userProfile={userProfile}
       isGroupOnline={isGroupOnline}
       isOnline={isOnline}
+      newSocket={newSocket}
     />
   );
 };

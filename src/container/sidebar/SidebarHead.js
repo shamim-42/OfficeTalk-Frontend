@@ -4,19 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { allUserListApi, friendListApi, userLogoutApi } from '../../api/auth';
 import { userSearchApi } from '../../api/chat';
-import useSocket from '../../hooks/useSocket';
 import { resetUserData, selectUserProfile } from '../../redux/features/authSlice';
 import { setAllUsers, updateFriendList } from '../../redux/features/layoutSlice';
 import SidebarHeaderUI from '../../ui/sidebar/SidebarHeader';
 
 
-const SidebarHead = ({isOnline}) => {
+const SidebarHead = ({isOnline, newSocket}) => {
   const [isJoinMeetingModalVisible, setIsJoinMeetingModalVisible] = useState(false);
   const [isChatGroupModalVisible, setIsChatGroupModalVisible] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [foundUsers, setFoundUsers] = useState([]);
   const dispatch = useDispatch();
-  const { socket: newSocket } = useSocket();
   const navigate = useNavigate();
   const userProfile = useSelector(selectUserProfile);
   const userId = userProfile.id;

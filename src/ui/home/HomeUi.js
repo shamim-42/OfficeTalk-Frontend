@@ -6,7 +6,7 @@ import Sidebar from '../../container/sidebar/Sidebar';
 const { Sider, Content } = Layout;
 
 const HomeUi = (props) => {
-  const { Audio } = props;
+  const { Audio, newSocket } = props;
   const sideBarRef = useRef(null)
 
   return (
@@ -19,11 +19,11 @@ const HomeUi = (props) => {
           trigger={sideBarRef?.current}
           collapsed={false}
         >
-          <Sidebar />
+          <Sidebar newSocket={newSocket} />
         </Sider>
       </Affix>
       <Content className="content-area">
-        <Outlet ji="ji" />
+        <Outlet ji="ji" context={newSocket} />
       </Content>
     </>
   );

@@ -1,20 +1,20 @@
 import { message, notification } from 'antd';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import socketio from "socket.io-client";
 import { checkJWTToken } from '../api/auth';
-import useSocket from '../hooks/useSocket';
 import { resetUserData, selectUserProfile, selectUserToken } from '../redux/features/authSlice';
 import { setUpdateConversation, updateConversationGroupMessage } from '../redux/features/layoutSlice';
 import HomeUi from '../ui/home/HomeUi';
 
 
 const HomePage = () => {
-  const { socket: newSocket } = useSocket();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userProfile = useSelector(selectUserProfile);
   const token = useSelector(selectUserToken);
+  const [newSocket, initSocket] = useState(null);
   const Audio = useRef();
 
   // Check JWT token validity function
@@ -94,11 +94,24 @@ const HomePage = () => {
   // All useEffect function below
   useEffect(() => {
     checkJWTTokenValidity();
-  }, [checkJWTTokenValidity])
+  }, [checkJWTTokenValidity]);
+
+  useEffect(() => {
+    if (token) {
+      const newSocket = socketio(`${process.env.REACT_APP_BASE_URL}:3000`, {
+        transports: ['websocket'],
+        query: {
+          token: token
+        }
+      })
+      initSocket(newSocket);
+    }
+  }, [token])
 
   return (
     <HomeUi
       Audio={Audio}
+      newSocket={newSocket}
     />
   );
 };

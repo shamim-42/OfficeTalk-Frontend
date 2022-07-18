@@ -1,9 +1,8 @@
 import { Spin } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { getGroupInfo, getGroupMessagesApi, groupMessageSeenApi, groupMessageSendApi } from "../../api/group";
-import useSocket from "../../hooks/useSocket";
 import { selectUserProfile, setCurrentGroup } from "../../redux/features/authSlice";
 import { selectOnlineGroups, updateConversationGroupMessage, updateConversationGroupSeen, updateConversationGroupStatus } from "../../redux/features/layoutSlice";
 import GroupHomeUI from "../../ui/group/GroupHomeUI";
@@ -19,11 +18,13 @@ const GroupHome = () => {
   const [pageNumber, setPageNumber] = useState("1");
   const [nextPage, setNextPage] = useState(0);
   const userProfile = useSelector(selectUserProfile);
-  const { socket: newSocket } = useSocket();
+  // const { socket: newSocket } = useSocket();
   const userId = userProfile.id;
   const onlineGroups = useSelector(selectOnlineGroups);
   const isGroupOnline = onlineGroups.includes(parseInt(id));
   const dispatch = useDispatch();
+  const  newSocket  = useOutletContext();
+
 
 
   const handlePreviousMessage = () => {
@@ -294,6 +295,7 @@ const GroupHome = () => {
         updateMessageListOnDelete(res);
       });
     }
+
   }, [updateUserReactList, updateUserSeenList, updateMessageListOnDelete, newSocket, id]);
 
   useEffect(() => {

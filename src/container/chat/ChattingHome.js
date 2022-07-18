@@ -1,10 +1,9 @@
 import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../../api/auth';
 import { acceptUserApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../../api/chat';
-import useSocket from '../../hooks/useSocket';
 import { selectUserProfile, setCurrentUser } from '../../redux/features/authSlice';
 import { setUpdateConversation, setUpdateUnreadCount, updateFriendList } from '../../redux/features/layoutSlice';
 import ChattingHomeUi from '../../ui/chatting/chattingHome/ChattingHomeUi';
@@ -15,7 +14,7 @@ const ChattingHome = () => {
   let { chatId } = useParams();
   const [currentUserProfile, setCurrentUserProfile] = useState({})
   const [isLoading, setIsLoading] = useState(true);
-  const { socket: newSocket } = useSocket();
+  // const { socket: newSocket } = useSocket();
   const [messagesText, setMessagesText] = useState('')
   const [messageStatus, setMessageStatus] = useState(null);
   const [pageNumber, setPageNumber] = useState("1");
@@ -26,6 +25,9 @@ const ChattingHome = () => {
   const userProfile = useSelector(selectUserProfile);
   const dispatch = useDispatch();
   const userId = userProfile.id;
+  const navigate = useNavigate();
+
+  const  newSocket  = useOutletContext();
 
   // handle on change message function
   const handleChangeMessage = (e) => {
@@ -264,11 +266,6 @@ const ChattingHome = () => {
 
   useEffect(() => {
     getNewMessage()
-    return () => {
-      if (newSocket) {
-        newSocket.off('newMessage/user/' + userId);
-      }
-    }
   }, [getNewMessage, userId, newSocket]);
 
   useEffect(() => {
@@ -287,6 +284,13 @@ const ChattingHome = () => {
       setPageNumber("1");
     }
   }, [makeReadMessage, chatId, dispatch]);
+
+  useEffect(() => {
+    if (parseInt(chatId) === parseInt(userId)) {
+      navigate('/');
+    }
+
+  }, [chatId, userId, navigate]);
 
 
   return (

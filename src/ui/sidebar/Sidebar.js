@@ -5,12 +5,12 @@ import { selectConversationList } from '../../redux/features/layoutSlice';
 import SidebarCard from './SidebarCard';
 
 const SidebarUI = (props) => {
-  const { userProfile, isOnline, isGroupOnline } = props;
+  const { userProfile, isOnline, isGroupOnline, newSocket } = props;
   const conversationList = useSelector(selectConversationList);
 
   return (
     <div className="sidebar-container">
-      <SidebarHead isOnline={isOnline} />
+      <SidebarHead newSocket={newSocket} isOnline={isOnline} />
       <Divider />
       <div className="sidebar-card-container">
         <div className="sidebar-cards">
