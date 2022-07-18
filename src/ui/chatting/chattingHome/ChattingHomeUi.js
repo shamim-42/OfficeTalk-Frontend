@@ -16,7 +16,6 @@ const ChattingHomeUi = (props) => {
     handlePreviousMessage()
     setIsMore(true)
   }
-
   const filteredMessages = getDateWiseMessages(allMessage);
 
   return (

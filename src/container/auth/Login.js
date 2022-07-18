@@ -66,6 +66,7 @@ const Login = () => {
     // on Login success handler function
     async function successHandler(response) {
       let res = await response.json();
+      console.log(res)
       const userLoginData = res.profile;
       const accessToken = res.accessToken;
       setLoading(false);
@@ -78,6 +79,7 @@ const Login = () => {
     // Bad Request Handler function
     async function handleBadReq(response) {
       let err = await response.json();
+      console.log(err)
       const message = err.message;
       setErrorMessage(message);
       // console.log("Login Error", err.message);

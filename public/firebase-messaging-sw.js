@@ -2,15 +2,14 @@
 importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js');
 
-console.log(process.env)
 // Initialize the Firebase app in the service worker by passing the generated config
 const firebaseConfig = {
-  apiKey: "AIzaSyBoa5PXUmJqq4P_34nDco0v6ylmObRBnSA",
-  authDomain: "office-talk-teton.firebaseapp.com",
-  projectId: "office-talk-teton",
-  storageBucket: "office-talk-teton.appspot.com",
-  messagingSenderId: "672360034822",
-  appId: "1:672360034822:web:1a59ba0f448bd40d43c987"
+  apiKey: "AIzaSyDzrYOWQGRndiN4I1QCZJRUPMhr5wZWIfk",
+  authDomain: "car-mechanic-985f5.firebaseapp.com",
+  projectId: "car-mechanic-985f5",
+  storageBucket: "car-mechanic-985f5.appspot.com",
+  messagingSenderId: "1084209587761",
+  appId: "1:1084209587761:web:49066bb1d555165b731710"
 };
 
 
