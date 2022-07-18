@@ -18,7 +18,6 @@ const GroupHome = () => {
   const [pageNumber, setPageNumber] = useState("1");
   const [nextPage, setNextPage] = useState(0);
   const userProfile = useSelector(selectUserProfile);
-  // const { socket: newSocket } = useSocket();
   const userId = userProfile.id;
   const onlineGroups = useSelector(selectOnlineGroups);
   const isGroupOnline = onlineGroups.includes(parseInt(id));

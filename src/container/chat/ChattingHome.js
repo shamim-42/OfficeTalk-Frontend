@@ -14,7 +14,6 @@ const ChattingHome = () => {
   let { chatId } = useParams();
   const [currentUserProfile, setCurrentUserProfile] = useState({})
   const [isLoading, setIsLoading] = useState(true);
-  // const { socket: newSocket } = useSocket();
   const [messagesText, setMessagesText] = useState('')
   const [messageStatus, setMessageStatus] = useState(null);
   const [pageNumber, setPageNumber] = useState("1");
