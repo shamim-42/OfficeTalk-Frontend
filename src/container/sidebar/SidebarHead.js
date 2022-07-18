@@ -2,18 +2,18 @@ import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { allUserListApi, friendListApi, userLogoutApi } from '../api/auth';
-import { userSearchApi } from '../api/chat';
-import useSocket from '../hooks/useSocket';
-import { resetUserData, selectUserProfile } from '../redux/features/authSlice';
-import { setActiveUser, setAllUsers, updateFriendList } from '../redux/features/layoutSlice';
-import SidebarHeaderUI from '../ui/sidebar/SidebarHeader';
+import { allUserListApi, friendListApi, userLogoutApi } from '../../api/auth';
+import { userSearchApi } from '../../api/chat';
+import useSocket from '../../hooks/useSocket';
+import { resetUserData, selectUserProfile } from '../../redux/features/authSlice';
+import { setAllUsers, updateFriendList } from '../../redux/features/layoutSlice';
+import SidebarHeaderUI from '../../ui/sidebar/SidebarHeader';
 
-const SidebarHead = () => {
+
+const SidebarHead = ({isOnline}) => {
   const [isJoinMeetingModalVisible, setIsJoinMeetingModalVisible] = useState(false);
   const [isChatGroupModalVisible, setIsChatGroupModalVisible] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
-  const [onlineUsers, setOnlineUsers] = useState([]);
   const [foundUsers, setFoundUsers] = useState([]);
   const dispatch = useDispatch();
   const { socket: newSocket } = useSocket();
@@ -21,10 +21,6 @@ const SidebarHead = () => {
   const userProfile = useSelector(selectUserProfile);
   const userId = userProfile.id;
   const [friendList, setFriendList] = useState([]);
-
-  function isOnline(userid) {
-    return onlineUsers.indexOf(parseInt(userid)) !== -1;
-  }
 
   const handleBlur = () => {
     const timer = setTimeout(() => {
@@ -134,16 +130,6 @@ const SidebarHead = () => {
     }
     return await userLogoutApi(userId, { successHandler, handleBadReq })
   }
-
-  useEffect(() => {
-    if (newSocket) {
-      newSocket.on('users/online', (allOnlineUsers) => {
-        // const allOnlineUsers = users.filter(user => user !== userId)
-        setOnlineUsers(allOnlineUsers)
-        dispatch(setActiveUser(allOnlineUsers));
-      })
-    }
-  }, [dispatch, newSocket]);
 
   useEffect(() => {
     fetchUserList();

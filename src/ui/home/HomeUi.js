@@ -2,11 +2,11 @@ import { Affix, Layout } from 'antd';
 import { useRef } from 'react';
 import { Outlet } from 'react-router-dom';
 import Ring from '../../assest/iphone_notification.mp3';
-import Sidebar from '../sidebar/Sidebar';
+import Sidebar from '../../container/sidebar/Sidebar';
 const { Sider, Content } = Layout;
 
 const HomeUi = (props) => {
-  const { userProfile, isOnline, isGroupOnline, Audio } = props;
+  const { Audio } = props;
   const sideBarRef = useRef(null)
 
   return (
@@ -19,10 +19,7 @@ const HomeUi = (props) => {
           trigger={sideBarRef?.current}
           collapsed={false}
         >
-          <Sidebar
-            userProfile={userProfile}
-            isGroupOnline={isGroupOnline}
-            isOnline={isOnline} />
+          <Sidebar />
         </Sider>
       </Affix>
       <Content className="content-area">
