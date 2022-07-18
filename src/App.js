@@ -5,11 +5,10 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import connector from './connector';
 import Login from './container/auth/Login';
 import Registration from './container/auth/Registration';
-import { requestForToken } from './firebase/firebase';
 import Layout from './layout/Layout';
 import { selectUserToken } from './redux/features/authSlice';
 
-requestForToken()
+// requestForToken()
 
 const PrivateRoute = ({ children }) => {
   const accessToken = useSelector(selectUserToken);
