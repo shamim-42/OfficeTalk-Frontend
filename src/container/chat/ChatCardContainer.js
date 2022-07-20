@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteMessageApi, singleReactionApi } from '../../api/chat';
 import { selectUserProfile } from '../../redux/features/authSlice';
@@ -8,7 +8,7 @@ import MessageCard from '../../ui/chatting/chattingHome/MessageCard';
 import { updateMessageListOnReact } from '../../utils/utils';
 
 const ChatCardContainer = (props) => {
-  const { currentUserProfile, setAllMessage, singleMessage, messages, index } = props;
+  const { currentUserProfile, setAllMessage, singleMessage, messages, index, targetId } = props;
   const [reactVisible, setReactVisible] = useState(false);
   const [optionVisible, setOptionVisible] = useState(false);
   const chatId = currentUserProfile?.id;
@@ -21,7 +21,6 @@ const ChatCardContainer = (props) => {
   function isOnline(id) {
     return onlineUsers.indexOf(id) !== -1;
   }
-
 
   /**
      * single message reaction function
@@ -48,6 +47,7 @@ const ChatCardContainer = (props) => {
 
     async function handleBadReq(response) {
       let error = await response.json();
+      message.error(error.message);
       // console.log(error)
     }
     return await singleReactionApi(userId, reactData, { successHandler, handleBadReq })
@@ -107,22 +107,35 @@ const ChatCardContainer = (props) => {
     setOptionVisible(false);
   };
 
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView();
+
+  }, [targetId]);
+
   return (
-    <MessageCard
-      CurrentUserProfile={currentUserProfile}
-      userProfile={userProfile}
-      deleteMessage={deleteMessage}
-      message={singleMessage}
-      isOnline={isOnline}
-      messages={messages}
-      index={index}
-      copyToClipboard={copyToClipboard}
-      reactVisible={reactVisible}
-      setReactVisible={setReactVisible}
-      optionVisible={optionVisible}
-      setOptionVisible={setOptionVisible}
-      makeReaction={makeReaction}
-    />
+    <>
+      <MessageCard
+        CurrentUserProfile={currentUserProfile}
+        userProfile={userProfile}
+        deleteMessage={deleteMessage}
+        message={singleMessage}
+        isOnline={isOnline}
+        messages={messages}
+        index={index}
+        copyToClipboard={copyToClipboard}
+        reactVisible={reactVisible}
+        setReactVisible={setReactVisible}
+        optionVisible={optionVisible}
+        setOptionVisible={setOptionVisible}
+        makeReaction={makeReaction}
+      />
+      {
+        singleMessage.id === targetId &&
+        <div ref={messagesEndRef}></div>
+      }
+    </>
   );
 };
 

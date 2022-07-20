@@ -25,7 +25,7 @@ const Sidebar = ({newSocket}) => {
     const userId = userProfile.id;
     async function successHandler(response) {
       const res = await response.json();
-      // console.log(res)
+      console.log(res)
       dispatch(setConversationList(res))
     }
 

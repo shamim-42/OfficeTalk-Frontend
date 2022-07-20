@@ -17,24 +17,6 @@
     width: 100vw;
   }
 
-  & .sayhi-card {
-    width: 300px;
-    height: 180px;
-    background-color: map.get($theme-colors, "white-f1");
-    margin: 20px auto;
-    border-radius: 12px;
-    @include set-display-flex(center, space-around, 0, column);
-
-    & .sayhi-emoji {
-      width: 50px;
-      height: 50px;
-    }
-
-    & .sayhi-btn {
-      width: 150px;
-    }
-  }
-
   & .chatting-content {
     width: 100%;
     @include set-display-flex(flex-start, flex-end, 32px, column);
@@ -217,4 +199,21 @@
 .message-list {
   @include set-display-flex(flex-start, flex-end, 8px, column);
   width: 100%;
+}
+.sayhi-card {
+  width: 300px;
+  height: 180px;
+  background-color: map.get($theme-colors, "white-f1");
+  margin: 20px auto;
+  border-radius: 12px;
+  @include set-display-flex(center, space-around, 0, column);
+
+  & .sayhi-emoji {
+    width: 50px;
+    height: 50px;
+  }
+
+  & .sayhi-btn {
+    width: 150px;
+  }
 }

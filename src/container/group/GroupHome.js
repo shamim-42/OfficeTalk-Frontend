@@ -1,4 +1,4 @@
-import { Spin } from "antd";
+import { message, Spin } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useOutletContext, useParams } from "react-router-dom";
@@ -23,8 +23,6 @@ const GroupHome = () => {
   const isGroupOnline = onlineGroups.includes(parseInt(id));
   const dispatch = useDispatch();
   const  newSocket  = useOutletContext();
-
-
 
   const handlePreviousMessage = () => {
     setPageNumber((prevPage) => {
@@ -104,6 +102,7 @@ const GroupHome = () => {
 
     async function handleBadReq(response) {
       let error = await response.json();
+      message.error(error.message);
       // console.log(error)
     }
     return await getGroupMessagesApi(id, pageNumber, payload, { successHandler, handleBadReq })
@@ -111,7 +110,7 @@ const GroupHome = () => {
 
   // update messages list after fetch messages
   const updateMessagesOnLoad = (res) => {
-    console.log(res)
+    // console.log(res)
     if (res?.messages?.length > 0) {
       setAllMessage((prevMsg) => {
         let oldMsg = JSON.parse(JSON.stringify(prevMsg));

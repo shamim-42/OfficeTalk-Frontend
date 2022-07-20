@@ -1,41 +1,28 @@
-import { message } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { userActiveStatusApi } from '../../api/auth';
-import { acceptUserApi, getAllMessageApi, makeReadApi, sendMessageApi } from '../../api/chat';
+import { acceptUserApi, getAllMessageApi, makeReadApi } from '../../api/chat';
 import { selectUserProfile, setCurrentUser } from '../../redux/features/authSlice';
-import { setUpdateConversation, setUpdateUnreadCount, updateFriendList } from '../../redux/features/layoutSlice';
+import { setUpdateUnreadCount, updateFriendList } from '../../redux/features/layoutSlice';
 import ChattingHomeUi from '../../ui/chatting/chattingHome/ChattingHomeUi';
-import { checkLink, updateMessageListOnReact } from '../../utils/utils';
-
+import { updateMessageListOnReact } from '../../utils/utils';
 
 const ChattingHome = () => {
   let { chatId } = useParams();
   const [currentUserProfile, setCurrentUserProfile] = useState({})
   const [isLoading, setIsLoading] = useState(true);
-  const [messagesText, setMessagesText] = useState('')
   const [messageStatus, setMessageStatus] = useState(null);
   const [pageNumber, setPageNumber] = useState("1");
   const [nextPage, setNextPage] = useState(0);
-  const [timer, setTimer] = useState(null);
-  const [isTyping, setIsTyping] = useState(false);
-  const [allMessage, setAllMessage] = useState([])
+  const [allMessage, setAllMessage] = useState([]);
+  const [targetId, setTargetId] = useState(0);
   const userProfile = useSelector(selectUserProfile);
+
   const dispatch = useDispatch();
   const userId = userProfile.id;
   const navigate = useNavigate();
-
-  const  newSocket  = useOutletContext();
-
-  // handle on change message function
-  const handleChangeMessage = (e) => {
-    setMessagesText(e.target.value);
-    newSocket.emit('isWriting', { chatId: chatId, userId: userId });
-    if (timer) {
-      clearTimeout(timer);
-    }
-  }
+  const newSocket = useOutletContext();
 
   const handlePreviousMessage = () => {
     setPageNumber((prevPage) => {
@@ -50,6 +37,10 @@ const ChattingHome = () => {
   const getAllMessage = useCallback(async () => {
     async function successHandler(response) {
       const res = await response.json();
+      console.log(res)
+      if (res?.messages.length > 0) {
+        setTargetId(res.messages[res?.messages.length - 1].id)
+      }
       updateMessagesOnLoad(res);
     }
 
@@ -76,71 +67,7 @@ const ChattingHome = () => {
     setIsLoading(false)
   }
 
-  /**
-   * Send message to current user function
-   * @param {*} e 
-   * @param {string} msg 
-   * @returns 
-   */
-  async function handleSubmitMessage(e, msg = null) {
-    newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
-    if (messagesText.trim().length <= 0 && !msg) {
-      return
-    }
-    let messageLinks = null;
-    const isLink = checkLink(messagesText)
-    if (isLink) messageLinks = isLink;
 
-    const messageData = {
-      message: msg || messagesText,
-      senderId: userId,
-      type: "text",
-      links: messageLinks,
-    }
-    async function successHandler(response) {
-      const res = await response.json();
-      updateMessagesOnSend(res);
-    }
-
-    async function handleBadReq(response) {
-      let error = await response.json();
-      message.error(error.message);
-      // console.log(error)
-      setIsLoading(false);
-    }
-    return await sendMessageApi(chatId, messageData, { successHandler, handleBadReq })
-  }
-
-  // update messages list and conversation after send new message
-  const updateMessagesOnSend = (res) => {
-    // console.log(res);
-    const result = res.result;
-    const status = res.status;
-    const newMessage = {
-      id: res.conversationId,
-      users_id: parseInt(result.receiverId),
-      image: currentUserProfile.profileImage,
-      name: currentUserProfile.fullname,
-      lastMessage: result?.content,
-      sentBy: result.senderId,
-      lastMessageTime: result?.createdAt,
-      unreadMessages: 0,
-      status: status,
-      type: "single",
-    }
-
-    setMessagesText('')
-    setAllMessage((prevMessages) => {
-      const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
-      const newMessage = JSON.parse(JSON.stringify(res.result));
-      newMessage.EmojiTotal = [];
-      newMessage.Emoji = [];
-      copyPrevMessages.push(newMessage);
-      return copyPrevMessages;
-    });
-    // console.log("first")
-    dispatch(setUpdateConversation(newMessage));
-  }
 
   // make message as read message 
   const makeReadMessage = useCallback(async () => {
@@ -174,6 +101,7 @@ const ChattingHome = () => {
     }
     return await userActiveStatusApi(chatId, { successHandler, handleBadReq })
   }, [chatId])
+
 
   // Accept or Reject a user function
   async function userRequestFunction(msg) {
@@ -214,12 +142,6 @@ const ChattingHome = () => {
     }
   }, [userId, makeReadMessage, chatId, newSocket])
 
-  // handle on blur event function
-  const handleBlur = () => {
-    setTimer(setTimeout(() => {
-      newSocket.emit('isNotWriting', { chatId: chatId, userId: userId });
-    }, 2000));
-  }
 
   /**
    * All useEffect Function below
@@ -242,24 +164,6 @@ const ChattingHome = () => {
 
         });
       });
-
-      newSocket.on(`isWriting/${userId}`, (res) => {
-        if (parseInt(res.userId) === parseInt(chatId)) {
-          setIsTyping(true);
-        }
-      });
-
-      newSocket.on(`isNotWriting/${userId}`, (res) => {
-        setIsTyping(false);
-      });
-    }
-
-    return () => {
-      setIsTyping(false);
-      if (newSocket) {
-        newSocket.off(`isWriting/${userId}`);
-        newSocket.off(`isNotWriting/${userId}`);
-      }
     }
   }, [userId, chatId, newSocket]);
 
@@ -285,27 +189,26 @@ const ChattingHome = () => {
   }, [makeReadMessage, chatId, dispatch]);
 
   useEffect(() => {
+    console.log(targetId)
     if (parseInt(chatId) === parseInt(userId)) {
       navigate('/');
     }
-
-  }, [chatId, userId, navigate]);
+  }, [chatId, userId, navigate, targetId]);
 
 
   return (
     <ChattingHomeUi
-      handleSubmitMessage={handleSubmitMessage}
-      messagesText={messagesText}
-      handleChangeMessage={handleChangeMessage}
-      handleBlur={handleBlur}
       allMessage={allMessage}
       setAllMessage={setAllMessage}
       messageStatus={messageStatus}
-      isTyping={isTyping}
       isLoading={isLoading}
       nextPage={nextPage}
+      newSocket={newSocket}
+      userId={userId}
+      targetId={targetId}
       handlePreviousMessage={handlePreviousMessage}
       userRequestFunction={userRequestFunction}
+      setTargetId={setTargetId}
       currentUserProfile={currentUserProfile} />
   );
 };

@@ -44,6 +44,7 @@ const GroupCardContainer = (props) => {
 
     async function handleBadReq(response) {
       let error = await response.json();
+      message.error(error.message);
       // console.log(error)
     }
     return await groupReactionApi(userId, reactData, { successHandler, handleBadReq })
