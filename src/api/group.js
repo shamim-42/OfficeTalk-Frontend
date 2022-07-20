@@ -1,37 +1,37 @@
 import connector from "../connector";
 
 export const creategroupApi = async function (payload, options = {}) {
-  const url = '3000/group/creategroup';
+  const url = '3001/group/creategroup';
   return await connector.post(url, payload, options);
 };
 
 export const getGroupInfo = async function (groupId, userId, options = {}) {
-  const url = `3000/group/${groupId}/${userId}`;
+  const url = `3001/group/${groupId}/${userId}`;
   return connector.get(url, options);
 };
 
 export const getGroupMessagesApi = async function (groupId, pageNumber, payload, options = {}) {
-  const url = `3000/group/${groupId}/groupmessages?page=${pageNumber}`;
+  const url = `3001/group/${groupId}/groupmessages?page=${pageNumber}`;
   return connector.post(url, payload, options);
 };
 
 export const groupMessageSendApi = async function (groupId, payload, options = {}) {
-  const url = `3000/group/${groupId}/sendMessageGroup`;
+  const url = `3001/group/${groupId}/sendMessageGroup`;
   return connector.post(url, payload, options);
 };
 
 export const groupMessageSeenApi = async function (groupId, payload, options = {}) {
-  const url = `3000/group/${groupId}/markAsRead`;
+  const url = `3001/group/${groupId}/markAsRead`;
   return connector.post(url, payload, options);
 };
 
 
 export const groupMessageDeleteApi = async function (msgId, groupId, userId, options = {}) {
-  const url = `3000/group/deletemessageGroup/${msgId}/${groupId}/${userId}`;
+  const url = `3001/group/deletemessageGroup/${msgId}/${groupId}/${userId}`;
   return connector.delete(url, options);
 };
 
 export const groupReactionApi = async function (userId, payload, options = {}) {
-  const url = `3000/like-emoji/${userId}/voteGroup`;
+  const url = `3001/like-emoji/${userId}/voteGroup`;
   return await connector.post(url, payload, options);
 };
