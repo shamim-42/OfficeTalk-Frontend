@@ -1,15 +1,14 @@
-import { Avatar, Button, Col, Popover, Row, Tooltip } from 'antd';
+import { Col, Row } from 'antd';
 import { useEffect, useRef } from 'react';
-import { FaPlusCircle } from "react-icons/fa";
 import useWindowDimensions from '../../../hooks/useWindowDimensions';
 import { timeFormat } from '../../../utils/timeFormat';
-import { checkDevided, getTwoCharacters } from '../../../utils/utils';
+import { checkDevided } from '../../../utils/utils';
 import CustomAvatar from '../../helper/CustomAvatar';
 import TextAvatar from '../../helper/TextAvatar';
 import ImageMessageCard from './ImageMessageCard';
 import MessageOption from './MessageOption';
-import MessageSeenBubbles from './MessageSeenBubbles';
 import TextMessageCard from './TextMessageCard';
+import UserSeenBubbles from './UserSeenBubbles';
 
 
 const MessageCard = (props) => {
@@ -24,7 +23,6 @@ const MessageCard = (props) => {
         inline: "end"
       });
     }
-
   }, [targetId, message]);
 
   if (message?.user?.id === userProfile.id || message?.senderId === userProfile.id) {
@@ -63,6 +61,7 @@ const MessageCard = (props) => {
                     </>
                   }
                 </div>
+
                 <div className='message-body message-right'>
                   {message.type === 'text' &&
                     <>
@@ -115,14 +114,16 @@ const MessageCard = (props) => {
                   {
                     (userProfile.profileImageResize || userProfile.profileImage) ?
                       <CustomAvatar
-                        size={40}
+                        size={windowWidth < 768 ? 24 : 40}
                         icon={isOnline(userProfile?.id) && "small"}
                         src={userProfile.profileImageResize || userProfile.profileImage}
                       />
                       :
                       <TextAvatar name={userProfile?.fullname}
                         icon={isOnline(userProfile?.id) && "small"}
-                        size="40px" fontSize="18px" />
+                        size={windowWidth < 768 ? "24px" : "40px"}
+                        fontSize={windowWidth < 768 ? "10px" : "18px"}
+                      />
                   }
                 </Col>
               }
@@ -146,14 +147,16 @@ const MessageCard = (props) => {
                   {
                     CurrentUserProfile?.profileImageResize ?
                       <CustomAvatar
-                        size={40}
+                        size={windowWidth < 768 ? 24 : 40}
                         icon={isOnline(CurrentUserProfile?.id) && "small"}
-                        src={CurrentUserProfile?.profileImageResize}
+                        src={CurrentUserProfile.profileImageResize || CurrentUserProfile.profileImage}
                       />
                       :
                       <TextAvatar name={CurrentUserProfile?.fullname}
                         icon={isOnline(CurrentUserProfile?.id) && "small"}
-                        size="40px" fontSize="18px" />
+                        size={windowWidth < 768 ? "24px" : "40px"}
+                        fontSize={windowWidth < 768 ? "10px" : "18px"}
+                      />
                   }
                 </Col>
                 :
@@ -163,7 +166,9 @@ const MessageCard = (props) => {
               {
                 checkDevided(messages[index - 1], message, index)
                 &&
-                <p className='message-time'>{(CurrentUserProfile?.fullname)?.split(" ")[0]}, {timeFormat(message.createdAt)}</p>
+                <p className='message-time'>
+                  {(CurrentUserProfile?.fullname)?.split(" ")[0]}, {timeFormat(message.createdAt)}
+                </p>
               }
               <div className='message-body message-left'>
                 {message.type === 'image' &&
@@ -173,7 +178,8 @@ const MessageCard = (props) => {
                   <TextMessageCard
                     CurrentUserProfile={CurrentUserProfile}
                     userProfile={userProfile}
-                    message={message} />
+                    message={message}
+                  />
                 }
                 <MessageOption
                   isDelete={false}
@@ -185,14 +191,17 @@ const MessageCard = (props) => {
                   setOptionVisible={setOptionVisible}
                   message={message}
                   makeReaction={makeReaction}
-                  align="left" />
+                  align="left"
+                />
               </div>
+
               {(message.content && message.type !== 'text') &&
                 <div className='message-body message-left'>
                   <TextMessageCard
                     CurrentUserProfile={CurrentUserProfile}
                     userProfile={userProfile}
-                    message={message} />
+                    message={message}
+                  />
                   <MessageOption
                     isDelete={false}
                     copyToClipboard={copyToClipboard}
@@ -203,60 +212,20 @@ const MessageCard = (props) => {
                     setOptionVisible={setOptionVisible}
                     message={message}
                     makeReaction={makeReaction}
-                    align="left" />
+                    align="left"
+                  />
                 </div>
               }
             </Col>
           </Row>
         </Col>
       </Row>
-      <UserSeenBubbles message={message} userProfile={userProfile} />
+      <UserSeenBubbles
+        message={message}
+        userProfile={userProfile}
+      />
     </div>
   );
 };
 
 export default MessageCard;
-
-const UserSeenBubbles = (props) => {
-  const { message, userProfile } = props;
-  return (
-    <Row className="message-card-bubble" justify="start">
-      <Col span={22} className="bubble-images">
-        {
-          (message?.readMessage?.length > 5) &&
-          <Popover placement='leftBottom'
-            content={<MessageSeenBubbles
-              userProfile={userProfile}
-              users={message.readMessage} />}
-            trigger="click">
-            <Button type="text" className="message-card-bubble-btn">
-              <FaPlusCircle />
-            </Button>
-          </Popover>
-        }
-        {
-          (message?.readMessage?.length > 0) && message.readMessage.slice(0, 5).map((user) => {
-            if (user.userId === userProfile.id) return false;
-            return (
-              user.user.profileImageResize ?
-                <Tooltip key={user.userId}
-                  placement="top" title={user?.user.fullname}>
-                  <Avatar
-                    size={16}
-                    src={user.user.profileImageResize}
-                  />
-                </Tooltip>
-                :
-                <Tooltip key={user.userId}
-                  placement="top" title={user?.user.fullname}>
-                  <p className="profile-text-avatar" >
-                    {getTwoCharacters(user?.user.fullname)}
-                  </p>
-                </Tooltip>
-            )
-          })
-        }
-      </Col>
-    </Row>
-  )
-}

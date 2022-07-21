@@ -18,7 +18,7 @@
 
   @include media("<=tablet") {
     width: 99vw;
-    margin-left: 100vw;
+    margin-left: 0;
     height: 93vh;
     overflow-x: hidden;
     // display: none;

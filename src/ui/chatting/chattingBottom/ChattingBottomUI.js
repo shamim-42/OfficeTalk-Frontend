@@ -11,13 +11,15 @@ const ChattingBottomUI = (props) => {
   const goBottom = useRef(null);
 
   useEffect(() => {
-    goBottom.current?.scrollIntoView();
-  }, [])
+    goBottom.current?.scrollIntoView({
+      inline: "end"
+    });
+  }, [messageStatus])
 
   return (
     <>
       {((allMessage.length === 0) && !messageStatus) && (
-        <div className="sayhi-card">
+        <div ref={goBottom} className="sayhi-card">
           <Avatar className="sayhi-emoji" src="https://s3-bucket-ot-teton.s3.amazonaws.com/images/d6e592b7-ba77-4efa-860b-72df4f0f30f4.gif" />
           <p className="sayhi-message">
             {`Say hi to ${currentUserProfile.fullname}.`}
@@ -32,7 +34,6 @@ const ChattingBottomUI = (props) => {
           </Button>
         </div>
       )}
-      <div ref={goBottom}></div>
       <div className="chatting-bottom">
         {isTyping && (
           <div className="user-typing">

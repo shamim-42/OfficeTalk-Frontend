@@ -3,6 +3,7 @@
 .chatting-home {
   height: 100%;
   position: relative;
+  background-color: map.get($theme-colors, "white");
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -103,9 +104,10 @@
 
   @include media("<=tablet") {
     width: 100vw;
+    // height: 100vh;
 
     & .chatting-content {
-      height: 60vh;
+      overflow: auto;
     }
   }
 }

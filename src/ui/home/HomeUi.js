@@ -1,7 +1,7 @@
 import { Affix, Layout } from 'antd';
 import { useRef } from 'react';
 import { Outlet } from 'react-router-dom';
-import Ring from '../../assest/iphone_notification.mp3';
+import Ring from '../../assest/music/iphone_notification.mp3';
 import Sidebar from '../../container/sidebar/Sidebar';
 const { Sider, Content } = Layout;
 
