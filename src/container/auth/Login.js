@@ -1,17 +1,18 @@
 import { Alert, Form, message, Modal, Spin } from 'antd';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { userLoginApi } from '../../api/auth';
 import { setUser, setUserProfile } from '../../redux/features/authSlice';
+import { selectLoading, updateLoading } from '../../redux/features/layoutSlice';
 import LoginUi from '../../ui/auth/login/LoginUi';
 
 const Login = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isErrorModal, setIsErrorModal] = useState(false);
   const [modalNumber, setModalNumber] = useState(1);
-  const [errorMessage, setErrorMessage] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('');
+  const loading = useSelector(selectLoading);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -56,7 +57,8 @@ const Login = () => {
 
   // on login submit function
   const onSubmitHandler = async (values) => {
-    setLoading(true);
+    if (!values) return;
+    dispatch(updateLoading(true));
     const loginData = {
       email: values.email,
       password: values.password,
@@ -65,9 +67,10 @@ const Login = () => {
     // on Login success handler function
     async function successHandler(response) {
       let res = await response.json();
+      console.log(res)
       const userLoginData = res.profile;
       const accessToken = res.accessToken;
-      setLoading(false);
+      dispatch(updateLoading(false));
       message.success('User logged in successfully !');
       dispatch(setUserProfile(userLoginData))
       dispatch(setUser(accessToken))
@@ -77,10 +80,11 @@ const Login = () => {
     // Bad Request Handler function
     async function handleBadReq(response) {
       let err = await response.json();
+      console.log(err)
       const message = err.message;
       setErrorMessage(message);
       // console.log("Login Error", err.message);
-      setLoading(false);
+      dispatch(updateLoading(false));
       showErrorModal()
     }
 

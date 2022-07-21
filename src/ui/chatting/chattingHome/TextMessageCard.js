@@ -68,9 +68,9 @@ const ReactViewPopover = ({ message }) => {
             <div className="user-list-item"
               key={index}>
               <div className="user-info">
-                {emj.user?.profileImage
+                {emj.user?.profileImageResize
                   ? <Avatar
-                    src={emj.user.profileImage}
+                    src={emj.user.profileImageResize}
                     style={{
                       width: 20,
                       height: 20,

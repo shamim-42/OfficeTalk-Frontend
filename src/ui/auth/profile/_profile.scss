@@ -10,7 +10,7 @@
 .profile-titlebar {
   @include set-display-flex(center, space-between);
   padding: 16px 24px;
-  background-color: #f1f1f1;
+  background-color: map.get($theme-colors, "white-f1");
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 
@@ -23,7 +23,7 @@
     gap: 4px;
 
     & .editprofile-link {
-      box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.25);
+      box-shadow: map.get($theme-colors, "black-alhpa-25");
       padding: 4px 8px;
       border-radius: 4px;
     }
@@ -52,16 +52,16 @@
         display: inline-block;
         content: "Select Photo";
         margin-bottom: 0;
-        background: #ffffff;
+        background: map.get($theme_colors, "white");
         padding: 4px 15px;
-        border: 1px solid #d9d9d9;
-        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+        border: 1px solid map.get($theme-colors, "gray-d9");
+        box-shadow: 0px 2px 4px 0px map.get($theme-colors, "black-alhpa-12");
         cursor: pointer;
         font-weight: normal;
         transition: all 0.2s ease-in-out;
         &:hover {
-          border-color: #40a9ff;
-          color: #40a9ff;
+          border-color: map.get($theme_colors, "primary-text-40");
+          color: map.get($theme-colors, "primary-text-40");
         }
       }
     }
@@ -75,8 +75,8 @@
     height: 100px;
     position: relative;
     border-radius: 100%;
-    border: 6px solid #f8f8f8;
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    border: 6px solid map.get($theme-colors, "white-f8");
+    box-shadow: 0px 2px 4px 0px map.get($theme-colors, "black-alhpa-10");
 
     & .imagePreview {
       width: 100%;

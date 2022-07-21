@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { editprofileApi, editprofilePhotoApi } from '../../api/auth';
 import { selectUserProfile, setUserProfile } from '../../redux/features/authSlice';
+import { selectLoading, updateLoading } from '../../redux/features/layoutSlice';
 import EditProfileForm from '../../ui/auth/profile/EditProfileForm';
 
 
@@ -15,7 +16,8 @@ const EditProfile = () => {
   const dispatch = useDispatch();
   const [uploadPhoto, setUploadPhoto] = useState(null);
   const [photoChange, setPhotoChange] = useState(false)
-  const [loader, setLoader] = useState(false);
+  const loading = useSelector(selectLoading);
+  // const [loader, setLoader] = useState(false);
 
 
   // Handle onChange profileImage function
@@ -29,7 +31,7 @@ const EditProfile = () => {
     if (!uploadPhoto) {
       return
     }
-    setLoader(true);
+    dispatch(updateLoading(true));
     const formData = new FormData();
     formData.append("file", uploadPhoto);
 
@@ -39,13 +41,14 @@ const EditProfile = () => {
       newProfile.profileImage = data?.sm.Location;
       dispatch(setUserProfile(newProfile))
       setPhotoChange(false);
-      setLoader(false);
+      dispatch(updateLoading(false));
     }
 
     async function handleBadReq(response) {
       let error = await response.json();
       // console.log(error);
-      setLoader(false);
+      dispatch(updateLoading(false));
+
     }
 
     return await editprofilePhotoApi(userId, formData, {
@@ -88,7 +91,7 @@ const EditProfile = () => {
         handleEditProfileImage={handleEditProfileImage}
         handleImageChange={handleImageChange}
         photoChange={photoChange}
-        loader={loader}
+        loader={loading}
         userProfile={userProfile} />
     </>
   );

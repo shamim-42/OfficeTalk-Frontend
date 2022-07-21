@@ -1,9 +1,8 @@
-import { Spin } from "antd";
+import { message, Spin } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getGroupInfo, getGroupMessagesApi, groupMessageSeenApi, groupMessageSendApi } from "../../api/group";
-import useSocket from "../../hooks/useSocket";
+import { useOutletContext, useParams } from "react-router-dom";
+import { getGroupInfo, getGroupMessagesApi, groupMessageSeenApi } from "../../api/group";
 import { selectUserProfile, setCurrentGroup } from "../../redux/features/authSlice";
 import { selectOnlineGroups, updateConversationGroupMessage, updateConversationGroupSeen, updateConversationGroupStatus } from "../../redux/features/layoutSlice";
 import GroupHomeUI from "../../ui/group/GroupHomeUI";
@@ -15,16 +14,15 @@ const GroupHome = () => {
   const [groupInfo, setGroupInfo] = useState({});
   const [loading, setLoading] = useState(false);
   const [allMessage, setAllMessage] = useState([]);
-  const [messageText, setMessageText] = useState("");
   const [pageNumber, setPageNumber] = useState("1");
   const [nextPage, setNextPage] = useState(0);
+  const [targetId, setTargetId] = useState(0);
   const userProfile = useSelector(selectUserProfile);
-  const { socket: newSocket } = useSocket();
   const userId = userProfile.id;
   const onlineGroups = useSelector(selectOnlineGroups);
   const isGroupOnline = onlineGroups.includes(parseInt(id));
   const dispatch = useDispatch();
-
+  const newSocket = useOutletContext();
 
   const handlePreviousMessage = () => {
     setPageNumber((prevPage) => {
@@ -33,11 +31,6 @@ const GroupHome = () => {
     })
   }
 
-
-  // Update message text function on change
-  const handleChangeMessage = (e) => {
-    setMessageText(e.target.value);
-  }
 
   // get current group information
   const getCurrentGroupInfo = useCallback(async () => {
@@ -92,21 +85,25 @@ const GroupHome = () => {
    * Get current group all messages fetch
    */
   const getGroupMessages = useCallback(async () => {
+    const userId = userProfile.id;
     const payload = {
       userId: userId,
     }
     async function successHandler(response) {
       const res = await response.json();
+      if (res?.messages.length > 0) {
+        setTargetId(res.messages[res?.messages.length - 1].id)
+      }
       updateMessagesOnLoad(res);
-      // console.log(res);
     }
 
     async function handleBadReq(response) {
       let error = await response.json();
+      message.error(error.message);
       // console.log(error)
     }
     return await getGroupMessagesApi(id, pageNumber, payload, { successHandler, handleBadReq })
-  }, [id, userId, pageNumber]);
+  }, [id, userProfile, pageNumber]);
 
   // update messages list after fetch messages
   const updateMessagesOnLoad = (res) => {
@@ -115,68 +112,11 @@ const GroupHome = () => {
       setAllMessage((prevMsg) => {
         let oldMsg = JSON.parse(JSON.stringify(prevMsg));
         let resMsg = JSON.parse(JSON.stringify(res.messages));
-        let newMsg = [...resMsg, ...oldMsg];
+        let newMsg = resMsg.concat(oldMsg)
         return newMsg;
       })
     }
     setNextPage(res?.pagination?.nextPage)
-  }
-
-  /**
-   * Send message to current user function
-   * @returns 
-   */
-  async function handleSubmitMessage() {
-    if (messageText.trim().length <= 0 && !messageText) {
-      return
-    }
-    const messageData = {
-      message: messageText,
-      senderId: userId,
-      type: "text",
-    }
-    async function successHandler(response) {
-      const res = await response.json();
-      // console.log(res);
-      updateMessagesOnSend(res);
-    }
-
-    async function handleBadReq(response) {
-      // let error = await response.json();
-    }
-    return await groupMessageSendApi(id, messageData, { successHandler, handleBadReq })
-  }
-
-  // update messages list after send message
-  const updateMessagesOnSend = (res) => {
-    // console.log(res);
-    setMessageText('');
-    const result = res.result;
-    const newMessage = {
-      lastMessage: result?.content,
-      groupId: result?.room?.id,
-      lastMessageTime: result?.createdAt,
-      name: result?.room?.name,
-      image: result?.room?.groupImage,
-      unreadMessages: 0,
-      type: "group",
-      status: res?.status,
-      users_seen: []
-    }
-
-    setAllMessage((prevMessages) => {
-      const copyPrevMessages = JSON.parse(JSON.stringify(prevMessages));
-      const newMessage = JSON.parse(JSON.stringify(result));
-      newMessage.EmojiTotal = [];
-      newMessage.Emoji = [];
-      newMessage.readMessage = [];
-      const index = copyPrevMessages.findIndex(message => message.id === result.id);
-      if (index === -1) {
-        copyPrevMessages.push(newMessage);
-      }
-      return copyPrevMessages;
-    });
-    dispatch(updateConversationGroupMessage(newMessage))
   }
 
   /**
@@ -218,6 +158,7 @@ const GroupHome = () => {
     } else {
 
     }
+    setTargetId(res.id);
   }, [dispatch, userId, groupMessageSeen, id]);
 
   /**
@@ -278,6 +219,8 @@ const GroupHome = () => {
 
   useEffect(() => {
     if (newSocket) {
+      newSocket.emit("JoinRoom", id);
+
       newSocket.on("groupSeen/", (res) => {
         // console.log(res)
         updateUserSeenList(res);
@@ -291,16 +234,13 @@ const GroupHome = () => {
         updateMessageListOnDelete(res);
       });
     }
-  }, [updateUserReactList, updateUserSeenList, updateMessageListOnDelete, newSocket]);
 
+  }, [updateUserReactList, updateUserSeenList, updateMessageListOnDelete, newSocket, id]);
 
   useEffect(() => {
-    if (newSocket) {
-      newSocket.emit("JoinRoom", id);
-    }
     getCurrentGroupInfo()
     getGroupMessages()
-  }, [getCurrentGroupInfo, getGroupMessages, id, newSocket]);
+  }, [getCurrentGroupInfo, getGroupMessages])
 
   useEffect(() => {
     groupMessageSeen();
@@ -314,17 +254,17 @@ const GroupHome = () => {
   return (
     <Spin spinning={loading}>
       <GroupHomeUI
-        handleChangeMessage={handleChangeMessage}
         userProfile={userProfile}
         groupInfo={groupInfo}
         allMessage={allMessage}
-        messageText={messageText}
-        handleSubmitMessage={handleSubmitMessage}
         handlePreviousMessage={handlePreviousMessage}
         setAllMessage={setAllMessage}
         isGroupOnline={isGroupOnline}
+        setTargetId={setTargetId}
         nextPage={nextPage}
         groupId={id}
+        targetId={targetId}
+        userId={userId}
       />
     </Spin>
   );

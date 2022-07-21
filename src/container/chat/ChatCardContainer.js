@@ -8,7 +8,7 @@ import MessageCard from '../../ui/chatting/chattingHome/MessageCard';
 import { updateMessageListOnReact } from '../../utils/utils';
 
 const ChatCardContainer = (props) => {
-  const { currentUserProfile, setAllMessage, singleMessage, messages, index } = props;
+  const { currentUserProfile, setAllMessage, singleMessage, messages, index, targetId } = props;
   const [reactVisible, setReactVisible] = useState(false);
   const [optionVisible, setOptionVisible] = useState(false);
   const chatId = currentUserProfile?.id;
@@ -17,11 +17,11 @@ const ChatCardContainer = (props) => {
   const userId = userProfile.id;
   const onlineUsers = useSelector(selectActiveUser);
 
+
   // check user online status function
   function isOnline(id) {
     return onlineUsers.indexOf(id) !== -1;
   }
-
 
   /**
      * single message reaction function
@@ -48,6 +48,7 @@ const ChatCardContainer = (props) => {
 
     async function handleBadReq(response) {
       let error = await response.json();
+      message.error(error.message);
       // console.log(error)
     }
     return await singleReactionApi(userId, reactData, { successHandler, handleBadReq })
@@ -122,6 +123,7 @@ const ChatCardContainer = (props) => {
       optionVisible={optionVisible}
       setOptionVisible={setOptionVisible}
       makeReaction={makeReaction}
+      targetId={targetId}
     />
   );
 };

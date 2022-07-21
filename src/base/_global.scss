@@ -1,5 +1,4 @@
 // global style guide
-
 @use "sass:map";
 
 // set the line-clamp with the params passed to it
@@ -11,10 +10,21 @@
 }
 
 // set display to flex with the params passed to it
-@mixin set-display-flex($align, $justify, $gap: 0, $direction: row) {
+@mixin set-display-flex(
+  $align: stretch,
+  $justify: flex-start,
+  $gap: 0,
+  $direction: row
+) {
   display: flex;
-  justify-content: $justify;
-  align-items: $align;
+
+  @if $align != stretch {
+    align-items: $align;
+  }
+
+  @if $justify != flex-start {
+    justify-content: $justify;
+  }
 
   @if $gap != 0 {
     gap: $gap;

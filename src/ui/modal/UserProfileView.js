@@ -7,6 +7,21 @@ import TextAvatar from "../helper/TextAvatar";
 
 const UserProfileView = ({ closeProfileModal, userProfile, handleLogout }) => {
 
+  const handleNotification = (checked) => {
+    if (checked) {
+      Notification.requestPermission()
+        .then((permission) => {
+          console.log(permission)
+        }).catch(err => console.log(err));
+    } else {
+      Notification.close()
+        .then((permission) => {
+          console.log(permission);
+        })
+    }
+    console.log(`switch to ${checked}`);
+  };
+
   return (
     <div>
       <Button
@@ -42,7 +57,7 @@ const UserProfileView = ({ closeProfileModal, userProfile, handleLogout }) => {
             <AiOutlineBell />
             <span>Notification</span>
           </div>
-          <Switch size="small" defaultChecked />
+          <Switch size="small" onChange={handleNotification} />
         </div>
         <Button className="profile-option">
           <RiSettings3Line />

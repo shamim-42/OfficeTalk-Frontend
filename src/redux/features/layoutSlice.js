@@ -10,10 +10,15 @@ export const layoutSlice = createSlice({
     activeUser: [],
     conversationList: [],
     onlineGroups: [],
+    loading: false,
   },
   reducers: {
     setError: (state, action) => {
       state.error = action.payload;
+    },
+
+    updateLoading: (state, action) => {
+      state.loading = action.payload;
     },
 
     resetError: (state) => {
@@ -151,9 +156,10 @@ export const layoutSlice = createSlice({
 
 });
 
-export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation, setUpdateUnreadCount, updateConversationStatus, deleteSingleConversation, updateConversationMessage, updateFriendList, updateConversationGroupMessage, updateOnlineGroupList, updateConversationGroupStatus, updateConversationGroupSeen } = layoutSlice.actions;
+export const { setError, resetError, setAllUsers, setActiveUser, setConversationList, setAddConversation, setUpdateConversation, setUpdateUnreadCount, updateConversationStatus, deleteSingleConversation, updateConversationMessage, updateFriendList, updateConversationGroupMessage, updateOnlineGroupList, updateConversationGroupStatus, updateConversationGroupSeen, updateLoading } = layoutSlice.actions;
 
 export const selectError = (state) => state.layout.error;
+export const selectLoading = (state) => state.layout.loading;
 export const selectAllUser = (state) => state.layout.allUsers;
 export const selectFriendList = (state) => state.layout.friendList;
 export const selectActiveUser = (state) => state.layout.activeUser;

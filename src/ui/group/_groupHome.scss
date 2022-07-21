@@ -40,7 +40,7 @@
         text-align: center;
 
         & .ant-avatar {
-          border: 3px solid #ffff;
+          border: 3px solid map.get($theme-colors, "white");
         }
       }
 

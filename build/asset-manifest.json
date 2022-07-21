@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.cd633f15.css",
-    "main.js": "/static/js/main.afa41784.js",
+    "main.css": "/static/css/main.da033efd.css",
+    "main.js": "/static/js/main.5ebd0365.js",
     "static/media/iphone_notification.mp3": "/static/media/iphone_notification.9265569a62097dd69f3c.mp3",
     "index.html": "/index.html",
-    "main.cd633f15.css.map": "/static/css/main.cd633f15.css.map",
-    "main.afa41784.js.map": "/static/js/main.afa41784.js.map"
+    "main.da033efd.css.map": "/static/css/main.da033efd.css.map",
+    "main.5ebd0365.js.map": "/static/js/main.5ebd0365.js.map"
   },
   "entrypoints": [
-    "static/css/main.cd633f15.css",
-    "static/js/main.afa41784.js"
+    "static/css/main.da033efd.css",
+    "static/js/main.5ebd0365.js"
   ]
 }

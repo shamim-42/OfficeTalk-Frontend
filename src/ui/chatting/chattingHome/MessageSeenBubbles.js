@@ -4,8 +4,7 @@ import CustomAvatar from "../../helper/CustomAvatar";
 import TextAvatar from "../../helper/TextAvatar";
 
 const MessageSeenBubbles = ({ users, userProfile }) => {
-  // console.log(users)
-
+  
   return (
     <div className="message-bubbles-popover">
       <p className="message-bubbles-popover-title">

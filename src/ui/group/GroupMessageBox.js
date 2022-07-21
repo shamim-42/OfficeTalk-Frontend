@@ -1,15 +1,9 @@
 import { Divider } from 'antd';
-import { useEffect, useRef } from 'react';
 import GroupCardContainer from '../../container/group/GroupCardContainer';
 import { conversationTimeFormat } from '../../utils/timeFormat';
 
 const GroupMessageBox = (props) => {
-  const { filterMessages, userProfile, allMessage, setAllMessage, groupId } = props;
-  const messagesEndRef = useRef(null);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView();
-  }, [allMessage]);
+  const { filterMessages, userProfile, setAllMessage, groupId, targetId } = props;
 
   return (
     <>
@@ -25,12 +19,12 @@ const GroupMessageBox = (props) => {
               setAllMessage={setAllMessage}
               index={index}
               key={index}
+              targetId={targetId}
               messages={filterMessages?.data?.messages}
             />
           ))
         }
       </div>
-      <div ref={messagesEndRef}></div>
     </>
   );
 };

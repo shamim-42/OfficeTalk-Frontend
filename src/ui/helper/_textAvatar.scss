@@ -5,11 +5,9 @@
   width: fit-content;
 
   & .profile-text-avatar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #ea6053;
-    color: #ffff;
+    @include set-display-flex(center, center);
+    background-color: map.get($theme-colors, "orange-text-ea");
+    color: map.get($theme-colors, "white");
     border-radius: 100%;
     text-align: center;
   }
