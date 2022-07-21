@@ -238,7 +238,7 @@ const UserSeenBubbles = (props) => {
           (message?.readMessage?.length > 0) && message.readMessage.slice(0, 5).map((user) => {
             if (user.userId === userProfile.id) return false;
             return (
-              user.user.profileImage ?
+              user.user.profileImageResize ?
                 <Tooltip key={user.userId}
                   placement="top" title={user?.user.fullname}>
                   <Avatar

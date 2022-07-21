@@ -132,8 +132,8 @@
     margin-right: auto;
     left: 0;
     right: 0;
-    background-color: #fff2f0;
-    border: 1px solid #ffccc7;
+    background-color: map.get($theme-colors, "white-ff");
+    border: 1px solid map.get($theme-colors, "white-ffcc");
     border-radius: 4px;
     width: 400px;
 

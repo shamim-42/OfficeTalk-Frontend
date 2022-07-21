@@ -130,7 +130,7 @@
         height: 5px;
         width: 5px;
         border-radius: 50%;
-        background-color: #8d8d8d;
+        background-color: map.get($theme-colors, "gray-text-8d");
         margin: 3px;
         animation: typing 1500ms ease-in-out infinite;
         animation-delay: 4500ms;

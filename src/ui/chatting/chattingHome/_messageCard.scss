@@ -117,10 +117,7 @@
   width: 100%;
 
   & .bubble-images {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 4px;
+    @include set-display-flex(center, flex-end, 4px);
 
     & .message-card-bubble-btn {
       margin-top: 5px;
@@ -137,8 +134,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #ea6053;
-      color: #ffff;
+      background-color: map.get($theme-colors, "orange-text-ea");
+      color: map.get($theme-colors, "white");
       border-radius: 100%;
       text-align: center;
     }

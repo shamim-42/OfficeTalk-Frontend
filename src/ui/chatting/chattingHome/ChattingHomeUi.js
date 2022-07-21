@@ -1,5 +1,5 @@
 import { Button, Spin } from "antd";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import ChatHeader from "../../../container/chat/ChatHeader";
 import ChattingBottom from "../../../container/chat/ChattingBottom";
 import { getDateWiseMessages } from "../../../utils/utils";
@@ -8,12 +8,6 @@ import MessageBox from "./MessageBox";
 const ChattingHomeUi = (props) => {
   const { currentUserProfile, newSocket, allMessage, isLoading, userId, messageStatus, userRequestFunction, nextPage, handlePreviousMessage, setAllMessage, targetId, setTargetId } = props;
 
-  const [isMore, setIsMore] = useState(false);
-  function seeMore() {
-    handlePreviousMessage()
-    setIsMore(true)
-  }
-  console.log(allMessage)
   const filteredMessages = getDateWiseMessages(allMessage);
 
   return (
@@ -25,7 +19,7 @@ const ChattingHomeUi = (props) => {
             {nextPage > 0 &&
               <div className="previous-btn-container">
                 <Button
-                  onClick={seeMore}
+                  onClick={handlePreviousMessage}
                   className="previous-btn">see previous</Button>
               </div>
             }
@@ -35,7 +29,6 @@ const ChattingHomeUi = (props) => {
                 filteredMessages.map((filterMessages, index) => (
                   <MessageBox
                     key={index}
-                    isMore={isMore}
                     currentUserProfile={currentUserProfile}
                     setAllMessage={setAllMessage}
                     messageStatus={messageStatus}

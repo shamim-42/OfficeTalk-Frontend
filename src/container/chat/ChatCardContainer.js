@@ -17,7 +17,6 @@ const ChatCardContainer = (props) => {
   const userId = userProfile.id;
   const onlineUsers = useSelector(selectActiveUser);
 
-  console.log(targetId)
 
   // check user online status function
   function isOnline(id) {

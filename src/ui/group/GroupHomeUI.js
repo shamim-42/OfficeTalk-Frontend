@@ -4,13 +4,11 @@ import GroupHead from "../../container/group/GroupHead";
 import { getDateWiseMessages } from "../../utils/utils";
 import GroupMessageBox from "./GroupMessageBox";
 
-
 const GroupHomeUI = (props) => {
   const { groupInfo, allMessage, userProfile, setTargetId, userId, isGroupOnline, setAllMessage, groupId, handlePreviousMessage, nextPage, targetId } = props;
 
   const filteredMessages = getDateWiseMessages(allMessage);
-  console.log(targetId)
-  console.log(allMessage)
+  // console.log(allMessage)
 
   return (
     <div>

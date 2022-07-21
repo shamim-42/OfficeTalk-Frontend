@@ -55,7 +55,7 @@ const ChattingHome = () => {
     dispatch(updateLoading(true));
     async function successHandler(response) {
       const res = await response.json();
-      console.log(res)
+      // console.log(res)
       if (res?.messages.length > 0) {
         setTargetId(res.messages[res?.messages.length - 1].id)
       }
@@ -126,8 +126,14 @@ const ChattingHome = () => {
   }
 
 
+  useEffect(() => {
+    getCurrentUserProfile()
+    getAllMessage()
+  }, [getCurrentUserProfile, getAllMessage]);
+
   // ***** All Socket Function below ***** //
-  const getNewMessage = useCallback(() => {
+
+  useEffect(() => {
     if (newSocket) {
       newSocket.on('newMessage/user/' + userId, (msg) => {
         if (parseInt(msg.senderId) === parseInt(chatId)) {
@@ -141,14 +147,12 @@ const ChattingHome = () => {
             return copyPrevMessages;
           });
         }
+        setTargetId(msg.id);
       })
     }
-  }, [userId, makeReadMessage, chatId, newSocket])
+  }, [userId, newSocket, chatId, makeReadMessage]);
 
 
-  /**
-   * All useEffect Function below
-   */
   useEffect(() => {
     if (newSocket) {
       newSocket.on(`isdeleted/${userId}`, (res) => {
@@ -171,16 +175,9 @@ const ChattingHome = () => {
   }, [userId, chatId, newSocket]);
 
   useEffect(() => {
-    getNewMessage()
-  }, [getNewMessage, userId, newSocket]);
-
-  useEffect(() => {
-    getCurrentUserProfile()
-    getAllMessage()
-
-  }, [getCurrentUserProfile, getAllMessage]);
-
-  useEffect(() => {
+    if (parseInt(chatId) === parseInt(userId)) {
+      navigate('/');
+    }
     makeReadMessage()
     dispatch(setCurrentUser(chatId))
 
@@ -189,13 +186,7 @@ const ChattingHome = () => {
       dispatch(setCurrentUser(null))
       setPageNumber("1");
     }
-  }, [makeReadMessage, chatId, dispatch]);
-
-  useEffect(() => {
-    if (parseInt(chatId) === parseInt(userId)) {
-      navigate('/');
-    }
-  }, [chatId, userId, navigate, targetId]);
+  }, [makeReadMessage, chatId, dispatch, userId, navigate]);
 
 
   return (

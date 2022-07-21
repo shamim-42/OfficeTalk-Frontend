@@ -96,7 +96,7 @@
         border: 1px solid map.get($theme-colors, "white");
         background-color: map.get($theme-colors, "gray-text-c4");
         font-size: 12px;
-        color: #2d2d2d;
+        color: map.get($theme-colors, "black-2d");
 
         &::before {
           content: "";
@@ -206,8 +206,6 @@
     overflow-y: hidden;
     width: 100vw;
     height: 100vh;
-    // display: none;
-    // z-index: 10;
   }
 }
 

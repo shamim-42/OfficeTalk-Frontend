@@ -158,6 +158,7 @@ const GroupHome = () => {
     } else {
 
     }
+    setTargetId(res.id);
   }, [dispatch, userId, groupMessageSeen, id]);
 
   /**

@@ -39,7 +39,7 @@
       & .more-button-dark {
         width: 137px;
         height: 137px;
-        background-color: rgba(2, 2, 2, 0.41);
+        background-color: map.get($theme-colors, "black-alhpa-41");
         position: absolute;
         right: 0;
         bottom: 0;
