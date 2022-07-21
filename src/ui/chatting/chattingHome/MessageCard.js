@@ -1,4 +1,5 @@
 import { Avatar, Button, Col, Popover, Row, Tooltip } from 'antd';
+import { useEffect, useRef } from 'react';
 import { FaPlusCircle } from "react-icons/fa";
 import useWindowDimensions from '../../../hooks/useWindowDimensions';
 import { timeFormat } from '../../../utils/timeFormat';
@@ -12,14 +13,23 @@ import TextMessageCard from './TextMessageCard';
 
 
 const MessageCard = (props) => {
-  const { CurrentUserProfile, userProfile, deleteMessage, message, isOnline, messages, index, reactVisible, setReactVisible, optionVisible, setOptionVisible, makeReaction, copyToClipboard } = props;
+  const { CurrentUserProfile, userProfile, deleteMessage, message, isOnline, messages, index, reactVisible, setReactVisible, optionVisible, setOptionVisible, makeReaction, copyToClipboard, targetId } = props;
 
   const { width: windowWidth } = useWindowDimensions();
+  const messagesEndRef = useRef(null);
 
+  useEffect(() => {
+    if (message.id === targetId) {
+      messagesEndRef.current?.scrollIntoView({
+        inline: "end"
+      });
+    }
+
+  }, [targetId, message]);
 
   if (message?.user?.id === userProfile.id || message?.senderId === userProfile.id) {
     return (
-      <>
+      <div className="message-list" ref={messagesEndRef}>
         <Row className="message-card" justify="end">
           <Col span={windowWidth > 768 ? 14 : 22}>
             <Row>
@@ -120,12 +130,12 @@ const MessageCard = (props) => {
           </Col>
         </Row>
         <UserSeenBubbles message={message} userProfile={userProfile} />
-      </>
+      </div>
     )
   }
 
   return (
-    <>
+    <div className="message-list" ref={messagesEndRef}>
       <Row className="message-card" justify="start">
         <Col span={windowWidth > 768 ? 14 : 22}>
           <Row>
@@ -201,7 +211,7 @@ const MessageCard = (props) => {
         </Col>
       </Row>
       <UserSeenBubbles message={message} userProfile={userProfile} />
-    </>
+    </div>
   );
 };
 

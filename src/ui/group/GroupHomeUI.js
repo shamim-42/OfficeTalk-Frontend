@@ -1,16 +1,16 @@
-import { Affix, Button, Col, Input, Row } from "antd";
-import { BsEmojiSmile } from "react-icons/bs";
-import { FaRegPaperPlane } from "react-icons/fa";
+import { Affix, Button } from "antd";
+import GroupBottom from "../../container/group/GroupBottom";
 import GroupHead from "../../container/group/GroupHead";
 import { getDateWiseMessages } from "../../utils/utils";
 import GroupMessageBox from "./GroupMessageBox";
 
 
 const GroupHomeUI = (props) => {
-  const { groupInfo, allMessage, userProfile, handleChangeMessage, messageText, handleSubmitMessage, isGroupOnline, setAllMessage, groupId, handlePreviousMessage, nextPage } = props;
+  const { groupInfo, allMessage, userProfile, setTargetId, userId, isGroupOnline, setAllMessage, groupId, handlePreviousMessage, nextPage, targetId } = props;
 
   const filteredMessages = getDateWiseMessages(allMessage);
-  // console.log(allMessage)
+  console.log(targetId)
+  console.log(allMessage)
 
   return (
     <div>
@@ -33,6 +33,7 @@ const GroupHomeUI = (props) => {
             filteredMessages.map((filterMessages, index) => (
               <GroupMessageBox
                 key={index}
+                targetId={targetId}
                 groupId={groupId}
                 userProfile={userProfile}
                 setAllMessage={setAllMessage}
@@ -42,40 +43,12 @@ const GroupHomeUI = (props) => {
             ))}
         </div>
       </div>
-      <div className="chatting-bottom">
-        {/* {isTyping && (
-            <div className="user-typing">
-              <Avatar
-                className="user-typing-img"
-                src={currentUserProfile?.profileImage}
-              />
-              <div className="typing">
-                <span className="circle"></span>
-                <span className="circle"></span>
-                <span className="circle"></span>
-                <span className="circle"></span>
-                <span className="circle"></span>
-              </div>
-            </div>
-          )} */}
-        <Row className="message-input-container">
-          <Col span={14}>
-            <Input
-              prefix={<Button shape="circle" icon={<BsEmojiSmile />} />}
-              className="message-input"
-              size="large"
-              placeholder="Type a message"
-              value={messageText}
-              onChange={handleChangeMessage}
-              onPressEnter={handleSubmitMessage}
-            />
-          </Col>
-          <Col span={1} className="chat-input-attachment">
-            {messageText.trim() && <Button shape="circle"
-              onClick={handleSubmitMessage} icon={<FaRegPaperPlane />} className="chat-sent-control" />}
-          </Col>
-        </Row>
-      </div>
+      <GroupBottom
+        setAllMessage={setAllMessage}
+        setTargetId={setTargetId}
+        userId={userId}
+        groupId={groupId}
+      />
     </div>
   );
 };

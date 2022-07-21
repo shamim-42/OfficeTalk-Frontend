@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteMessageApi, singleReactionApi } from '../../api/chat';
 import { selectUserProfile } from '../../redux/features/authSlice';
@@ -16,6 +16,8 @@ const ChatCardContainer = (props) => {
   const userProfile = useSelector(selectUserProfile);
   const userId = userProfile.id;
   const onlineUsers = useSelector(selectActiveUser);
+
+  console.log(targetId)
 
   // check user online status function
   function isOnline(id) {
@@ -107,35 +109,23 @@ const ChatCardContainer = (props) => {
     setOptionVisible(false);
   };
 
-  const messagesEndRef = useRef(null);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView();
-
-  }, [targetId]);
-
   return (
-    <>
-      <MessageCard
-        CurrentUserProfile={currentUserProfile}
-        userProfile={userProfile}
-        deleteMessage={deleteMessage}
-        message={singleMessage}
-        isOnline={isOnline}
-        messages={messages}
-        index={index}
-        copyToClipboard={copyToClipboard}
-        reactVisible={reactVisible}
-        setReactVisible={setReactVisible}
-        optionVisible={optionVisible}
-        setOptionVisible={setOptionVisible}
-        makeReaction={makeReaction}
-      />
-      {
-        singleMessage.id === targetId &&
-        <div ref={messagesEndRef}></div>
-      }
-    </>
+    <MessageCard
+      CurrentUserProfile={currentUserProfile}
+      userProfile={userProfile}
+      deleteMessage={deleteMessage}
+      message={singleMessage}
+      isOnline={isOnline}
+      messages={messages}
+      index={index}
+      copyToClipboard={copyToClipboard}
+      reactVisible={reactVisible}
+      setReactVisible={setReactVisible}
+      optionVisible={optionVisible}
+      setOptionVisible={setOptionVisible}
+      makeReaction={makeReaction}
+      targetId={targetId}
+    />
   );
 };
 

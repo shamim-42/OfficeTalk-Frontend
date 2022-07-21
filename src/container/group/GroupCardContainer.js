@@ -7,7 +7,7 @@ import MessageCard from '../../ui/chatting/chattingHome/MessageCard';
 import { updateMessageListOnReact } from '../../utils/utils';
 
 const GroupCardContainer = (props) => {
-  const { singleMessage, userProfile, index, messages, setAllMessage, groupId } = props;
+  const { singleMessage, userProfile, index, messages, setAllMessage, groupId, targetId } = props;
   const userId = userProfile.id;
   const [reactVisible, setReactVisible] = useState(false);
   const [optionVisible, setOptionVisible] = useState(false);
@@ -104,6 +104,7 @@ const GroupCardContainer = (props) => {
 
   return (
     <MessageCard
+      targetId={targetId}
       CurrentUserProfile={singleMessage.user}
       userProfile={userProfile}
       deleteMessage={deleteGroupMessage}

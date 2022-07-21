@@ -14,7 +14,10 @@ const UserProfileView = ({ closeProfileModal, userProfile, handleLogout }) => {
           console.log(permission)
         }).catch(err => console.log(err));
     } else {
-      // Notification.close();
+      Notification.close()
+        .then((permission) => {
+          console.log(permission);
+        })
     }
     console.log(`switch to ${checked}`);
   };
