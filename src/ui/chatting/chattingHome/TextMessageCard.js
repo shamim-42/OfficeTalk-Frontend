@@ -5,8 +5,10 @@ import TextAvatar from '../../helper/TextAvatar';
 const TextMessageCard = ({ message, CurrentUserProfile, userProfile, }) => {
   const senderName = (message?.children?.senderId === userProfile.id) ? userProfile.fullname : CurrentUserProfile.fullname;
 
+  const senderId = message?.senderId || message?.user?.id;
+
   return (
-    <div className="text-message">
+    <div className={`text-message ${senderId === userProfile.id && "sender-message"}`}>
       {
         message.children &&
         <>

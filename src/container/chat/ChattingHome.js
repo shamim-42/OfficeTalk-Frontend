@@ -11,7 +11,7 @@ import { updateMessageListOnReact } from '../../utils/utils';
 const ChattingHome = () => {
   let { chatId } = useParams();
   const [currentUserProfile, setCurrentUserProfile] = useState({})
-  const [messageStatus, setMessageStatus] = useState(null);
+  const [messageStatus, setMessageStatus] = useState("empty");
   const [pageNumber, setPageNumber] = useState("1");
   const [nextPage, setNextPage] = useState(0);
   const [allMessage, setAllMessage] = useState([]);
@@ -34,8 +34,8 @@ const ChattingHome = () => {
 
   // update messages list after fetch messages
   const updateMessagesOnLoad = useCallback((res) => {
+
     setMessageStatus(res.status);
-    // console.log(res)
     if (res?.messages?.length > 0) {
       setAllMessage((prevMsg) => {
         let oldMsg = JSON.parse(JSON.stringify(prevMsg));

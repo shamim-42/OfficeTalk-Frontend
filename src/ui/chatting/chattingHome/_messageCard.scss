@@ -78,7 +78,8 @@
 
   & .text-message {
     position: relative;
-    background-color: map.get($theme-colors, "white-f1");
+    // background-color: map.get($theme-colors, "white-f1");
+    background-color: #f2f6f9;
     width: 95%;
     padding: 20px;
     // border: 0.5px solid map.get($theme-colors, "gray-text-bc");
@@ -106,6 +107,10 @@
       color: map.get($theme-colors, "black");
       word-wrap: break-word;
     }
+  }
+
+  & .text-message.sender-message {
+    background-color: #dbf1ff;
   }
 
   @include media("<=tablet") {

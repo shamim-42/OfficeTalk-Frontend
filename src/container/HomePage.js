@@ -41,7 +41,6 @@ const HomePage = () => {
   }, [token, dispatch, navigate])
 
 
-
   useEffect(() => {
     if (userProfile && newSocket) {
       newSocket.connect();

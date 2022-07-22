@@ -7,9 +7,11 @@ import { HiOutlineFolderRemove } from "react-icons/hi";
 import { ImUpload } from "react-icons/im";
 import { IoChevronDownOutline, IoOptions } from "react-icons/io5";
 import { MdCall } from "react-icons/md";
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CreateGroup from '../../container/group/CreateGroup';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
+import { selectUserProfile } from '../../redux/features/authSlice';
 import CustomAvatar from '../helper/CustomAvatar';
 import TextAvatar from '../helper/TextAvatar';
 import UserProfileView from '../modal/UserProfileView';
@@ -19,9 +21,10 @@ import SettingPopover from './SettingPopover';
 
 
 const SidebarHeaderUI = (props) => {
-  const { handleChangeSearch, onChangeSwitch, userProfile, handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible, showProfileOpenModal, friendList, isOnline, openProfile, closeProfileModal, foundUsers, handleBlur } = props;
+  const { handleChangeSearch, onChangeSwitch,  handleLogout, isJoinMeetingModalVisible, showJoinMeetingModal, cancelJoinMeetingModal, isChatGroupModalVisible, showChatGroupModal, handleChatGroupCancel, setIsChatGroupModalVisible, showProfileOpenModal, friendList, isOnline, openProfile, closeProfileModal, foundUsers, handleBlur } = props;
 
   const { width: windowWidth } = useWindowDimensions();
+  const userProfile = useSelector(selectUserProfile);
 
   return (
     <>
