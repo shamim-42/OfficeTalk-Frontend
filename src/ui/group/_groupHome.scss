@@ -3,6 +3,7 @@
 .group-chat-content {
   min-height: 82vh;
   padding-bottom: 14px;
+  background-color: map.get($theme-colors, "white");
 
   & .previous-btn-container {
     width: 100%;
@@ -16,6 +17,12 @@
       border-radius: 15px;
     }
   }
+
+  // @include media("<=tablet") {
+  //   height: 60vh;
+  //   overflow-y: auto;
+  //   overflow-x: hidden;
+  // }
 }
 .ant-drawer.group-profile {
   & > .ant-drawer-mask {

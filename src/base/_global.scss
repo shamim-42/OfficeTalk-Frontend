@@ -386,3 +386,12 @@ h4 {
 .ant-popover-inner-content {
   padding: 0;
 }
+.modal-logout-button {
+  @include set-display-flex(center, space-between);
+
+  & button {
+    width: 70px;
+    height: 24px;
+    font-size: 12px;
+  }
+}

@@ -50,3 +50,8 @@ export const checkJWTToken = async function (payload, options = {}) {
   const url = '4000/auth/verifyjwt';
   return await connector.post(url, payload, options);
 }
+
+export const resetLoginSession = async function (payload, options = {}) {
+  const url = '4000/auth/previousSessionLogOut';
+  return await connector.post(url, payload, options);
+}
