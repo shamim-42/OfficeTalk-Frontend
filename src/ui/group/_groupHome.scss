@@ -18,6 +18,10 @@
     }
   }
 
+  & .all-messages-content {
+    padding: 16px 64px;
+  }
+
   // @include media("<=tablet") {
   //   height: 60vh;
   //   overflow-y: auto;

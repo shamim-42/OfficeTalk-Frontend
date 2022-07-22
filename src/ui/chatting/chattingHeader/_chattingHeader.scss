@@ -2,7 +2,8 @@
 
 .chatting-header {
   @include set-display-flex(center, space-between, 10);
-  background-color: map.get($theme-colors, "white-f1");
+  background-color: map.get($theme-colors, "white");
+  box-shadow: rgb(0 0 0 / 14%) 0px 2px 8px -2px;
   padding: 18px;
   color: map.get($theme-colors, "black");
   position: relative;

@@ -3,12 +3,17 @@
 .sidebar-header {
   & .ant-input-affix-wrapper {
     border-radius: 8px;
-    background-color: map.get($theme-colors, "gray-dd");
+    background-color: map.get($theme-colors, "white-f1");
+    border: 0;
     // background-color: #e6f0f8;
 
     & > * {
-      background-color: map.get($theme-colors, "gray-dd");
+      background-color: map.get($theme-colors, "white-f1");
       // background-color: #e6f0f8;
+    }
+
+    & input.ant-input {
+      padding: 4px;
     }
   }
 

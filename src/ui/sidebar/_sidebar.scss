@@ -2,7 +2,8 @@
 @use "sass:map";
 
 .sidebar-container {
-  background-color: map.get($theme-colors, "white-f1");
+  background-color: map.get($theme-colors, "white");
+  box-shadow: rgb(0 0 0 / 14%) 0px 2px 8px 0px;
   height: 100vh;
   padding: 8px;
 
@@ -76,17 +77,16 @@
       padding-bottom: 200px;
 
       & .focushed {
-        border: 1px solid map.get($theme-colors, "green-017");
+        // border: 1px solid map.get($theme-colors, "green-017");
+        // border: 1px solid #40a9ff;
+        background-color: #dbf1ff !important;
       }
 
       & .sidebar-card {
         background-color: map.get($theme-colors, "white-fa");
         width: 100%;
         border-radius: 8px;
-
-        &:focus-within {
-          border: 1px solid map.get($theme-colors, "green-017");
-        }
+        border: none;
 
         & .unread-card {
           color: map.get($theme-colors, "black");

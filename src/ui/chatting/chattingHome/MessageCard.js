@@ -29,7 +29,7 @@ const MessageCard = (props) => {
     return (
       <div className="message-list" ref={messagesEndRef}>
         <Row className="message-card" justify="end">
-          <Col span={windowWidth > 768 ? 14 : 22}>
+          <Col span={windowWidth > 768 ? 16 : 22}>
             <Row>
               <Col span={21} className="messages-area">
                 {
@@ -138,7 +138,7 @@ const MessageCard = (props) => {
   return (
     <div className="message-list" ref={messagesEndRef}>
       <Row className="message-card" justify="start">
-        <Col span={windowWidth > 768 ? 14 : 22}>
+        <Col span={windowWidth > 768 ? 16 : 22}>
           <Row>
             {
               checkDevided(messages[index - 1], message, index)
